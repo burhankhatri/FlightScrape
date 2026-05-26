@@ -31,13 +31,12 @@
     line-height: 1.05;
     font-weight: 600;
   }
-  /* Display / marketing headings — Plus Jakarta Sans */
+  /* Display / marketing headings — Instrument Serif */
   .sf-display {
-    font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    font-feature-settings: "ss01" on, "cv11" on;
+    font-family: var(--font-display), Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
   }
 }
 
@@ -455,10 +454,16 @@
     @apply font-mono text-[11px] sm:text-xs tabular-nums text-neutral-500;
   }
   .type-hero {
-    font-size: clamp(2rem, 5vw + 1rem, 4.25rem);
+    font-size: clamp(2.5rem, 6vw + 0.5rem, 4.5rem);
   }
   .type-section {
-    font-size: clamp(1.5rem, 2.5vw + 0.75rem, 2rem);
+    font-size: clamp(1.375rem, 2vw + 0.75rem, 1.75rem);
+  }
+  .landing-shell {
+    background:
+      radial-gradient(ellipse 90% 70% at 50% -10%, rgba(240, 245, 250, 0.9), transparent 55%),
+      linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
+    background-attachment: fixed;
   }
   .origin-menu-panel {
     box-shadow:
