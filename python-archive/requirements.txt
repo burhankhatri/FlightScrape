@@ -1,0 +1,7 @@
+streamlit>=1.39.0
+fast-flights>=2.2
+playwright>=1.40.0   # for fast-flights `fetch_mode=local`; remote service now requires a paid token
+amadeus>=11.0.0
+anthropic>=0.40.0
+requests>=2.32.0
+python-dotenv>=1.0.0

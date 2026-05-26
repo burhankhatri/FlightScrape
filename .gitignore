@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next
+.next/
+out/
+build/
+dist/
+
+# env (DO NOT COMMIT)
+.env
+.env.local
+.env*.local
+
+# typescript / next
+next-env.d.ts
+*.tsbuildinfo
+
+# misc
+.DS_Store
+*.log
+
+# python (archive)
+python-archive/.venv/
+python-archive/__pycache__/
+python-archive/lib/__pycache__/
+python-archive/data/cache.db
+python-archive/data/cache.db-journal
+python-archive/data/images/
