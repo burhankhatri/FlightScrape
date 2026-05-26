@@ -108,7 +108,7 @@ export function DateNudger({ baseline, adults }: Props) {
           e.stopPropagation();
           handleOpen();
         }}
-        className="text-xs text-sky-700 hover:text-sky-900 transition font-medium inline-flex items-center gap-1"
+        className="text-xs text-[#0070f3] hover:text-[#0761d1] transition font-medium inline-flex items-center gap-1"
       >
         <span aria-hidden>±</span>
         {open ? "Hide nearby dates" : "Try shifting dates"}
@@ -181,7 +181,7 @@ function DateNudgeChip({
 
   if (loading) {
     return (
-      <div className="glass-pill !rounded-xl px-2.5 py-2 text-center text-[11px] text-neutral-400">
+      <div className="rounded-md border border-[#ebebeb] bg-[#fafafa] px-2.5 py-2 text-center text-[11px] text-[#888888]">
         <div className="font-mono">{label}</div>
         <div className="mt-0.5">…</div>
       </div>
@@ -190,7 +190,7 @@ function DateNudgeChip({
 
   if (error || !offer) {
     return (
-      <div className="glass-pill !rounded-xl px-2.5 py-2 text-center text-[11px] text-neutral-300">
+      <div className="rounded-md border border-[#ebebeb] bg-[#fafafa] px-2.5 py-2 text-center text-[11px] text-[#a1a1a1]">
         <div className="font-mono">{label}</div>
         <div className="mt-0.5">—</div>
       </div>
@@ -204,10 +204,10 @@ function DateNudgeChip({
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()}
       className={[
-        "glass-pill !rounded-xl px-2.5 py-2 text-center text-[11px] no-underline transition-colors block",
+        "block rounded-md border px-2.5 py-2 text-center text-[11px] no-underline transition-colors",
         cheaper
-          ? "ring-1 ring-sky-400/60 bg-sky-50/70 text-sky-900 hover:bg-sky-100/70"
-          : "text-neutral-700 hover:bg-white/70",
+          ? "border-[#171717] bg-[#171717] text-white hover:bg-[#383838]"
+          : "border-[#ebebeb] bg-white text-[#4d4d4d] hover:border-[#a1a1a1] hover:text-[#171717]",
       ].join(" ")}
       title={`Depart ${departLabel} · ${offer.airline} · ${offer.duration}`}
     >

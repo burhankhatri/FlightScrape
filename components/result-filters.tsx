@@ -8,7 +8,6 @@ import {
   activeFilterCount,
   isFiltersActive,
 } from "@/lib/filter-cards";
-import { GlassSurface } from "./ui/glass-surface";
 
 interface Props {
   filters: Filters;
@@ -53,40 +52,38 @@ export function ResultFilters({
   };
 
   const reset = () => onChange(DEFAULT_FILTERS);
-
-  // Slider step: round to nearest 10 for price, 0.5 hour for duration.
   const priceStep = priceMax > 2000 ? 50 : 25;
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2 xs:gap-3 mb-3">
+    <div className="mx-auto w-full max-w-3xl">
+      <div className="mb-3 flex flex-col gap-2 xs:flex-row xs:items-center xs:justify-between xs:gap-3">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="glass-pill touch-target px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-colors inline-flex items-center justify-center gap-2 w-full xs:w-auto"
+          className="btn-vercel-secondary touch-target inline-flex w-full items-center justify-center gap-2 xs:w-auto"
           aria-expanded={open}
           aria-controls="result-filters-panel"
         >
-          <FunnelIcon className="w-4 h-4" />
+          <FunnelIcon className="h-4 w-4" />
           Filters
           {activeCount > 0 && (
-            <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full bg-sky-600 text-white text-[11px] font-semibold tabular-nums">
+            <span className="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#171717] px-1.5 text-[11px] font-semibold tabular-nums text-white">
               {activeCount}
             </span>
           )}
         </button>
 
-        <div className="text-xs text-neutral-500 text-center xs:text-right">
+        <div className="text-center text-xs text-[#888888] xs:text-right">
           {isActive ? (
             <>
-              <span className="font-semibold text-neutral-800">{resultCount}</span>
+              <span className="font-semibold text-[#171717]">{resultCount}</span>
               {" of "}
               <span className="tabular-nums">{totalCount}</span>
               {" shown"}
             </>
           ) : (
             <>
-              <span className="font-semibold text-neutral-800">{totalCount}</span>{" "}
+              <span className="font-semibold text-[#171717]">{totalCount}</span>{" "}
               {totalCount === 1 ? "destination" : "destinations"}
             </>
           )}
@@ -104,9 +101,8 @@ export function ResultFilters({
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <GlassSurface className="p-4 sm:p-6 mb-4 !rounded-2xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-5">
-                {/* Stops */}
+            <div className="vercel-surface mb-4 p-4 sm:p-6">
+              <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-8">
                 <div>
                   <FilterLabel>Stops</FilterLabel>
                   <div className="flex flex-wrap gap-1.5">
@@ -126,11 +122,10 @@ export function ResultFilters({
                   </div>
                 </div>
 
-                {/* Max price */}
                 <div>
-                  <div className="flex items-baseline justify-between mb-1.5">
+                  <div className="mb-1.5 flex items-baseline justify-between">
                     <FilterLabel>Max price</FilterLabel>
-                    <span className="text-xs text-neutral-600 tabular-nums">
+                    <span className="font-mono text-xs tabular-nums text-[#4d4d4d]">
                       {filters.maxPrice === null
                         ? `up to $${priceMax.toLocaleString()}`
                         : `$${filters.maxPrice.toLocaleString()}`}
@@ -146,16 +141,15 @@ export function ResultFilters({
                       const v = parseInt(e.target.value, 10);
                       update({ maxPrice: v >= priceMax ? null : v });
                     }}
-                    className="w-full accent-sky-600"
+                    className="w-full accent-[#171717]"
                     aria-label="Maximum price"
                   />
                 </div>
 
-                {/* Max duration */}
                 <div>
-                  <div className="flex items-baseline justify-between mb-1.5">
+                  <div className="mb-1.5 flex items-baseline justify-between">
                     <FilterLabel>Max duration</FilterLabel>
-                    <span className="text-xs text-neutral-600 tabular-nums">
+                    <span className="font-mono text-xs tabular-nums text-[#4d4d4d]">
                       {filters.maxDurationHours === null
                         ? `up to ${durationMax}h`
                         : `${filters.maxDurationHours}h`}
@@ -173,16 +167,15 @@ export function ResultFilters({
                         maxDurationHours: v >= durationMax ? null : v,
                       });
                     }}
-                    className="w-full accent-sky-600"
+                    className="w-full accent-[#171717]"
                     aria-label="Maximum flight duration in hours"
                   />
                 </div>
 
-                {/* Airlines */}
                 {airlines.length > 1 && (
                   <div className="sm:col-span-2">
                     <FilterLabel>Hide airlines</FilterLabel>
-                    <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
+                    <div className="flex max-h-24 flex-wrap gap-1.5 overflow-y-auto">
                       {airlines.map((a) => {
                         const excluded = filters.excludeAirlines.includes(a);
                         return (
@@ -193,9 +186,7 @@ export function ResultFilters({
                             className={chipClass(excluded, true)}
                             aria-pressed={excluded}
                           >
-                            {excluded && (
-                              <span aria-hidden className="mr-1">✕</span>
-                            )}
+                            {excluded && <span aria-hidden className="mr-1">✕</span>}
                             {a}
                           </button>
                         );
@@ -206,17 +197,17 @@ export function ResultFilters({
               </div>
 
               {isActive && (
-                <div className="flex justify-end mt-5 pt-4 border-t border-white/40">
+                <div className="mt-5 flex justify-end border-t border-[#ebebeb] pt-4">
                   <button
                     type="button"
                     onClick={reset}
-                    className="text-xs font-medium text-sky-700 hover:text-sky-900 transition-colors"
+                    className="text-xs font-medium text-[#0070f3] transition hover:text-[#0761d1]"
                   >
                     Reset all filters
                   </button>
                 </div>
               )}
-            </GlassSurface>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -226,27 +217,16 @@ export function ResultFilters({
 
 function FilterLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="type-label uppercase tracking-wider mb-2 text-[11px]">
-      {children}
-    </p>
+    <p className="type-caption-mono mb-2 text-[#888888]">{children}</p>
   );
 }
 
 function chipClass(selected: boolean, isExclude = false): string {
-  const base =
-    "touch-target px-3 py-2 sm:py-1.5 rounded-full text-xs font-medium transition-all border inline-flex items-center justify-center";
+  const base = "vercel-chip touch-target";
   if (selected) {
-    return [
-      base,
-      isExclude
-        ? "bg-red-500/10 text-red-700 border-red-300/60"
-        : "bg-sky-600 text-white border-sky-600 shadow-sm",
-    ].join(" ");
+    return [base, isExclude ? "vercel-chip-exclude" : "vercel-chip-active"].join(" ");
   }
-  return [
-    base,
-    "bg-white/55 text-neutral-700 border-white/70 hover:bg-white/80 hover:text-neutral-900",
-  ].join(" ");
+  return base;
 }
 
 function FunnelIcon({ className }: { className?: string }) {

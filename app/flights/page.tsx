@@ -9,8 +9,6 @@ import { StatsBar } from "@/components/stats-bar";
 import { SearchProgress } from "@/components/search-progress";
 import { ResultFilters } from "@/components/result-filters";
 import { ChipButton } from "@/components/ui/chip-button";
-import { GlassSurface } from "@/components/ui/glass-surface";
-import { Airplane } from "@/components/sf-icons";
 import {
   type OriginOption,
   findOriginByIata,
@@ -45,6 +43,14 @@ function loadStoredOrigin(): OriginOption {
   const saved = localStorage.getItem(ORIGIN_STORAGE_KEY);
   if (saved) return findOriginByIata(saved) ?? getDefaultOrigin();
   return getDefaultOrigin();
+}
+
+function EmptyState({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="vercel-surface mx-auto max-w-lg px-6 py-8 text-center text-sm text-[#4d4d4d]">
+      {children}
+    </div>
+  );
 }
 
 export default function FlightsPage() {
@@ -181,26 +187,25 @@ export default function FlightsPage() {
   );
 
   return (
-    <main className="page-shell flex flex-col items-center">
+    <main className="app-shell page-shell flex flex-col items-center">
       <div className="page-container flex flex-col items-center gap-5 sm:gap-6 md:gap-8">
         <motion.header
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
           <div className="text-center sm:text-left">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 type-caption font-medium text-sky-700/80 hover:text-sky-800 transition-colors mb-2"
+              className="mb-2 inline-flex items-center gap-1.5 text-sm font-medium tracking-[-0.02em] text-[#4d4d4d] transition hover:text-[#171717]"
             >
-              <Airplane className="w-3.5 h-3.5 -rotate-45" />
-              Flighthelper
+              ← Flighthelper
             </Link>
-            <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-neutral-900">
+            <h1 className="sf-display text-xl font-semibold tracking-[-0.04em] text-[#171717] sm:text-2xl md:text-3xl">
               Search flights
             </h1>
-            <p className="mt-1 text-sm text-neutral-600 max-w-md">
+            <p className="mt-1 max-w-md text-sm leading-relaxed text-[#4d4d4d]">
               Describe your trip — we compare prices across dates and destinations.
             </p>
           </div>
@@ -208,7 +213,7 @@ export default function FlightsPage() {
 
         <section
           aria-labelledby="search-heading"
-          className="w-full flex flex-col items-center"
+          className="flex w-full flex-col items-center"
         >
           <h2 id="search-heading" className="sr-only">
             Search flights
@@ -232,16 +237,14 @@ export default function FlightsPage() {
                 transition={{ duration: 0.4 }}
                 className="flex flex-col items-center gap-3"
               >
-                <h2 className="text-sm font-semibold text-neutral-800">
-                  Example searches
-                </h2>
-                <p className="type-caption text-center max-w-md">
+                <p className="type-caption-mono text-[#888888]">Example searches</p>
+                <p className="type-caption max-w-md text-center">
                   Tap one to run it with your selected departure airport.
                 </p>
-                <div className="flex flex-col xs:flex-row flex-wrap items-stretch xs:items-center justify-center gap-2 w-full max-w-3xl px-0 sm:px-2">
+                <div className="flex w-full max-w-3xl flex-col flex-wrap items-stretch justify-center gap-2 px-0 xs:flex-row xs:items-center sm:px-2">
                   {EXAMPLE_QUERIES.map((q) => (
                     <ChipButton key={q} onClick={() => search(q)} className="w-full xs:w-auto">
-                      <span className="italic text-left xs:text-center line-clamp-3 xs:line-clamp-2 sm:line-clamp-1">
+                      <span className="line-clamp-3 text-left xs:line-clamp-2 xs:text-center sm:line-clamp-1">
                         {q}
                       </span>
                     </ChipButton>
@@ -285,9 +288,9 @@ export default function FlightsPage() {
                 exit={{ opacity: 0 }}
                 className="flex justify-center"
               >
-                <GlassSurface className="px-6 py-4 text-red-600 text-sm text-center max-w-lg">
+                <div className="vercel-surface max-w-lg px-6 py-4 text-center text-sm text-[#ee0000]">
                   {error}
-                </GlassSurface>
+                </div>
               </motion.div>
             )}
 
@@ -320,14 +323,14 @@ export default function FlightsPage() {
                 )}
 
                 {data.cards.length === 0 ? (
-                  <GlassSurface className="px-6 py-8 text-center text-neutral-500 max-w-lg mx-auto">
+                  <EmptyState>
                     No results. Try different dates or check that the destination is in{" "}
-                    <code className="text-neutral-700">lib/destinations.ts</code>.
-                  </GlassSurface>
+                    <code className="font-mono text-[#171717]">lib/destinations.ts</code>.
+                  </EmptyState>
                 ) : filteredCards.length === 0 ? (
-                  <GlassSurface className="px-6 py-8 text-center text-neutral-500 max-w-lg mx-auto">
+                  <EmptyState>
                     No flights match your filters. Try loosening them above.
-                  </GlassSurface>
+                  </EmptyState>
                 ) : (
                   <div className="cards-carousel">
                     {filteredCards.map((c, i) => (

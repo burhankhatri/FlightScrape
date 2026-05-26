@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { OriginPicker } from "@/components/origin-picker";
-import { LiquidGlassButton } from "@/components/ui/liquid-glass-button";
 import { FieldLabel } from "@/components/ui/field-label";
 import type { OriginOption } from "@/lib/origins";
 
@@ -45,7 +44,7 @@ export function TripSearchForm({ origin, onOriginChange, onSearch, loading }: Pr
             onChange={(e) => setQuery(e.target.value)}
             placeholder="cheapest flights to KL in july"
             disabled={loading}
-            className="field-box w-full outline-none placeholder:text-neutral-400 text-base sm:text-[0.9375rem]"
+            className="field-box w-full outline-none placeholder:text-[#888888] text-base sm:text-sm"
             autoComplete="off"
             enterKeyHint="search"
           />
@@ -58,15 +57,14 @@ export function TripSearchForm({ origin, onOriginChange, onSearch, loading }: Pr
           >
             Search
           </span>
-          <LiquidGlassButton
+          <button
             type="submit"
             disabled={loading || !query.trim()}
-            ariaLabel="Search flights"
-            size="sm"
-            className="w-full md:w-auto touch-target"
+            aria-label="Search flights"
+            className="btn-vercel-primary w-full md:w-auto touch-target"
           >
             {loading ? "Searching…" : "Search"}
-          </LiquidGlassButton>
+          </button>
         </div>
       </div>
     </form>

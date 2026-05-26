@@ -76,10 +76,8 @@ function CyclingQuery({ reduceMotion }: { reduceMotion: boolean | null }) {
 
   return (
     <div className="mt-10 w-full max-w-md">
-      <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-400">
-        Try saying
-      </p>
-      <div className="relative min-h-[3.25rem] overflow-hidden rounded-xl border border-neutral-200/80 bg-white/60 px-4 py-3 backdrop-blur-sm">
+      <p className="type-caption-mono mb-2 text-[#888888]">Example query</p>
+      <div className="relative min-h-[3rem] overflow-hidden rounded-md border border-[#ebebeb] bg-white px-4 py-3 shadow-[0_1px_1px_#00000005,0_2px_2px_#0000000a]">
         <AnimatePresence mode="wait">
           <motion.p
             key={query}
@@ -87,7 +85,7 @@ function CyclingQuery({ reduceMotion }: { reduceMotion: boolean | null }) {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={reduceMotion ? undefined : { opacity: 0, y: -8, filter: "blur(4px)" }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="font-mono text-[13px] leading-snug text-neutral-700 sm:text-sm"
+            className="font-mono text-[13px] leading-5 text-[#171717]"
           >
             &ldquo;{query}&rdquo;
           </motion.p>
@@ -95,7 +93,7 @@ function CyclingQuery({ reduceMotion }: { reduceMotion: boolean | null }) {
         {!reduceMotion && (
           <motion.span
             aria-hidden
-            className="absolute bottom-3 right-4 h-4 w-px bg-neutral-900/70"
+            className="absolute bottom-3 right-4 h-4 w-px bg-[#171717]"
             animate={{ opacity: [1, 1, 0, 0] }}
             transition={{ duration: 1, repeat: Infinity, times: [0, 0.45, 0.5, 1] }}
           />
@@ -111,28 +109,12 @@ export function LandingPage() {
 
   return (
     <div className="landing-shell page-shell flex min-h-[100dvh] flex-col">
-      {!motionOff && (
-        <motion.div
-          aria-hidden
-          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2 }}
-        >
-          <motion.div
-            className="absolute left-1/2 top-[18%] h-72 w-72 -translate-x-1/2 rounded-full bg-neutral-200/40 blur-3xl"
-            animate={{ scale: [1, 1.08, 1], opacity: [0.35, 0.5, 0.35] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
-      )}
-
       <header className="page-container pt-2 sm:pt-4">
         <motion.p
           initial={motionOff ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="text-[13px] font-medium tracking-wide text-neutral-500"
+          className="text-sm font-medium tracking-[-0.02em] text-[#4d4d4d]"
         >
           Flighthelper
         </motion.p>
@@ -145,7 +127,7 @@ export function LandingPage() {
             initial={motionOff ? false : "hidden"}
             animate={motionOff ? undefined : "visible"}
           >
-            <h1 className="sf-display type-hero text-balance text-neutral-900">
+            <h1 className="sf-display type-hero text-balance text-[#171717]">
               {HEADLINE.map((w, i) => (
                 <motion.span
                   key={`${w}-${i}`}
@@ -159,7 +141,7 @@ export function LandingPage() {
 
             <motion.p
               variants={motionOff ? undefined : fadeUp}
-              className="mt-6 max-w-lg text-base leading-relaxed text-neutral-600 sm:text-[1.0625rem]"
+              className="mt-6 max-w-lg text-base leading-7 text-[#4d4d4d] sm:text-lg"
             >
               Describe your trip once. We compare dates, routes, and providers —
               then surface the cheapest deal per destination.
@@ -180,7 +162,7 @@ export function LandingPage() {
               >
                 <Link
                   href="/flights"
-                  className="group inline-flex items-center gap-2 rounded-full bg-neutral-900 px-6 py-3 text-sm font-medium text-white no-underline transition-colors hover:bg-neutral-800"
+                  className="group inline-flex h-12 items-center gap-2 rounded-full bg-[#171717] px-6 text-base font-medium text-white no-underline transition-colors hover:bg-[#383838]"
                 >
                   Start searching
                   <motion.span
@@ -195,7 +177,7 @@ export function LandingPage() {
               </motion.div>
               <Link
                 href="/flights"
-                className="text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+                className="text-sm tracking-[-0.02em] text-[#4d4d4d] transition-colors hover:text-[#171717]"
               >
                 View example searches
               </Link>
@@ -207,7 +189,7 @@ export function LandingPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-20 divide-y divide-neutral-200/80 border-t border-neutral-200/80"
+            className="mt-20 divide-y divide-[#ebebeb] border-t border-[#ebebeb]"
           >
             {FEATURES.map(({ n, title, body }, i) => (
               <motion.li
@@ -218,10 +200,14 @@ export function LandingPage() {
                 transition={{ delay: i * 0.08, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 className="grid grid-cols-[3rem_1fr] gap-x-4 gap-y-1 py-5 sm:grid-cols-[4rem_1fr] sm:gap-x-6"
               >
-                <span className="font-mono text-xs tabular-nums text-neutral-400">{n}</span>
+                <span className="type-caption-mono text-[#888888]">{n}</span>
                 <div>
-                  <h2 className="text-[15px] font-medium text-neutral-900">{title}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-neutral-500">{body}</p>
+                  <h2 className="text-base font-semibold tracking-[-0.02em] text-[#171717]">
+                    {title}
+                  </h2>
+                  <p className="mt-1 text-sm leading-5 tracking-[-0.02em] text-[#4d4d4d]">
+                    {body}
+                  </p>
                 </div>
               </motion.li>
             ))}
@@ -234,7 +220,7 @@ export function LandingPage() {
           initial={motionOff ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-xs text-neutral-400"
+          className="text-center text-xs leading-4 text-[#888888]"
         >
           Made for travellers who hate spreadsheets.
         </motion.p>

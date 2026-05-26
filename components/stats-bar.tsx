@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import type { Card, SearchStats } from "@/lib/types";
-import { GlassSurface } from "./ui/glass-surface";
 
 interface Props {
   cards: Card[];
@@ -22,19 +21,16 @@ export function StatsBar({ cards, stats, originDisplay }: Props) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.05, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      <GlassSurface
-        variant="pill"
-        className="mx-auto max-w-2xl px-4 py-3 sm:px-5 sm:py-3.5 text-center !rounded-2xl sm:!rounded-full"
-      >
-        <div className="text-sm sm:text-[15px] text-neutral-600">
+      <div className="vercel-surface mx-auto max-w-2xl px-4 py-3 sm:px-5 sm:py-3.5 text-center">
+        <div className="text-sm tracking-[-0.02em] text-[#4d4d4d]">
           <span className="inline-flex flex-wrap items-center justify-center gap-x-1">
             <span>
-              <span className="font-bold text-neutral-900">{cards.length}</span>
+              <span className="font-semibold text-[#171717]">{cards.length}</span>
               {cards.length === 1 ? " destination" : " destinations"} from{" "}
-              <span className="font-bold text-neutral-900">{originDisplay}</span>
+              <span className="font-semibold text-[#171717]">{originDisplay}</span>
             </span>
             {isFlex && (
-              <span className="text-neutral-500">
+              <span className="text-[#888888]">
                 · cheapest across {stats.dateCombos} date options
               </span>
             )}
@@ -42,17 +38,20 @@ export function StatsBar({ cards, stats, originDisplay }: Props) {
         </div>
 
         {showSpread && (
-          <details className="mt-3 text-xs text-neutral-500">
-            <summary className="cursor-pointer hover:text-neutral-800 transition font-medium list-none">
+          <details className="mt-3 text-xs text-[#888888]">
+            <summary className="cursor-pointer font-medium list-none transition hover:text-[#171717]">
               How we know it&apos;s the cheapest
             </summary>
-            <ul className="mt-2.5 space-y-1.5 text-left max-h-40 overflow-y-auto">
+            <ul className="mt-2.5 max-h-40 space-y-1.5 overflow-y-auto text-left">
               {cards.map((c) => {
                 if (c.combosSucceeded < 2 || c.priceMax <= c.priceMin) return null;
                 const pct = ((c.priceMax - c.priceMin) / c.priceMin) * 100;
                 return (
-                  <li key={c.destLabel} className="glass-pill !rounded-2xl px-3 py-2">
-                    <strong className="text-neutral-800">{c.destLabel}</strong>: checked{" "}
+                  <li
+                    key={c.destLabel}
+                    className="rounded-md border border-[#ebebeb] bg-[#fafafa] px-3 py-2 text-[#4d4d4d]"
+                  >
+                    <strong className="text-[#171717]">{c.destLabel}</strong>: checked{" "}
                     {c.combosSucceeded} options
                     {c.combosTried > c.combosSucceeded &&
                       ` (${c.combosTried - c.combosSucceeded} timed out)`}
@@ -65,7 +64,7 @@ export function StatsBar({ cards, stats, originDisplay }: Props) {
             </ul>
           </details>
         )}
-      </GlassSurface>
+      </div>
     </motion.div>
   );
 }

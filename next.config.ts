@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["geist"],
   // The Google Flights HTML fetch + Wikipedia API calls run in our /api routes.
   // Allow external image hosts that Wikipedia returns for hero images.
   images: {

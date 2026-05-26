@@ -15,13 +15,8 @@
     font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
     line-height: 1.55;
     letter-spacing: -0.011em;
-    background:
-      radial-gradient(ellipse 80% 60% at 15% 10%, rgba(186, 214, 255, 0.65), transparent 55%),
-      radial-gradient(ellipse 70% 55% at 85% 20%, rgba(210, 198, 255, 0.5), transparent 50%),
-      radial-gradient(ellipse 60% 50% at 50% 90%, rgba(200, 230, 245, 0.45), transparent 55%),
-      linear-gradient(165deg, #eef3f9 0%, #dce6f0 45%, #d4dfea 100%);
-    background-attachment: fixed;
-    color: #1d1d1f;
+    background: #fafafa;
+    color: #171717;
     font-feature-settings: "ss01" on, "cv11" on, "tnum" on;
   }
   h1,
@@ -31,12 +26,12 @@
     line-height: 1.05;
     font-weight: 600;
   }
-  /* Display / marketing headings — Instrument Serif */
+  /* Display headings — Geist Sans (Vercel) */
   .sf-display {
-    font-family: var(--font-display), Georgia, "Times New Roman", serif;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.08;
+    font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 1;
   }
 }
 
@@ -90,56 +85,153 @@
     border-radius: 9999px;
   }
 
-  /* Compact search shell — one bar, not a giant card */
+  /* Search bar — Vercel-style surface */
   .search-shell {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.78) 0%,
-      rgba(255, 255, 255, 0.52) 100%
-    );
-    backdrop-filter: blur(36px) saturate(200%);
-    -webkit-backdrop-filter: blur(36px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.72);
-    border-radius: clamp(1rem, 2vw, 1.25rem);
+    background: #ffffff;
+    border: 1px solid #ebebeb;
+    border-radius: 8px;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.92),
-      0 16px 40px rgba(13, 38, 76, 0.09);
-    /* Allow origin dropdown to extend outside the bar (WebKit clips otherwise) */
+      0 1px 1px #00000005,
+      0 2px 2px #0000000a;
     overflow: visible;
   }
 
-  /* Shared inset field — origin trigger + text inputs look identical */
+  /* Form fields — Vercel form-input */
   .field-box {
     display: flex;
     align-items: center;
     width: 100%;
-    min-height: 2.875rem;
-    padding: 0 1rem;
-    border-radius: 0.75rem;
+    min-height: 2.5rem;
+    padding: 0 0.75rem;
+    border-radius: 6px;
     touch-action: manipulation;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85);
-    font-size: max(1rem, 0.9375rem);
-    color: #1d1d1f;
-    transition: background 0.15s, box-shadow 0.15s;
+    background: #ffffff;
+    border: 1px solid #ebebeb;
+    box-shadow: none;
+    font-size: max(1rem, 0.875rem);
+    color: #171717;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
   @media (min-width: 640px) {
     .field-box {
-      min-height: 2.75rem;
-      font-size: 0.9375rem;
-      padding: 0 0.875rem;
+      min-height: 2.5rem;
+      font-size: 0.875rem;
     }
   }
   .field-box:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.62);
+    border-color: #a1a1a1;
   }
   .field-box:focus-within,
   .field-box.field-box-active {
-    background: rgba(255, 255, 255, 0.68);
+    border-color: #171717;
+    box-shadow: 0 0 0 1px #171717;
+  }
+
+  /* Vercel surfaces & controls */
+  .vercel-surface {
+    background: #ffffff;
+    border: 1px solid #ebebeb;
+    border-radius: 8px;
     box-shadow:
-      inset 0 1px 2px rgba(255, 255, 255, 0.9),
-      0 0 0 2px rgba(125, 180, 255, 0.35);
+      0 1px 1px #00000005,
+      0 2px 2px #0000000a;
+  }
+
+  .vercel-divider {
+    height: 1px;
+    background: #ebebeb;
+    border: none;
+  }
+
+  .btn-vercel-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border-radius: 9999px;
+    background: #171717;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .btn-vercel-primary:hover:not(:disabled) {
+    background: #383838;
+  }
+  .btn-vercel-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn-vercel-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #171717;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    border: 1px solid #ebebeb;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn-vercel-secondary:hover:not(:disabled) {
+    border-color: #a1a1a1;
+    background: #fafafa;
+  }
+
+  .vercel-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid #ebebeb;
+    background: #ffffff;
+    color: #4d4d4d;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .vercel-chip:hover {
+    border-color: #a1a1a1;
+    color: #171717;
+  }
+  .vercel-chip-active {
+    background: #171717;
+    border-color: #171717;
+    color: #ffffff;
+  }
+  .vercel-chip-exclude {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #c50000;
+  }
+
+  .vercel-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid #ebebeb;
+    background: #fafafa;
+    color: #4d4d4d;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
 
   /* Subtle lift on hover — transform only (GPU-friendly, no backdrop repaint) */
@@ -445,25 +537,35 @@
     touch-action: manipulation;
   }
   .type-label {
-    @apply text-[13px] sm:text-sm font-medium text-neutral-600 leading-none;
+    @apply text-[13px] sm:text-sm font-medium text-[#4d4d4d] leading-none tracking-[-0.02em];
   }
   .type-caption {
-    @apply text-xs sm:text-[13px] text-neutral-500 leading-snug;
+    @apply text-xs sm:text-[13px] text-[#888888] leading-snug tracking-[-0.02em];
   }
   .type-code {
     @apply font-mono text-[11px] sm:text-xs tabular-nums text-neutral-500;
   }
   .type-hero {
-    font-size: clamp(2.5rem, 6vw + 0.5rem, 4.5rem);
+    font-size: clamp(2rem, 5vw + 0.75rem, 3rem);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
   }
   .type-section {
-    font-size: clamp(1.375rem, 2vw + 0.75rem, 1.75rem);
+    font-size: clamp(1.375rem, 2vw + 0.65rem, 2rem);
+    letter-spacing: -0.04em;
+    line-height: 1.25;
   }
-  .landing-shell {
-    background:
-      radial-gradient(ellipse 90% 70% at 50% -10%, rgba(240, 245, 250, 0.9), transparent 55%),
-      linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
-    background-attachment: fixed;
+  .type-caption-mono {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .landing-shell,
+  .app-shell {
+    background: #fafafa;
+    color: #171717;
   }
   .origin-menu-panel {
     box-shadow:

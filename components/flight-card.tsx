@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import type { Card } from "@/lib/types";
 import { DateNudger } from "./date-nudger";
-import { GlassSurface } from "./ui/glass-surface";
 
 interface Props {
   card: Card;
@@ -38,25 +37,25 @@ export function FlightCard({ card, index }: Props) {
 
   return (
     <motion.div
-      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={reduceMotion ? undefined : { y: -4, transition: { type: "spring", stiffness: 300, damping: 26 } }}
+      whileHover={reduceMotion ? undefined : { y: -2, transition: { type: "spring", stiffness: 300, damping: 26 } }}
       transition={{
         delay: reduceMotion ? 0 : 0.05 + index * 0.05,
-        duration: 0.5,
+        duration: 0.45,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="flex h-full text-neutral-800 transform-gpu"
+      className="flex h-full text-[#171717] transform-gpu"
     >
-      <GlassSurface interactive className="flex h-full w-full flex-col overflow-hidden">
-        <div className={`${CARD_X} pt-5 platform-rings`}>
-          <div className="relative mx-auto h-36 w-full sm:h-40">
+      <article className="vercel-surface flex h-full w-full flex-col overflow-hidden transition-shadow hover:shadow-[0_2px_2px_#0000000a,0_8px_16px_-4px_#0000000a]">
+        <div className={`${CARD_X} pt-5`}>
+          <div className="relative mx-auto h-36 w-full overflow-hidden rounded-md bg-[#f5f5f5] sm:h-40">
             {card.imageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={card.imageUrl}
                 alt={card.destLabel}
-                className="image-feather-card h-full w-full object-cover"
+                className="h-full w-full object-cover"
                 loading="lazy"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
@@ -69,11 +68,11 @@ export function FlightCard({ card, index }: Props) {
             <div
               data-img-fallback
               className={[
-                "flex h-full w-full items-center justify-center rounded-3xl bg-gradient-to-br from-sky-100/80 to-indigo-100/60 image-feather-card",
+                "flex h-full w-full items-center justify-center bg-[#f5f5f5]",
                 card.imageUrl ? "absolute inset-0 hidden" : "",
               ].join(" ")}
             >
-              <span className="text-3xl font-semibold text-sky-400/60">
+              <span className="font-display text-3xl font-semibold text-[#a1a1a1]">
                 {best.destCity.charAt(0)}
               </span>
             </div>
@@ -81,68 +80,64 @@ export function FlightCard({ card, index }: Props) {
         </div>
 
         <div className={`${CARD_X} pt-4 pb-3 text-center`}>
-          <h3 className="font-display text-lg font-bold tracking-tight text-neutral-900 sm:text-xl">
+          <h3 className="font-display text-lg font-semibold tracking-[-0.03em] text-[#171717] sm:text-xl">
             {best.destCity}
           </h3>
-          <p className="mt-1 text-sm text-neutral-500">{card.destCountry}</p>
+          <p className="mt-1 text-sm text-[#888888]">{card.destCountry}</p>
         </div>
 
-        <hr className="glass-divider mx-5 shrink-0" />
+        <hr className="vercel-divider mx-5 shrink-0" />
 
         <div className={`${CARD_X} py-4`}>
           <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-x-2 sm:gap-x-3">
             <div className="min-w-0 text-left">
-              <div className="text-base font-bold tabular-nums leading-none text-neutral-900 sm:text-lg">
+              <div className="text-base font-semibold tabular-nums leading-none text-[#171717] sm:text-lg">
                 {formatDate(best.departDate)}
               </div>
-              <div className="mt-1 truncate text-xs font-medium tracking-wide text-neutral-500">
+              <div className="mt-1 truncate font-mono text-xs text-[#888888]">
                 {best.origin}
               </div>
             </div>
 
-            <span className="glass-pill shrink-0 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-              {stopsLabel}
-            </span>
+            <span className="vercel-badge shrink-0">{stopsLabel}</span>
 
             <div className="min-w-0 text-right">
-              <div className="text-base font-bold tabular-nums leading-none text-neutral-900 sm:text-lg">
+              <div className="text-base font-semibold tabular-nums leading-none text-[#171717] sm:text-lg">
                 {best.returnDate ? formatDate(best.returnDate) : "One-way"}
               </div>
-              <div className="mt-1 text-xs font-medium tracking-wide text-neutral-500">
-                {best.destIata}
-              </div>
+              <div className="mt-1 font-mono text-xs text-[#888888]">{best.destIata}</div>
             </div>
           </div>
 
-          <p className="mt-3 text-center text-[13px] leading-snug text-neutral-500">
+          <p className="mt-3 text-center text-[13px] leading-snug text-[#4d4d4d]">
             {[best.airline || "Multiple", best.duration, nights].filter(Boolean).join(" · ")}
           </p>
         </div>
 
-        <hr className="glass-divider mx-5 shrink-0" />
+        <hr className="vercel-divider mx-5 shrink-0" />
 
         <div
           className={`${CARD_X} flex flex-col justify-between gap-3 py-4 sm:flex-row sm:items-end`}
         >
           <div className="min-w-0">
             {isCheapestOfMany && (
-              <span className="mb-1 block text-xs font-medium text-sky-700">
+              <span className="mb-1 block text-xs font-medium text-[#4d4d4d]">
                 Best of {card.combosSucceeded} date options
               </span>
             )}
-            <div className="text-2xl font-bold tabular-nums tracking-tight text-neutral-900 sm:text-[1.75rem]">
+            <div className="text-2xl font-semibold tabular-nums tracking-[-0.03em] text-[#171717] sm:text-[1.75rem]">
               {best.priceDisplay}
             </div>
-            <div className="mt-0.5 text-[11px] text-neutral-400">per person</div>
+            <div className="mt-0.5 text-[11px] text-[#888888]">per person</div>
           </div>
 
           <a
             href={best.bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="liquid-glass-button liquid-glass-button-sm shrink-0 no-underline text-inherit"
+            className="btn-vercel-primary shrink-0"
           >
-            <span className="liquid-glass-button-label">Book</span>
+            Book
           </a>
         </div>
 
@@ -158,7 +153,7 @@ export function FlightCard({ card, index }: Props) {
                   e.stopPropagation();
                   setShowAlternates((v) => !v);
                 }}
-                className="text-xs font-medium text-neutral-500 transition hover:text-neutral-800"
+                className="text-xs font-medium text-[#0070f3] transition hover:text-[#0761d1]"
               >
                 {showAlternates ? "Hide" : "Show"} {card.alternates.length} other option
                 {card.alternates.length > 1 ? "s" : ""}
@@ -167,7 +162,7 @@ export function FlightCard({ card, index }: Props) {
                 <motion.ul
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="mt-2 space-y-1.5 overflow-hidden text-xs text-neutral-600"
+                  className="mt-2 space-y-1.5 overflow-hidden text-xs text-[#4d4d4d]"
                 >
                   {card.alternates.map((alt, i) => (
                     <li key={i}>
@@ -176,22 +171,22 @@ export function FlightCard({ card, index }: Props) {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="glass-pill flex items-center gap-2 !rounded-2xl px-3 py-2 no-underline text-inherit transition-colors hover:text-neutral-900"
+                        className="flex items-center gap-2 rounded-md border border-[#ebebeb] bg-[#fafafa] px-3 py-2 no-underline transition-colors hover:border-[#a1a1a1] hover:text-[#171717]"
                       >
-                        <span className="shrink-0 font-mono text-neutral-500">
+                        <span className="shrink-0 font-mono text-[#888888]">
                           {formatDate(alt.departDate)}
                           {alt.returnDate && ` → ${formatDate(alt.returnDate)}`}
                         </span>
-                        <span className="text-neutral-300">·</span>
+                        <span className="text-[#ebebeb]">·</span>
                         <span className="min-w-0 flex-1 truncate">
                           {alt.airline}
                           {alt.destIata !== best.destIata && (
-                            <span className="ml-1 font-mono text-[10px] text-sky-700">
+                            <span className="ml-1 font-mono text-[10px] text-[#4d4d4d]">
                               {alt.destIata}
                             </span>
                           )}
                         </span>
-                        <span className="shrink-0 font-semibold tabular-nums text-neutral-800">
+                        <span className="shrink-0 font-semibold tabular-nums text-[#171717]">
                           {alt.priceDisplay}
                         </span>
                       </a>
@@ -202,7 +197,7 @@ export function FlightCard({ card, index }: Props) {
             </div>
           )}
         </div>
-      </GlassSurface>
+      </article>
     </motion.div>
   );
 }

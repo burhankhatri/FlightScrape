@@ -33,3 +33,4 @@ python-archive/lib/__pycache__/
 python-archive/data/cache.db
 python-archive/data/cache.db-journal
 python-archive/data/images/
+.vercel

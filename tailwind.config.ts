@@ -14,7 +14,8 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          "var(--font-body)",
+          "var(--font-geist-sans)",
+          "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -22,13 +23,21 @@ export default {
           "sans-serif",
         ],
         display: [
-          "var(--font-display)",
-          "var(--font-body)",
+          "var(--font-geist-sans)",
+          "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
           "sans-serif",
         ],
-        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+        mono: [
+          "var(--font-geist-mono)",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "monospace",
+        ],
       },
       borderRadius: {
         "4xl": "2rem",
