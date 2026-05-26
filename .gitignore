@@ -22,6 +22,10 @@ next-env.d.ts
 .DS_Store
 *.log
 
+# tooling local config
+.claude/
+.vercel/
+
 # python (archive)
 python-archive/.venv/
 python-archive/__pycache__/

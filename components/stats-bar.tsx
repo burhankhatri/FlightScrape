@@ -24,7 +24,7 @@ export function StatsBar({ cards, stats, originDisplay }: Props) {
     >
       <GlassSurface
         variant="pill"
-        className="mx-auto max-w-2xl px-5 py-3.5 text-center"
+        className="mx-auto max-w-2xl px-4 py-3 sm:px-5 sm:py-3.5 text-center !rounded-2xl sm:!rounded-full"
       >
         <div className="text-sm sm:text-[15px] text-neutral-600">
           <span className="inline-flex flex-wrap items-center justify-center gap-x-1">

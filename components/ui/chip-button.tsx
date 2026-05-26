@@ -19,7 +19,12 @@ export function ChipButton({ children, onClick, className = "" }: Props) {
       whileHover={reduceMotion ? undefined : { y: -2 }}
       whileTap={reduceMotion ? undefined : { scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      className={`glass-pill glass-hover-lift px-4 py-2.5 text-sm text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer transform-gpu ${className}`}
+      className={[
+        "glass-pill glass-hover-lift touch-target px-4 py-3 sm:py-2.5",
+        "text-sm text-neutral-600 hover:text-neutral-900 transition-colors",
+        "cursor-pointer transform-gpu inline-flex items-center justify-center",
+        className,
+      ].join(" ")}
     >
       {children}
     </motion.button>

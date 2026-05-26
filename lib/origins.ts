@@ -1,5 +1,7 @@
 /**
- * Searchable origin airport list derived from AIRPORTS.
+ * Searchable origin airport list — derived from the full AIRPORTS dataset.
+ * The OriginPicker shows a curated "popular" grid by default and fuzzy-filters
+ * the full list as the user types.
  */
 
 import { AIRPORTS, type Airport } from "./destinations";
@@ -11,7 +13,16 @@ export interface OriginOption {
   label: string;
 }
 
-const POPULAR_IATAS = ["KHI", "LHE", "ISB", "DXB", "IST", "LHR", "JFK", "SIN"];
+/** Hand-picked popular origins shown when the dropdown opens with no query. */
+const POPULAR_IATAS = [
+  "KHI", "LHE", "ISB",
+  "DXB", "DOH", "AUH",
+  "IST", "LHR", "CDG",
+  "FRA", "AMS", "MAD",
+  "JFK", "LAX", "SFO",
+  "SIN", "HKG", "BKK",
+  "NRT", "ICN", "SYD",
+];
 
 function toOption(a: Airport): OriginOption {
   return {
@@ -41,16 +52,39 @@ export function getPopularOrigins(): OriginOption[] {
   return POPULAR_IATAS.map((i) => byIata.get(i)).filter(Boolean) as OriginOption[];
 }
 
+/**
+ * Substring search across city / country / IATA / label. Results are ranked:
+ * exact IATA match first, then prefix matches, then substring matches.
+ */
 export function searchOrigins(query: string): OriginOption[] {
   const q = query.trim().toLowerCase();
   if (!q) return getOriginOptions();
-  return getOriginOptions().filter(
-    (o) =>
-      o.city.toLowerCase().includes(q) ||
-      o.country.toLowerCase().includes(q) ||
-      o.iata.toLowerCase().includes(q) ||
-      o.label.toLowerCase().includes(q),
+
+  const matches: Array<{ o: OriginOption; score: number }> = [];
+  for (const o of getOriginOptions()) {
+    const iata = o.iata.toLowerCase();
+    const city = o.city.toLowerCase();
+    const country = o.country.toLowerCase();
+
+    let score = -1;
+    if (iata === q) score = 0;
+    else if (city === q) score = 1;
+    else if (city.startsWith(q)) score = 2;
+    else if (country === q) score = 3;
+    else if (country.startsWith(q)) score = 4;
+    else if (iata.startsWith(q)) score = 5;
+    else if (city.includes(q)) score = 6;
+    else if (country.includes(q)) score = 7;
+    if (score >= 0) matches.push({ o, score });
+  }
+
+  matches.sort(
+    (a, b) =>
+      a.score - b.score ||
+      a.o.country.localeCompare(b.o.country) ||
+      a.o.city.localeCompare(b.o.city),
   );
+  return matches.map((m) => m.o);
 }
 
 export function groupOriginsByCountry(

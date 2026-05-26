@@ -27,7 +27,7 @@ type Combo = { group: string; iata: string; depart: string; ret: string | null }
 
 const comboKey = (c: Combo) => `${c.group}|${c.iata}|${c.depart}|${c.ret ?? ""}`;
 
-async function lookupPair(
+export async function lookupPair(
   origin: string,
   dest: string,
   depart: string,
@@ -222,7 +222,7 @@ export async function search(
 
     callbacks?.onCard?.(card);
 
-    heroImage(card.wikiTitle).then((url) => {
+    heroImage(card.wikiTitle, card.best.destIata).then((url) => {
       if (url) callbacks?.onCardImage?.(card.destLabel, url);
     });
   };
@@ -324,7 +324,7 @@ export async function search(
       const best = sorted[0];
       const airport = getAirport(best.destIata);
       const wikiTitle = airport?.wikiCity ?? best.destCity;
-      const imageUrl = await heroImage(wikiTitle);
+      const imageUrl = await heroImage(wikiTitle, best.destIata);
       return buildCard(
         groupName,
         offers,
@@ -337,7 +337,12 @@ export async function search(
   );
 
   for (const card of built) {
-    if (card) cards.push(card);
+    if (!card) continue;
+    cards.push(card);
+    // Stream polish-phase images — early async lookups may have timed out.
+    if (card.imageUrl) {
+      callbacks?.onCardImage?.(card.destLabel, card.imageUrl);
+    }
   }
   cards.sort((a, b) => a.best.price - b.best.price);
 

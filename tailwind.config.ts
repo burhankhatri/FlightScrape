@@ -3,14 +3,29 @@ import type { Config } from "tailwindcss";
 export default {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
+    screens: {
+      xs: "380px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       fontFamily: {
         sans: [
-          "var(--font-inter)",
+          "var(--font-body)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
           "system-ui",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-display)",
+          "var(--font-body)",
+          "-apple-system",
+          "BlinkMacSystemFont",
           "sans-serif",
         ],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
@@ -18,6 +33,9 @@ export default {
       borderRadius: {
         "4xl": "2rem",
         "5xl": "2.5rem",
+      },
+      maxWidth: {
+        "8xl": "88rem",
       },
       keyframes: {
         "metal-spin": {

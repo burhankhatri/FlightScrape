@@ -13,7 +13,7 @@ interface Props {
   loading?: boolean;
 }
 
-/** One tight search bar — From + Where to + Search, same field styling throughout */
+/** Responsive search bar — stacks on phone, three-column grid on tablet+ */
 export function TripSearchForm({ origin, onOriginChange, onSearch, loading }: Props) {
   const [query, setQuery] = useState("");
 
@@ -25,11 +25,10 @@ export function TripSearchForm({ origin, onOriginChange, onSearch, loading }: Pr
   return (
     <form
       onSubmit={submit}
-      className="search-shell w-full max-w-xl mx-auto p-3 sm:p-3.5 overflow-visible"
+      className="search-shell w-full max-w-2xl mx-auto p-3 sm:p-4 overflow-visible"
     >
-      <div className="flex flex-col sm:flex-row sm:items-end gap-3 overflow-visible">
-        {/* From */}
-        <div className="relative sm:w-[9.5rem] shrink-0 overflow-visible z-10">
+      <div className="grid grid-cols-1 md:grid-cols-[12rem_minmax(0,1fr)_auto] gap-3 md:gap-x-4 overflow-visible">
+        <div className="relative z-20 min-w-0 overflow-visible">
           <FieldLabel htmlFor="origin-picker">From</FieldLabel>
           <OriginPicker
             value={origin}
@@ -38,25 +37,33 @@ export function TripSearchForm({ origin, onOriginChange, onSearch, loading }: Pr
           />
         </div>
 
-        {/* Where to + Search */}
-        <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-end gap-3">
-          <div className="flex-1 min-w-0">
-            <FieldLabel htmlFor="trip-search">Where to</FieldLabel>
-            <input
-              id="trip-search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="cheapest flights to KL in july"
-              disabled={loading}
-              className="field-box outline-none placeholder:text-neutral-400"
-            />
-          </div>
+        <div className="min-w-0">
+          <FieldLabel htmlFor="trip-search">Where to</FieldLabel>
+          <input
+            id="trip-search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="cheapest flights to KL in july"
+            disabled={loading}
+            className="field-box w-full outline-none placeholder:text-neutral-400 text-base sm:text-[0.9375rem]"
+            autoComplete="off"
+            enterKeyHint="search"
+          />
+        </div>
+
+        <div className="min-w-0">
+          <span
+            className="type-label mb-1.5 hidden md:block invisible select-none"
+            aria-hidden
+          >
+            Search
+          </span>
           <LiquidGlassButton
             type="submit"
             disabled={loading || !query.trim()}
             ariaLabel="Search flights"
             size="sm"
-            className="w-full sm:w-auto sm:mb-0 shrink-0"
+            className="w-full md:w-auto touch-target"
           >
             {loading ? "Searching…" : "Search"}
           </LiquidGlassButton>

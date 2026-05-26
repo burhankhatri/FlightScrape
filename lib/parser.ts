@@ -99,6 +99,16 @@ Date handling:
 - "returning Aug 25" with multiple depart options — set every return_date to Aug 25.
 - If no return language and no duration is given, set trip_type="one-way" and return_dates=null.
 
+ABSOLUTE RULES for return_dates (these are not negotiable):
+1. return_dates[i] MUST be strictly LATER than depart_dates[i]. Never the same day, never earlier. A return before the depart is impossible.
+2. return_dates length MUST equal depart_dates length.
+3. If you find yourself about to emit a return earlier than the corresponding depart, you have made an error — recompute by adding the intended duration in days to the depart date.
+
+Minimum/at-least durations:
+- "at least N days", "minimum N days", "no less than N days", "≥N days", "N+ days" → every (depart, return) pair MUST satisfy return ≥ depart + N nights. Sample durations of N, N+1, N+2, N+3, N+5, N+7 — weighted toward the lower end. NEVER return a duration less than N. This is the most common bug; double-check before submitting.
+- "around N days", "about N days", "roughly N days" → split across N-1, N, N+1, N+2.
+- "exactly N days", "strictly N days" → all pairs use exactly N.
+
 Origin handling:
 - If the user said "from X" or "leaving from X", set origin to X.
 - Otherwise origin=null. The caller will fill in a default.
@@ -124,17 +134,152 @@ export async function parseQuery(
     parsed = { ...parsed, origin: defaultOrigin };
   }
 
-  // Defend against length-mismatched parallel arrays.
-  if (parsed.returnDates && parsed.returnDates.length !== parsed.departDates.length) {
-    const n = Math.min(parsed.returnDates.length, parsed.departDates.length);
-    parsed = {
+  parsed = repairDates(parsed, query);
+
+  return parsed;
+}
+
+// ----- Date-pair defense ---------------------------------------------------
+
+function parseISO(iso: string): number {
+  return Date.UTC(
+    parseInt(iso.slice(0, 4), 10),
+    parseInt(iso.slice(5, 7), 10) - 1,
+    parseInt(iso.slice(8, 10), 10),
+  );
+}
+
+function addDaysISO(iso: string, days: number): string {
+  const t = parseISO(iso) + days * 86_400_000;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+function nightsBetween(depart: string, ret: string): number {
+  return Math.round((parseISO(ret) - parseISO(depart)) / 86_400_000);
+}
+
+const TODAY_ISO = () => new Date().toISOString().slice(0, 10);
+
+/**
+ * Parse a duration intent from the raw user query. Returns the minimum number
+ * of nights the user is willing to accept (or null if the query is silent on
+ * duration). Used to fix up LLM outputs that violate the constraint.
+ */
+function inferMinNights(query: string): {
+  min: number | null;
+  exact: number | null;
+} {
+  const q = query.toLowerCase();
+  // Order matters: "at least 14 days" must match before plain "14 days".
+  const minPatterns: Array<[RegExp, (m: RegExpMatchArray) => number]> = [
+    [/(?:at\s*least|minimum|min\.?|no\s*less\s*than|>=|≥)\s*(\d+)\s*\+?\s*(?:days?|nights?|d\b)/, (m) => parseInt(m[1], 10)],
+    [/(\d+)\s*\+\s*(?:days?|nights?)/, (m) => parseInt(m[1], 10)],
+    [/(?:at\s*least|minimum)\s*(\d+)\s*(?:weeks?|wks?)/, (m) => parseInt(m[1], 10) * 7],
+  ];
+  for (const [re, get] of minPatterns) {
+    const m = q.match(re);
+    if (m) return { min: get(m), exact: null };
+  }
+  const exactPatterns: Array<[RegExp, (m: RegExpMatchArray) => number]> = [
+    [/(?:exactly|strictly|precisely)\s*(\d+)\s*(?:days?|nights?)/, (m) => parseInt(m[1], 10)],
+    [/for\s*(\d+)\s*(?:days?|nights?)\b/, (m) => parseInt(m[1], 10)],
+    [/(\d+)[-\s]*(?:day|night)\s*trip/, (m) => parseInt(m[1], 10)],
+    [/for\s*(\d+)\s*weeks?/, (m) => parseInt(m[1], 10) * 7],
+    [/(\d+)[-\s]*week\s*trip/, (m) => parseInt(m[1], 10) * 7],
+  ];
+  for (const [re, get] of exactPatterns) {
+    const m = q.match(re);
+    if (m) return { min: null, exact: get(m) };
+  }
+  return { min: null, exact: null };
+}
+
+/**
+ * Validate and repair the LLM's depart/return arrays. LLMs occasionally emit:
+ *   - mismatched lengths
+ *   - returns earlier than departs (or duplicates of an earlier return)
+ *   - returns that violate an "at least N days" constraint from the query
+ *
+ * Strategy: drop bad pairs, then if too many are gone (or the user signaled a
+ * duration), synthesize fresh returns by adding N..N+5 day offsets to the
+ * surviving departs. Guarantees a coherent search regardless of LLM weather.
+ */
+function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
+  let { departDates, returnDates } = parsed;
+  if (!departDates || departDates.length === 0) return parsed;
+
+  // Drop depart dates in the past (LLM sometimes picks current-year months
+  // that have already passed without rolling to next year).
+  const today = TODAY_ISO();
+  departDates = departDates.filter((d) => d >= today);
+  if (departDates.length === 0) {
+    // Fallback: shift everything one year forward.
+    departDates = parsed.departDates.map((d) => {
+      const y = parseInt(d.slice(0, 4), 10);
+      return `${y + 1}${d.slice(4)}`;
+    });
+  }
+
+  if (parsed.tripType === "one-way" || returnDates === null) {
+    return { ...parsed, departDates, returnDates: null };
+  }
+
+  const { min, exact } = inferMinNights(query);
+
+  // Align lengths conservatively.
+  if (returnDates.length !== departDates.length) {
+    const n = Math.min(returnDates.length, departDates.length);
+    returnDates = returnDates.slice(0, n);
+    departDates = departDates.slice(0, n);
+  }
+
+  // Validate each pair.
+  const valid: Array<{ d: string; r: string }> = [];
+  for (let i = 0; i < departDates.length; i++) {
+    const d = departDates[i];
+    const r = returnDates[i];
+    if (!d || !r || !/^\d{4}-\d{2}-\d{2}$/.test(d) || !/^\d{4}-\d{2}-\d{2}$/.test(r)) {
+      continue;
+    }
+    const nights = nightsBetween(d, r);
+    if (nights < 1) continue;
+    if (min !== null && nights < min) continue;
+    if (exact !== null && nights !== exact) continue;
+    valid.push({ d, r });
+  }
+
+  // If most pairs survived, just keep them.
+  const targetCount = parsed.departDates.length || 8;
+  if (valid.length >= Math.ceil(targetCount * 0.6)) {
+    return {
       ...parsed,
-      departDates: parsed.departDates.slice(0, n),
-      returnDates: parsed.returnDates.slice(0, n),
+      departDates: valid.map((p) => p.d),
+      returnDates: valid.map((p) => p.r),
     };
   }
 
-  return parsed;
+  // Otherwise rebuild from the surviving depart dates + duration intent.
+  // Use the original depart list (already cleaned of past dates) as the base.
+  const baseDeparts = departDates;
+  const durations =
+    exact !== null
+      ? [exact]
+      : min !== null
+        ? [min, min + 1, min + 2, min + 3, min + 5, min + 7]
+        : valid.length > 0
+          ? [...new Set(valid.map((p) => nightsBetween(p.d, p.r)))]
+          : [7, 10, 14]; // last-resort defaults for unspecified durations
+
+  const rebuilt: Array<{ d: string; r: string }> = baseDeparts.map((d, i) => {
+    const dur = durations[i % durations.length];
+    return { d, r: addDaysISO(d, dur) };
+  });
+
+  return {
+    ...parsed,
+    departDates: rebuilt.map((p) => p.d),
+    returnDates: rebuilt.map((p) => p.r),
+  };
 }
 
 async function callClaude(query: string): Promise<ParsedQuery> {

@@ -24,7 +24,7 @@ export function SearchProgress({
   const pct = Math.min(100, Math.round(progress * 100));
 
   return (
-    <GlassSurface className="w-full max-w-lg mx-auto px-6 py-7 sm:px-8 sm:py-9">
+    <GlassSurface className="w-full max-w-lg mx-auto px-4 py-6 sm:px-8 sm:py-9 !rounded-2xl sm:!rounded-[2.5rem]">
       <div className="flex justify-center mb-6">
         <div className="relative w-16 h-16">
           <div className="absolute inset-0 liquid-glass-orb" aria-hidden />

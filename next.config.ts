@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "upload.wikimedia.org" },
       { protocol: "https", hostname: "commons.wikimedia.org" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
   // Ignore python-archive when bundling.
