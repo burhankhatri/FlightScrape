@@ -109,9 +109,22 @@ export function FlightCard({ card, index }: Props) {
             </div>
           </div>
 
-          <p className="mt-3 text-center text-[13px] leading-snug text-[#4d4d4d]">
-            {[best.airline || "Multiple", best.duration, nights].filter(Boolean).join(" · ")}
-          </p>
+          <div className="mt-4 flex items-center justify-center gap-2 text-center">
+            <span className="text-sm font-semibold text-[#171717] sm:text-[15px]">
+              {best.airline || "Multiple"}
+            </span>
+            {best.duration && (
+              <>
+                <span className="text-[#ebebeb]">·</span>
+                <span className="text-sm font-semibold tabular-nums text-[#171717] sm:text-[15px]">
+                  {best.duration}
+                </span>
+              </>
+            )}
+          </div>
+          {nights && (
+            <p className="mt-1 text-center text-xs text-[#888888]">{nights}</p>
+          )}
         </div>
 
         <hr className="vercel-divider mx-5 shrink-0" />
