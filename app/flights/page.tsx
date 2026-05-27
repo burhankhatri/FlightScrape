@@ -140,6 +140,15 @@ export default function FlightsPage() {
                 ),
               );
               break;
+            case "card-forecast":
+              setCards((prev) =>
+                prev.map((c) =>
+                  c.destLabel === event.destLabel
+                    ? { ...c, best: { ...c.best, forecast: event.forecast } }
+                    : c,
+                ),
+              );
+              break;
             case "done":
               setParsed(event.parsed);
               setStats(event.stats);

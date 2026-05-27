@@ -19,6 +19,7 @@
 
 import { bookingUrl } from "./deeplink";
 import { getAirport } from "./destinations";
+import { getGoogleFlightsSession, invalidateGoogleFlightsSession } from "./google-flights-session";
 import type { Cabin, Offer } from "./types";
 
 interface FetchArgs {
@@ -30,60 +31,12 @@ interface FetchArgs {
   adults: number;
 }
 
-const USER_AGENT =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
-  "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
-
 const BASE_HEADERS: Record<string, string> = {
-  "user-agent": USER_AGENT,
+  "user-agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+    "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
   "accept-language": "en-US,en;q=0.9",
 };
-
-const SESSION_TTL_MS = 20 * 60_000;
-
-interface Session {
-  sid: string;
-  bl: string;
-  cookieHeader: string;
-  pageUrl: string;
-  fetchedAt: number;
-}
-
-let sessionCache: Session | null = null;
-let sessionPromise: Promise<Session> | null = null;
-
-async function getSession(): Promise<Session> {
-  const now = Date.now();
-  if (sessionCache && now - sessionCache.fetchedAt < SESSION_TTL_MS) {
-    return sessionCache;
-  }
-  if (sessionPromise) return sessionPromise;
-  sessionPromise = (async () => {
-    const pageUrl = "https://www.google.com/travel/flights?hl=en&curr=USD";
-    const res = await fetch(pageUrl, {
-      headers: { ...BASE_HEADERS, accept: "text/html" },
-      redirect: "manual",
-    });
-    if (res.status !== 200) {
-      throw new Error(`google-flights session: page status ${res.status}`);
-    }
-    const setCookies = res.headers.getSetCookie?.() ?? [];
-    const cookieHeader = setCookies.map((s) => s.split(";")[0]).join("; ");
-    const html = await res.text();
-    const sid = html.match(/"FdrFJe":"(-?\d+)"/)?.[1];
-    const bl = html.match(/"cfb2h":"(boq_travel[^"]+)"/)?.[1];
-    if (!sid || !bl) {
-      throw new Error("google-flights session: missing sid/bl in page HTML");
-    }
-    sessionCache = { sid, bl, cookieHeader, pageUrl, fetchedAt: now };
-    return sessionCache;
-  })();
-  try {
-    return await sessionPromise;
-  } finally {
-    sessionPromise = null;
-  }
-}
 
 const CABIN_TO_SEAT: Record<Cabin, number> = {
   economy: 1,
@@ -136,8 +89,18 @@ interface RawOffer {
   durationMin: number | null;
 }
 
-function parseShoppingResults(raw: string): RawOffer[] {
+interface ParseResult {
+  offers: RawOffer[];
+  /** Google's "typical price" for this route+season, from section [5][2]. */
+  typicalPrice: number | null;
+  /** typical − current, from [5][3]. Positive = current is below typical (good deal). */
+  priceDelta: number | null;
+}
+
+function parseShoppingResults(raw: string): ParseResult {
   const offers: RawOffer[] = [];
+  let typicalPrice: number | null = null;
+  let priceDelta: number | null = null;
   // Each wrb.fr entry holds a JSON-encoded string containing the actual response.
   const matches = raw.matchAll(/"wrb\.fr",null,"((?:\\.|[^"\\])*)"/g);
   for (const m of matches) {
@@ -179,8 +142,22 @@ function parseShoppingResults(raw: string): RawOffer[] {
         offers.push({ price, airline, stops, durationMin });
       }
     }
+
+    // Section [5] is Google's price-insights block:
+    //   [5][1] = current cheapest as [null, N]
+    //   [5][2] = typical/historical-average for this route+season as [null, N]
+    //   [5][3] = delta = typical − current as [null, N] (positive ⇒ below typical)
+    if (typicalPrice === null) {
+      const section5 = (outer as unknown[])[5];
+      if (Array.isArray(section5)) {
+        const tCell = section5[2];
+        const dCell = section5[3];
+        if (Array.isArray(tCell) && typeof tCell[1] === "number") typicalPrice = tCell[1];
+        if (Array.isArray(dCell) && typeof dCell[1] === "number") priceDelta = dCell[1];
+      }
+    }
   }
-  return offers;
+  return { offers, typicalPrice, priceDelta };
 }
 
 function formatDuration(min: number | null): string {
@@ -192,9 +169,9 @@ function formatDuration(min: number | null): string {
 }
 
 export async function fetchGoogleFlights(args: FetchArgs): Promise<Offer | null> {
-  let raw: RawOffer[];
+  let parsed: ParseResult;
   try {
-    const sess = await getSession();
+    const sess = await getGoogleFlightsSession();
     const body = new URLSearchParams({ "f.req": buildFReq(args) }).toString();
     const postUrl =
       "https://www.google.com/_/FlightsFrontendUi/data/" +
@@ -221,23 +198,23 @@ export async function fetchGoogleFlights(args: FetchArgs): Promise<Offer | null>
     if (res.status !== 200) {
       // Invalidate cached session on auth/cookie issues so the next call retries.
       if (res.status === 400 || res.status === 401 || res.status === 403) {
-        sessionCache = null;
+        invalidateGoogleFlightsSession();
       }
       console.warn(`Google Flights ${res.status} for ${args.origin}→${args.dest} on ${args.depart}`);
       return null;
     }
     const text = await res.text();
-    raw = parseShoppingResults(text);
+    parsed = parseShoppingResults(text);
   } catch (err) {
     console.warn(`Google Flights fetch error for ${args.origin}→${args.dest}:`, err);
     return null;
   }
 
-  if (raw.length === 0) return null;
+  if (parsed.offers.length === 0) return null;
 
   // Cheapest first; prefer fewer stops on ties.
-  raw.sort((a, b) => a.price - b.price || a.stops - b.stops);
-  const best = raw[0];
+  parsed.offers.sort((a, b) => a.price - b.price || a.stops - b.stops);
+  const best = parsed.offers[0];
 
   const airport = getAirport(args.dest);
   const nights =
@@ -272,5 +249,7 @@ export async function fetchGoogleFlights(args: FetchArgs): Promise<Offer | null>
       adults: args.adults,
       cabin: args.cabin,
     }),
+    typicalPrice: parsed.typicalPrice,
+    priceDelta: parsed.priceDelta,
   };
 }

@@ -5,8 +5,10 @@
 import pLimit from "p-limit";
 import { fetchAmadeus } from "./amadeus";
 import { getCachedSearch, setCachedSearch } from "./cache";
+import { fetchCalendarGraph } from "./calendar-graph";
 import { bookingUrl } from "./deeplink";
 import { resolve, getAirport } from "./destinations";
+import { computeForecast } from "./forecast";
 import { fetchGoogleFlights } from "./google-flights";
 import { heroImage } from "./images";
 import type { SearchCallbacks } from "./search-events";
@@ -197,6 +199,10 @@ export async function search(
   for (const g of groups) groupAttempts.set(g.name, 0);
 
   let checked = 0;
+  // Collect background tasks fired by tryEmitGroup so we can await them before
+  // the stream closes — otherwise the forecast/image events get dropped because
+  // the response controller closes before the fetches resolve.
+  const backgroundTasks: Promise<void>[] = [];
 
   const tryEmitGroup = async (groupName: string) => {
     if (emittedGroups.has(groupName)) return;
@@ -222,9 +228,45 @@ export async function search(
 
     callbacks?.onCard?.(card);
 
-    heroImage(card.wikiTitle, card.best.destIata).then((url) => {
-      if (url) callbacks?.onCardImage?.(card.destLabel, url);
-    });
+    backgroundTasks.push(
+      heroImage(card.wikiTitle, card.best.destIata)
+        .then((url) => {
+          if (url) callbacks?.onCardImage?.(card.destLabel, url);
+        })
+        .catch(() => {}),
+    );
+
+    // Background-compute the price forecast: fetch the 60-day calendar grid for
+    // the best offer, combine with the typical-price benchmark we already have,
+    // and stream the verdict to the client. Failures are silent — the card just
+    // doesn't show a forecast badge if Google didn't give us the data.
+    if (card.best.returnDate) {
+      backgroundTasks.push(
+        fetchCalendarGraph({
+          origin: card.best.origin,
+          dest: card.best.destIata,
+          departDate: card.best.departDate,
+          returnDate: card.best.returnDate,
+          adults,
+        })
+          .then((nearby) => {
+            const forecast = computeForecast({
+              currentPrice: card.best.price,
+              departDate: card.best.departDate,
+              returnDate: card.best.returnDate,
+              typicalPrice: card.best.typicalPrice ?? null,
+              nearby:
+                nearby?.map((n) => ({
+                  departDate: n.departDate,
+                  returnDate: n.returnDate,
+                  price: n.price,
+                })) ?? null,
+            });
+            callbacks?.onCardForecast?.(card.destLabel, forecast);
+          })
+          .catch(() => {}),
+      );
+    }
   };
 
   const recordResult = async (combo: Combo, offer: Offer | null) => {
@@ -345,6 +387,10 @@ export async function search(
     }
   }
   cards.sort((a, b) => a.best.price - b.best.price);
+
+  // Wait for in-flight image + forecast fetches before letting the stream close;
+  // otherwise the response controller closes mid-flight and the events are lost.
+  await Promise.all(backgroundTasks);
 
   return {
     cards,

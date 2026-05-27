@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
-import type { Card, Offer } from "@/lib/types";
+import type { Card, Offer, PriceForecast } from "@/lib/types";
 import { DateNudger } from "./date-nudger";
 
 interface Props {
@@ -159,6 +159,19 @@ export function FlightCard({ card, index }: Props) {
           </div>
         </div>
 
+        <AnimatePresence>
+          {best.forecast && (
+            <motion.div
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className={CARD_X}
+            >
+              <ForecastBadge forecast={best.forecast} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className={`${CARD_X} mt-auto pb-5`}>
           <DateNudger baseline={best} adults={1} />
 
@@ -244,5 +257,85 @@ function AlternateRow({ alt, bestDestIata }: { alt: Offer; bestDestIata: string 
         </span>
       </a>
     </li>
+  );
+}
+
+const VERDICT_STYLE: Record<
+  PriceForecast["verdict"],
+  { bg: string; border: string; text: string; chip: string; icon: string; label: string }
+> = {
+  best: {
+    bg: "bg-[#ecfdf3]",
+    border: "border-[#abefc6]",
+    text: "text-[#067647]",
+    chip: "bg-[#067647] text-white",
+    icon: "✓",
+    label: "Best price",
+  },
+  good: {
+    bg: "bg-[#f0fdf4]",
+    border: "border-[#bbf7d0]",
+    text: "text-[#15803d]",
+    chip: "bg-[#15803d] text-white",
+    icon: "↓",
+    label: "Good price",
+  },
+  typical: {
+    bg: "bg-[#f5f5f5]",
+    border: "border-[#e5e5e5]",
+    text: "text-[#4d4d4d]",
+    chip: "bg-[#525252] text-white",
+    icon: "·",
+    label: "Typical",
+  },
+  shift: {
+    bg: "bg-[#fffbeb]",
+    border: "border-[#fde68a]",
+    text: "text-[#a16207]",
+    chip: "bg-[#a16207] text-white",
+    icon: "⇄",
+    label: "Wait — shift dates",
+  },
+  high: {
+    bg: "bg-[#fef2f2]",
+    border: "border-[#fecaca]",
+    text: "text-[#b91c1c]",
+    chip: "bg-[#b91c1c] text-white",
+    icon: "↑",
+    label: "Above typical",
+  },
+};
+
+function ForecastBadge({ forecast }: { forecast: PriceForecast }) {
+  const s = VERDICT_STYLE[forecast.verdict];
+  return (
+    <div className={`mb-4 rounded-lg border ${s.border} ${s.bg} px-3 py-2.5`}>
+      <div className="flex items-start gap-2.5">
+        <span
+          className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${s.chip} text-[11px] font-bold leading-none`}
+          aria-hidden
+        >
+          {s.icon}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline gap-1.5">
+            <span className={`text-[10px] font-bold uppercase tracking-wider ${s.text}`}>
+              {s.label}
+            </span>
+            {forecast.percentile !== null && (
+              <span className="text-[10px] text-[#a1a1a1]">
+                · {Math.round(forecast.percentile * 100)}th percentile (60d)
+              </span>
+            )}
+          </div>
+          <p className={`mt-0.5 text-[13px] font-medium leading-snug ${s.text}`}>
+            {forecast.headline}
+          </p>
+          {forecast.detail && (
+            <p className="mt-0.5 text-[11px] leading-snug text-[#4d4d4d]">{forecast.detail}</p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

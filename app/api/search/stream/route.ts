@@ -98,6 +98,8 @@ export async function POST(req: NextRequest) {
             onCard: (card) => send({ type: "card", card }),
             onCardImage: (destLabel, imageUrl) =>
               send({ type: "card-image", destLabel, imageUrl }),
+            onCardForecast: (destLabel, forecast) =>
+              send({ type: "card-forecast", destLabel, forecast }),
           },
         );
 

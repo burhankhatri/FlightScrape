@@ -97,3 +97,16 @@ export async function setCachedParse(query: string, parsed: ParsedQuery): Promis
   // Parse cache never expires — same query always parses the same way.
   await cacheSet(`p:${query.trim().toLowerCase()}`, parsed, 60 * 60 * 24 * 30);
 }
+
+/** Generic typed get/set for module-specific caches (e.g. calendar-graph). */
+export async function getCachedGeneric<T>(key: string): Promise<T | null> {
+  return cacheGet<T>(key);
+}
+
+export async function setCachedGeneric<T>(
+  key: string,
+  value: T,
+  ttlSec: number = DEFAULT_TTL_SEC,
+): Promise<void> {
+  await cacheSet(key, value, ttlSec);
+}

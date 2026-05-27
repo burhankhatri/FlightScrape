@@ -1,4 +1,4 @@
-import type { Card, ParsedQuery, SearchStats } from "./types";
+import type { Card, ParsedQuery, PriceForecast, SearchStats } from "./types";
 
 export type SearchStreamEvent =
   | { type: "status"; message: string; phase: "parse" | "search" | "images" | "done" }
@@ -18,6 +18,7 @@ export type SearchStreamEvent =
     }
   | { type: "card"; card: Card }
   | { type: "card-image"; destLabel: string; imageUrl: string }
+  | { type: "card-forecast"; destLabel: string; forecast: PriceForecast }
   | { type: "done"; parsed: ParsedQuery; stats: SearchStats }
   | { type: "error"; error: string };
 
@@ -29,4 +30,5 @@ export interface SearchCallbacks {
   onProgress?: (checked: number, total: number, succeeded: number, label?: string) => void;
   onCard?: (card: Card) => void;
   onCardImage?: (destLabel: string, imageUrl: string) => void;
+  onCardForecast?: (destLabel: string, forecast: PriceForecast) => void;
 }

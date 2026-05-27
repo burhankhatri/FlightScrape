@@ -6,6 +6,36 @@
 export type Cabin = "economy" | "premium-economy" | "business" | "first";
 export type TripType = "round-trip" | "one-way";
 
+/** Verdict from the forecast engine. */
+export type ForecastVerdict =
+  | "best"      // current is at or near the 60-day floor — book confidently
+  | "good"      // current is in the bottom quartile of the 60-day range — fair deal
+  | "typical"   // current is in the middle of the range — no strong signal
+  | "shift"     // a nearby date is materially cheaper — wait and shift dates
+  | "high";     // current is above typical / in the top quartile — wait
+
+/** Price forecast attached to the cheapest offer per card. */
+export interface PriceForecast {
+  verdict: ForecastVerdict;
+  /** One-sentence human-readable summary, e.g. "Among the cheapest 20% — book." */
+  headline: string;
+  /** Optional second line with concrete action, e.g. "Shift to Aug 28 to save $109". */
+  detail: string | null;
+
+  /** Google's "typical price" for this route + season (from GetShoppingResults [5][2]). */
+  typicalPrice: number | null;
+  /** typical − current. Positive = below typical (good); negative = above typical. */
+  priceDelta: number | null;
+
+  /** Cheapest nearby option within the 60-day calendar window. */
+  nearbyMin: { departDate: string; returnDate: string | null; price: number; daysFromBaseline: number } | null;
+  /** Where this price sits in the 60-day distribution (0 = absolute min, 1 = max). */
+  percentile: number | null;
+
+  /** Days until departure, used for urgency in the verdict. */
+  daysUntilDepart: number;
+}
+
 /** One bookable result for one (origin, dest_iata, depart, return) combination. */
 export interface Offer {
   origin: string;
@@ -24,6 +54,14 @@ export interface Offer {
   source: "google" | "amadeus" | "cache" | "cache-stale";
   stale: boolean;
   bookingUrl: string;          // pre-built Google Flights deeplink
+  /** Google's "typical historical price" for this route+season. Set when Google
+   *  exposed it in section [5][2]; null for cache hits saved before this was added. */
+  typicalPrice?: number | null;
+  /** typical − current. Positive ⇒ current is below typical (good deal). */
+  priceDelta?: number | null;
+  /** Rich forecast verdict — attached only to the "best" offer per card to avoid
+   *  one extra GetCalendarGraph call per alternate. */
+  forecast?: PriceForecast;
 }
 
 /** One destination card in the grid — best offer + runners-up. */
