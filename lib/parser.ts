@@ -261,6 +261,64 @@ function inferMinNights(query: string): {
   return { min: null, exact: null };
 }
 
+// ----- Single-month windows ("in July" / "late August") -------------------
+
+interface MonthRange { start: string; end: string; }
+
+const MONTH_NAMES_FOR_INFER: Record<string, number> = {
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+  july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
+  jan: 1, feb: 2, mar: 3, apr: 4, jun: 6, jul: 7, aug: 8, sep: 9, sept: 9, oct: 10, nov: 11, dec: 12,
+};
+
+function lastDayOfMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
+function monthRangeISO(year: number, month: number, segment: "full" | "early" | "mid" | "late" | "first-half" | "last-week" | "first-two-weeks"): MonthRange {
+  const last = lastDayOfMonth(year, month);
+  const mm = String(month).padStart(2, "0");
+  const day = (n: number) => `${year}-${mm}-${String(Math.min(Math.max(n, 1), last)).padStart(2, "0")}`;
+  switch (segment) {
+    case "early":            return { start: day(1),  end: day(10) };
+    case "mid":              return { start: day(10), end: day(20) };
+    case "late":             return { start: day(20), end: day(last) };
+    case "first-half":       return { start: day(1),  end: day(15) };
+    case "first-two-weeks":  return { start: day(1),  end: day(14) };
+    case "last-week":        return { start: day(last - 6), end: day(last) };
+    default:                 return { start: day(1),  end: day(last) };
+  }
+}
+
+/**
+ * Detect "in <month>" / "during <month>" / "late <month>" patterns. Returns
+ * the inferred date range or null if no month phrase is present.
+ */
+function inferMonthRange(query: string, today: string): MonthRange | null {
+  const q = query.toLowerCase();
+  const monthAlt = Object.keys(MONTH_NAMES_FOR_INFER).sort((a, b) => b.length - a.length).join("|");
+  const patterns: Array<[RegExp, "full" | "early" | "mid" | "late" | "first-half" | "first-two-weeks" | "last-week"]> = [
+    [new RegExp(`\\bfirst\\s+(?:two\\s+weeks|2\\s+weeks)\\s+of\\s+(${monthAlt})\\b`),  "first-two-weeks"],
+    [new RegExp(`\\bfirst\\s+(?:half|two\\s+weeks)\\s+of\\s+(${monthAlt})\\b`),         "first-half"],
+    [new RegExp(`\\blast\\s+week\\s+of\\s+(${monthAlt})\\b`),                            "last-week"],
+    [new RegExp(`\\b(?:early|beginning\\s+of|start\\s+of)\\s+(${monthAlt})\\b`),         "early"],
+    [new RegExp(`\\b(?:late|end\\s+of)\\s+(${monthAlt})\\b`),                            "late"],
+    [new RegExp(`\\bmid[-\\s]?(${monthAlt})\\b`),                                        "mid"],
+    [new RegExp(`\\b(?:in|during|throughout|over|across)\\s+(${monthAlt})\\b`),          "full"],
+  ];
+  const yearNow = parseInt(today.slice(0, 4), 10);
+  for (const [re, segment] of patterns) {
+    const m = q.match(re);
+    if (!m) continue;
+    const monthNum = MONTH_NAMES_FOR_INFER[m[1]];
+    // Year resolution: prefer the next occurrence of this month after `today`.
+    let range = monthRangeISO(yearNow, monthNum, segment);
+    if (range.end < today) range = monthRangeISO(yearNow + 1, monthNum, segment);
+    return range;
+  }
+  return null;
+}
+
 // ----- Window parsing ("between Jul 15 and Aug 15") -----------------------
 
 const MONTH_NAMES: Record<string, number> = {
@@ -345,12 +403,51 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
     });
   }
 
+  const { min, exact } = inferMinNights(query);
+  const window = inferWindow(query, today);
+  const monthRange = inferMonthRange(query, today);
+
+  // Month coverage (one-way): "flights to bali in july" → every day in July.
+  // LLMs love to sample every-other-day; we want exhaustive daily coverage.
   if (parsed.tripType === "one-way" || returnDates === null) {
+    if (monthRange && !window) {
+      const all: string[] = [];
+      for (let d = monthRange.start >= today ? monthRange.start : today;
+           d <= monthRange.end && all.length < 31;
+           d = addDaysISO(d, 1)) {
+        all.push(d);
+      }
+      if (all.length > 0) return { ...parsed, departDates: all, returnDates: null };
+    }
     return { ...parsed, departDates, returnDates: null };
   }
 
-  const { min, exact } = inferMinNights(query);
-  const window = inferWindow(query, today);
+  // Month coverage (round-trip with duration): "in july for 2 weeks" → every
+  // valid depart day in [Jul 1, Jul 31 − duration], return = depart + duration.
+  if (monthRange && !window && (exact !== null || min !== null)) {
+    const baseNights = exact ?? min!;
+    const winStart = monthRange.start >= today ? monthRange.start : today;
+    const latestDepart = addDaysISO(monthRange.end, -baseNights);
+    if (latestDepart >= winStart) {
+      const departSamples: string[] = [];
+      for (let d = winStart; d <= latestDepart && departSamples.length < 31; d = addDaysISO(d, 1)) {
+        departSamples.push(d);
+      }
+      const candidateDurations =
+        exact !== null ? [exact] : [min!, min! + 1, min! + 3, min! + 7];
+      const rebuilt = departSamples.map((d, i) => {
+        const maxFromHere = nightsBetween(d, monthRange.end);
+        let dur = candidateDurations[i % candidateDurations.length];
+        if (dur > maxFromHere) dur = candidateDurations.find((n) => n <= maxFromHere) ?? baseNights;
+        return { d, r: addDaysISO(d, dur) };
+      });
+      return {
+        ...parsed,
+        departDates: rebuilt.map((p) => p.d),
+        returnDates: rebuilt.map((p) => p.r),
+      };
+    }
+  }
 
   // Cap for programmatic regeneration. Matches the LLM schema's maxItems and
   // the search-engine concurrency budget — every entry becomes N × IATAs combos.
