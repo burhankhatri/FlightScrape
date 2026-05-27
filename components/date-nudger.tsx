@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Offer } from "@/lib/types";
 
 interface Props {
@@ -90,7 +90,6 @@ export function DateNudger({ baseline, adults }: Props) {
     setOpen((wasOpen) => {
       const next = !wasOpen;
       if (next) {
-        // Kick off all 6 probes in parallel on first open.
         for (const s of SHIFTS) {
           if (!probes[s]) fetchShift(s);
         }
@@ -98,6 +97,27 @@ export function DateNudger({ baseline, adults }: Props) {
       return next;
     });
   }, [fetchShift, probes]);
+
+  // Background-prefetch the 6 shifts on mount so prices are already there
+  // when the user clicks. Idle-callback (with timeout fallback) keeps it off the
+  // critical render path; the server-side cache absorbs the extra load.
+  const prefetched = useRef(false);
+  useEffect(() => {
+    if (prefetched.current) return;
+    prefetched.current = true;
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+    };
+    const start = () => {
+      for (const s of SHIFTS) fetchShift(s);
+    };
+    if (typeof w.requestIdleCallback === "function") {
+      w.requestIdleCallback(start, { timeout: 2000 });
+    } else {
+      const id = setTimeout(start, 500);
+      return () => clearTimeout(id);
+    }
+  }, [fetchShift]);
 
   return (
     <div>

@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
-import type { Card } from "@/lib/types";
+import type { Card, Offer } from "@/lib/types";
 import { DateNudger } from "./date-nudger";
 
 interface Props {
@@ -141,63 +141,90 @@ export function FlightCard({ card, index }: Props) {
           </a>
         </div>
 
-        <div className={`${CARD_X} mt-auto space-y-3 pb-5`}>
+        <div className={`${CARD_X} mt-auto pb-5`}>
           <DateNudger baseline={best} adults={1} />
 
           {card.alternates.length > 0 && (
-            <div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setShowAlternates((v) => !v);
-                }}
-                className="text-xs font-medium text-[#0070f3] transition hover:text-[#0761d1]"
-              >
-                {showAlternates ? "Hide" : "Show"} {card.alternates.length} other option
-                {card.alternates.length > 1 ? "s" : ""}
-              </button>
-              {showAlternates && (
-                <motion.ul
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="mt-2 space-y-1.5 overflow-hidden text-xs text-[#4d4d4d]"
-                >
-                  {card.alternates.map((alt, i) => (
-                    <li key={i}>
-                      <a
-                        href={alt.bookingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-2 rounded-md border border-[#ebebeb] bg-[#fafafa] px-3 py-2 no-underline transition-colors hover:border-[#a1a1a1] hover:text-[#171717]"
-                      >
-                        <span className="shrink-0 font-mono text-[#888888]">
-                          {formatDate(alt.departDate)}
-                          {alt.returnDate && ` → ${formatDate(alt.returnDate)}`}
-                        </span>
-                        <span className="text-[#ebebeb]">·</span>
-                        <span className="min-w-0 flex-1 truncate">
-                          {alt.airline}
-                          {alt.destIata !== best.destIata && (
-                            <span className="ml-1 font-mono text-[10px] text-[#4d4d4d]">
-                              {alt.destIata}
-                            </span>
-                          )}
-                        </span>
-                        <span className="shrink-0 font-semibold tabular-nums text-[#171717]">
-                          {alt.priceDisplay}
-                        </span>
-                      </a>
-                    </li>
+            <>
+              <hr className="vercel-divider my-4 shrink-0" />
+              <div>
+                <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-[#888888]">
+                  Other options
+                </p>
+                <ul className="space-y-1.5 text-xs text-[#4d4d4d]">
+                  {card.alternates.slice(0, 2).map((alt, i) => (
+                    <AlternateRow key={`top-${i}`} alt={alt} bestDestIata={best.destIata} />
                   ))}
-                </motion.ul>
-              )}
-            </div>
+                </ul>
+
+                {card.alternates.length > 2 && (
+                  <>
+                    <AnimatePresence initial={false}>
+                      {showAlternates && (
+                        <motion.ul
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                          className="mt-1.5 space-y-1.5 overflow-hidden text-xs text-[#4d4d4d]"
+                        >
+                          {card.alternates.slice(2).map((alt, i) => (
+                            <AlternateRow key={`rest-${i}`} alt={alt} bestDestIata={best.destIata} />
+                          ))}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowAlternates((v) => !v);
+                      }}
+                      className="mt-2 text-xs font-medium text-[#0070f3] transition hover:text-[#0761d1]"
+                    >
+                      {showAlternates
+                        ? "Hide"
+                        : `Show ${card.alternates.length - 2} more`}
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
           )}
         </div>
       </article>
     </motion.div>
+  );
+}
+
+function AlternateRow({ alt, bestDestIata }: { alt: Offer; bestDestIata: string }) {
+  return (
+    <li>
+      <a
+        href={alt.bookingUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="flex items-center gap-2 rounded-md border border-[#ebebeb] bg-[#fafafa] px-3 py-2 no-underline transition-colors hover:border-[#a1a1a1] hover:text-[#171717]"
+      >
+        <span className="shrink-0 font-mono text-[#888888]">
+          {formatDate(alt.departDate)}
+          {alt.returnDate && ` → ${formatDate(alt.returnDate)}`}
+        </span>
+        <span className="text-[#ebebeb]">·</span>
+        <span className="min-w-0 flex-1 truncate">
+          {alt.airline}
+          {alt.destIata !== bestDestIata && (
+            <span className="ml-1 font-mono text-[10px] text-[#4d4d4d]">
+              {alt.destIata}
+            </span>
+          )}
+        </span>
+        <span className="shrink-0 font-semibold tabular-nums text-[#171717]">
+          {alt.priceDisplay}
+        </span>
+      </a>
+    </li>
   );
 }
