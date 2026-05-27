@@ -359,6 +359,22 @@ function inferWindow(query: string, today: string): { start: string; end: string
     String.raw`(?:\d{4}-\d{2}-\d{2}|(?:[a-z]+)\s+\d{1,2}(?:st|nd|rd|th)?|\d{1,2}(?:st|nd|rd|th)?\s+(?:of\s+)?[a-z]+)`;
   // Require an explicit window-signalling preamble — never plain "X to Y".
   const preamble = String.raw`(?:between|within|anywhere\s+(?:between|in|from)?|any\s*time\s+(?:between|in|from)?|some\s*time\s+(?:between|in|from)?|flexible\s+(?:between|dates)?)\s+`;
+  // Shared-month form: "between august 1 and 31", "from sep 5 to 15"
+  // — second date drops the month and inherits from the first.
+  const monthAlt = Object.keys(MONTH_NAMES).sort((a, b) => b.length - a.length).join("|");
+  const sharedMonthPatterns: RegExp[] = [
+    new RegExp(`${preamble}(${monthAlt})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:and|to|through|until|till|-)\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`),
+    new RegExp(
+      `(?:any\\s+\\d+\\s*(?:day|night|week)s?\\s+(?:trip\\s+)?)?(?:between|within|in)\\s+(${monthAlt})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:and|to|through|until|till|-)\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`,
+    ),
+  ];
+  for (const re of sharedMonthPatterns) {
+    const m = q.match(re);
+    if (!m) continue;
+    const a = parseLooseDate(`${m[1]} ${m[2]}`, today);
+    const b = parseLooseDate(`${m[1]} ${m[3]}`, today);
+    if (a && b && b > a) return { start: a, end: b };
+  }
   const patterns: RegExp[] = [
     new RegExp(`${preamble}(${datePart})\\s+(?:and|to|through|until|till|-)\\s+(${datePart})`),
     // Also support "any N-day/week trip between/in X and Y" — the "between/in"
