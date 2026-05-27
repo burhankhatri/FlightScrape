@@ -43,7 +43,7 @@ export function SearchProgress({
 
         <div className="mb-5 h-1 overflow-hidden rounded-full bg-[#ebebeb]/70">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-sky-500 via-violet-500 to-rose-500"
+            className="h-full rounded-full bg-[#171717]"
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{ type: "spring", stiffness: 120, damping: 22 }}
