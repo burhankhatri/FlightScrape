@@ -100,25 +100,43 @@ Date handling:
 - If no return language and no duration is given, set trip_type="one-way" and return_dates=null.
 
 Window vs fixed dates — DECISION RULES (read carefully, this is the most-common mistake):
-A "fixed-dates" trip is when the user wants to leave on one specific day and return on one specific day. A "window" is when the user wants to explore multiple possible trips inside a date range. They look almost identical in casual English. Use these rules:
+A "fixed-dates" trip is when the user wants to leave on one specific day and return on one specific day. A "window" is when the user wants to explore multiple possible trips inside a date range. The DEFAULT is fixed. Only switch to window when the user EXPLICITLY signals a range.
 
-- "depart X return Y", "departing X returning Y", "leaving X coming back Y", "fly out X fly back Y" → FIXED. One pair: (X, Y).
-- "between X and Y" / "from X till Y" / "any time between X and Y" → WINDOW. Sample 10-14 pairs across the window. ALWAYS window.
-- "X to Y" followed by "cheapest", "best deal", "any", "find me", "explore" → WINDOW. The "cheapest"/"any" words signal the user wants to explore inside the range, not just two specific dates.
-- "X to Y" with NO duration word and NO exploration cue → FIXED. One pair (X, Y). The user typed specific dates and didn't ask to explore.
-- "between X and Y for/with a N-day/week trip" → WINDOW + duration: depart in [X, Y−N], return = depart + N. Every pair fits in the window.
-- "X to Y for a N-day trip" → WINDOW: vary depart from X up to Y−N, return = depart + N.
+DEFAULT: "X to Y" with two dates means depart_date = X, return_date = Y. ONE PAIR. Treat it like the user is telling you the specific trip dates — even if they add "cheapest", that just means "cheapest fare for the dates I gave you". Don't second-guess by exploring nearby dates; the UI has a separate ±N day nudger for that.
 
-In window mode you MUST vary the depart dates (and the return dates correspondingly). Do not collapse to one pair or only-vary-departs-with-fixed-return. Example:
-  Query: "cheapest 2-week trip to malaysia between july 15 and august 15"
-  Correct: (07-15, 07-29), (07-17, 07-31), (07-19, 08-02), ..., (07-28, 08-11) — all 14 nights, all within window
-  Wrong:   (07-15, 08-15) — single fixed pair, no exploration
-  Wrong:   (07-15, 07-29), (07-17, 07-29), ... — varying departs, fixed return; loses long-trip options
+WINDOW mode is triggered ONLY by these explicit signals:
+- "between X and Y" / "anywhere between X and Y" / "within X and Y" → WINDOW
+- "any time / sometime / anytime between/in X and Y" → WINDOW
+- "any N-day trip between X and Y" / "any N weeks between X and Y" → WINDOW + duration
+- "for a N-day trip somewhere in X to Y" → WINDOW + duration
+- "X to Y, dates flexible" / "flexible between X and Y" → WINDOW
+
+FIXED mode (one pair) covers everything else:
+- "10th July to 25th July" → FIXED (depart Jul 10, return Jul 25)
+- "10th July to 25th July cheapest" → FIXED, still one pair
+- "10th July to 25th July find me the best deal" → FIXED, still one pair
+- "depart X return Y" / "departing X returning Y" / "leaving X coming back Y" → FIXED
+- "X to Y for 2 weeks" (X and Y exact dates) → FIXED if Y − X already equals 14 nights; otherwise FIXED with user's dates (their numbers win)
+
+Worked examples:
+  "10th july to 25th july malaysia cheapest"
+    → FIXED: depart_dates=["2026-07-10"], return_dates=["2026-07-25"]
+    (User typed those two dates — they want Jul 10 to Jul 25, not exploration.)
+
+  "cheapest 2-week trip to malaysia between july 15 and august 15"
+    → WINDOW: depart_dates ∈ [07-15 .. 08-01] (14 entries), return_dates = depart + 14
+    (Explicit "between A and B" + "2-week" duration = window with that duration.)
+
+  "anywhere between july 10 and july 25 cheapest to malaysia"
+    → WINDOW: explore many short trips inside [07-10, 07-25]
+
+  "fly to malaysia jul 10, back jul 25"
+    → FIXED: one pair (07-10, 07-25)
 
 ABSOLUTE RULES for return_dates (these are not negotiable):
 1. return_dates[i] MUST be strictly LATER than depart_dates[i]. Never the same day, never earlier.
 2. return_dates length MUST equal depart_dates length.
-3. If a window is given, EVERY (depart, return) pair MUST satisfy window.start ≤ depart AND return ≤ window.end.
+3. If a window IS detected, EVERY (depart, return) pair MUST satisfy window.start ≤ depart AND return ≤ window.end.
 4. If both window and duration are given, the constraint chain is: window.start ≤ depart ≤ window.end − duration, and return = depart + duration.
 
 Minimum/at-least durations:
@@ -272,16 +290,24 @@ function parseLooseDate(text: string, today: string): string | null {
 }
 
 /**
- * Detect a window like "between July 15 and August 15" / "from 1st aug to 1st sep"
- * / "Jul 15 to Aug 15". Returns ISO start+end (both inclusive), or null.
+ * Detect a window — only when the user EXPLICITLY signals a range with
+ * "between/within/anywhere/anytime/sometime/flexible". Plain "X to Y" is NOT
+ * a window: that's a fixed-date trip with depart=X return=Y, even if "cheapest"
+ * follows. The user's exact dates are the source of truth.
  */
 function inferWindow(query: string, today: string): { start: string; end: string } | null {
   const q = query.toLowerCase();
   const datePart =
     String.raw`(?:\d{4}-\d{2}-\d{2}|(?:[a-z]+)\s+\d{1,2}(?:st|nd|rd|th)?|\d{1,2}(?:st|nd|rd|th)?\s+(?:of\s+)?[a-z]+)`;
+  // Require an explicit window-signalling preamble — never plain "X to Y".
+  const preamble = String.raw`(?:between|within|anywhere\s+(?:between|in|from)?|any\s*time\s+(?:between|in|from)?|some\s*time\s+(?:between|in|from)?|flexible\s+(?:between|dates)?)\s+`;
   const patterns: RegExp[] = [
-    new RegExp(`(?:between|from)\\s+(${datePart})\\s+(?:and|to|through|until|till|-)\\s+(${datePart})`),
-    new RegExp(`(${datePart})\\s+(?:to|through|until|till|-)\\s+(${datePart})`),
+    new RegExp(`${preamble}(${datePart})\\s+(?:and|to|through|until|till|-)\\s+(${datePart})`),
+    // Also support "any N-day/week trip between/in X and Y" — the "between/in"
+    // still must be there after the duration phrase.
+    new RegExp(
+      `(?:any\\s+\\d+\\s*(?:day|night|week)s?\\s+(?:trip\\s+)?)?(?:between|within|in)\\s+(${datePart})\\s+(?:and|to|through|until|till|-)\\s+(${datePart})`,
+    ),
   ];
   for (const re of patterns) {
     const m = q.match(re);
