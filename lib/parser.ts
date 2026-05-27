@@ -99,10 +99,27 @@ Date handling:
 - "returning Aug 25" with multiple depart options — set every return_date to Aug 25.
 - If no return language and no duration is given, set trip_type="one-way" and return_dates=null.
 
+Window vs fixed dates — DECISION RULES (read carefully, this is the most-common mistake):
+A "fixed-dates" trip is when the user wants to leave on one specific day and return on one specific day. A "window" is when the user wants to explore multiple possible trips inside a date range. They look almost identical in casual English. Use these rules:
+
+- "depart X return Y", "departing X returning Y", "leaving X coming back Y", "fly out X fly back Y" → FIXED. One pair: (X, Y).
+- "between X and Y" / "from X till Y" / "any time between X and Y" → WINDOW. Sample 10-14 pairs across the window. ALWAYS window.
+- "X to Y" followed by "cheapest", "best deal", "any", "find me", "explore" → WINDOW. The "cheapest"/"any" words signal the user wants to explore inside the range, not just two specific dates.
+- "X to Y" with NO duration word and NO exploration cue → FIXED. One pair (X, Y). The user typed specific dates and didn't ask to explore.
+- "between X and Y for/with a N-day/week trip" → WINDOW + duration: depart in [X, Y−N], return = depart + N. Every pair fits in the window.
+- "X to Y for a N-day trip" → WINDOW: vary depart from X up to Y−N, return = depart + N.
+
+In window mode you MUST vary the depart dates (and the return dates correspondingly). Do not collapse to one pair or only-vary-departs-with-fixed-return. Example:
+  Query: "cheapest 2-week trip to malaysia between july 15 and august 15"
+  Correct: (07-15, 07-29), (07-17, 07-31), (07-19, 08-02), ..., (07-28, 08-11) — all 14 nights, all within window
+  Wrong:   (07-15, 08-15) — single fixed pair, no exploration
+  Wrong:   (07-15, 07-29), (07-17, 07-29), ... — varying departs, fixed return; loses long-trip options
+
 ABSOLUTE RULES for return_dates (these are not negotiable):
-1. return_dates[i] MUST be strictly LATER than depart_dates[i]. Never the same day, never earlier. A return before the depart is impossible.
+1. return_dates[i] MUST be strictly LATER than depart_dates[i]. Never the same day, never earlier.
 2. return_dates length MUST equal depart_dates length.
-3. If you find yourself about to emit a return earlier than the corresponding depart, you have made an error — recompute by adding the intended duration in days to the depart date.
+3. If a window is given, EVERY (depart, return) pair MUST satisfy window.start ≤ depart AND return ≤ window.end.
+4. If both window and duration are given, the constraint chain is: window.start ≤ depart ≤ window.end − duration, and return = depart + duration.
 
 Minimum/at-least durations:
 - "at least N days", "minimum N days", "no less than N days", "≥N days", "N+ days" → every (depart, return) pair MUST satisfy return ≥ depart + N nights. Sample durations of N, N+1, N+2, N+3, N+5, N+7 — weighted toward the lower end. NEVER return a duration less than N. This is the most common bug; double-check before submitting.
@@ -308,6 +325,52 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
 
   const { min, exact } = inferMinNights(query);
   const window = inferWindow(query, today);
+
+  // Window + "cheapest"/"any" exploration cue, but no explicit duration: the
+  // user wants to explore many trip options inside the window. The LLM often
+  // collapses this to a single pair (X, Y) — which gives no exploration at all,
+  // or worse, picks a 15-night trip when an 8-night might be much cheaper.
+  // Regenerate ~12 pairs with varied departs AND varied trip durations.
+  const wantsExploration = /\b(cheapest|best\s+deal|best\s+price|best\s+fare|any|explore|find\s+me|deals?|flexible)\b/i.test(query);
+  if (window && exact === null && min === null && wantsExploration) {
+    const winStart = window.start >= today ? window.start : today;
+    const totalSpan = nightsBetween(winStart, window.end);
+    if (totalSpan >= 2) {
+      // Pick trip-duration buckets that fit. Skew toward shorter trips first
+      // (they're cheaper to compare and surface bargains) but always include the
+      // longest possible if the window is wide enough.
+      const candidateDurations = [3, 5, 7, 10, 14, 21].filter((n) => n <= totalSpan);
+      if (candidateDurations.length === 0) candidateDurations.push(Math.max(2, totalSpan));
+      // For each duration, generate 2-3 sample departs.
+      const pairs: Array<{ d: string; r: string }> = [];
+      for (const dur of candidateDurations) {
+        const latestDepart = addDaysISO(window.end, -dur);
+        const spanForDur = nightsBetween(winStart, latestDepart);
+        const samples = Math.min(spanForDur >= 6 ? 3 : 2, spanForDur + 1);
+        for (let i = 0; i < samples; i++) {
+          const d = samples === 1 ? winStart : addDaysISO(winStart, Math.round((i * spanForDur) / (samples - 1)));
+          pairs.push({ d, r: addDaysISO(d, dur) });
+          if (pairs.length >= 14) break;
+        }
+        if (pairs.length >= 14) break;
+      }
+      // Dedupe by string pair.
+      const seen = new Set<string>();
+      const uniq = pairs.filter((p) => {
+        const k = `${p.d}|${p.r}`;
+        if (seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      });
+      if (uniq.length > 0) {
+        return {
+          ...parsed,
+          departDates: uniq.map((p) => p.d),
+          returnDates: uniq.map((p) => p.r),
+        };
+      }
+    }
+  }
 
   // Window + duration: regenerate from scratch so every pair fits the window.
   // This is the most common bug class — the LLM samples departs to the end of
