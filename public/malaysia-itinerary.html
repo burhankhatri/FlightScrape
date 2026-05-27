@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>14 days in Malaysia · Jul 10 – Jul 24, 2026</title>
-  <meta name="description" content="A 14-day itinerary from Kuala Lumpur — Langkawi, Terengganu coastlines, Sabah islands and Borneo rainforest. Live domestic flight prices from flighthelper.vercel.app." />
+  <meta name="description" content="A 14-day itinerary for 4 travellers from Kuala Lumpur — Langkawi, Terengganu coastlines, Sabah islands and Borneo rainforest. Live domestic flight prices from flighthelper.vercel.app." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -24,22 +24,19 @@
     html, body { margin: 0; padding: 0; }
     body {
       font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
+      background: var(--bg); color: var(--ink); line-height: 1.5;
+      -webkit-font-smoothing: antialiased; letter-spacing: -0.01em;
     }
     .mono { font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace; }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
 
-    /* Hero */
     header.hero { padding: 80px 24px 48px; text-align: center; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
     .hero .eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 16px; }
     .hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; margin: 0 0 16px; }
-    .hero .tagline { font-size: 18px; color: var(--ink-2); max-width: 640px; margin: 0 auto 32px; }
+    .hero .tagline { font-size: 18px; color: var(--ink-2); max-width: 640px; margin: 0 auto 24px; }
+    .hero-pricing-note { font-size: 13px; color: var(--ink-3); max-width: 600px; margin: 0 auto 32px; font-style: italic; }
     .hero-stats { display: inline-flex; gap: 24px; padding: 12px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow); font-size: 13px; flex-wrap: wrap; justify-content: center; }
     .hero-stats > span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
     .hero-stats strong { color: var(--ink); font-weight: 600; }
@@ -54,7 +51,6 @@
     .day { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: grid; grid-template-columns: 1fr; }
     @media (min-width: 720px) { .day { grid-template-columns: 360px 1fr; } }
 
-    /* CAROUSEL */
     .day-media { position: relative; aspect-ratio: 4/3; background: #e5e5e5; }
     .day-media .badge { position: absolute; top: 12px; left: 12px; z-index: 3; padding: 5px 10px; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); }
     .carousel-wrap { width: 100%; height: 100%; position: relative; }
@@ -73,7 +69,6 @@
     .day-spots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
     .day-spots .spot { font-size: 12px; padding: 4px 10px; background: #f5f5f5; border-radius: 999px; color: var(--ink-2); }
 
-    /* COSTS */
     .costs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-top: 4px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: #fafafa; }
     .cost { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
     .cost .lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
@@ -89,9 +84,9 @@
     .flight-price .book-btn { display: inline-block; margin-top: 4px; padding: 6px 14px; background: var(--ink); color: #fff !important; border-radius: 999px; font-size: 12px; font-weight: 500; text-decoration: none !important; }
     .flight-price .book-btn:hover { background: #383838; }
 
-    /* Budget */
     .budget { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); margin-top: 24px; }
-    .budget h2 { margin: 0 0 20px; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+    .budget h2 { margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+    .budget .group-note { font-size: 13px; color: var(--ink-3); margin: 0 0 20px; }
     .budget table { width: 100%; border-collapse: collapse; }
     .budget td { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
     .budget td:last-child { text-align: right; font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums; }
@@ -105,13 +100,14 @@
 <body>
   <header class="hero">
     <div class="container">
-      <p class="eyebrow">Trip Plan · Jul 10 — Jul 24, 2026</p>
+      <p class="eyebrow">Trip Plan · Jul 10 — Jul 24, 2026 · Group of 4</p>
       <h1>14 days in Malaysia</h1>
       <p class="tagline">Land in KL, swim Langkawi, beachcomb Terengganu's empty coast, then island-hop Sabah and end deep in Borneo's rainforest.</p>
+      <p class="hero-pricing-note">All prices below are per-person, assuming 4 travellers sharing accommodation, vans, and boats. Solo or 2-person trips will cost more.</p>
       <div class="hero-stats">
         <span><strong>9</strong> destinations</span>
         <span><strong>7</strong> domestic flights · <strong class="mono">$380</strong></span>
-        <span><strong class="mono">$1508 +</strong> base/pax</span>
+        <span><strong class="mono">$1266–1386</strong> total/pax</span>
       </div>
     </div>
   </header>
@@ -136,9 +132,12 @@
       <span class="badge">KL</span>
       <div class="carousel-wrap" data-carousel="day-1">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Bukit_Bintang_junction_in_2024_2.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1585031039436-16a906da2f05?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1593923874587-127a467b2731?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1506320775314-84c60bff00ff?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1574218747243-6a6ac3639337?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -147,10 +146,10 @@
       <p class="day-description">Land at KUL, transfer to Bukit Bintang. Recover from the long-haul, nasi lemak at Village Park or rooftop drinks at Heli Lounge.</p>
       <div class="day-spots"><span class="spot">Bukit Bintang</span><span class="spot">Petronas Towers</span><span class="spot">Hotel rest</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$8</span></span>
     
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$35</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$23</span></span>
   </div>
       
     </div>
@@ -160,9 +159,12 @@
       <span class="badge">Langkawi</span>
       <div class="carousel-wrap" data-carousel="day-2">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Langkawi_sky_bridge.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1768700203085-bb9fb4b02078?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1767429659315-54736faeee46?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1721151599824-ca38a4b73292?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1764145739533-de72207ca061?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -171,10 +173,10 @@
       <p class="day-description">Early flight to Langkawi. Hike 30 min up the Machinchang foothills to seven stacked rainforest pools cascading over the cliff edge — a freshwater sky-pool with sea views.</p>
       <div class="day-spots"><span class="spot">Telaga Tujuh</span><span class="spot">Pantai Cenang</span><span class="spot">Sunset beach</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$15</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$60</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$10</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$5</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$33</span></span>
   </div>
       <div class="flight">
     <div>
@@ -193,10 +195,12 @@
       <span class="badge">Langkawi</span>
       <div class="carousel-wrap" data-carousel="day-3">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Langkawi_sky_bridge.jpg?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Eagle_square_at_Kuah_Langkawi.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1647878872662-50d50c74d40e?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1722667311568-bda82f2751ba?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1665988945099-9cd7b622bbc6?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1517655345491-33d121d7e4fb?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -205,10 +209,10 @@
       <p class="day-description">Cable car up Gunung Mat Cincang to the Sky Bridge, then afternoon mangrove boat tour. Bat caves, eagle feeding, fish farm. Sunset on Tanjung Rhu.</p>
       <div class="day-spots"><span class="spot">Langkawi Sky Bridge</span><span class="spot">Kilim Geoforest mangroves</span><span class="spot">Tanjung Rhu</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$15</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$55</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$95</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$10</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$35</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$63</span></span>
   </div>
       
     </div>
@@ -218,10 +222,12 @@
       <span class="badge">Transit</span>
       <div class="carousel-wrap" data-carousel="day-4">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/View_from_Lot_10_-_Forest_in_the_City_to_Bukti_Bintang_junction_1.jpg?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Bukit_Bintang_junction_in_2024_2.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1604631832503-a0bc87125967?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1699192287053-a20d788809a3?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1602472175457-a0014af9aa69?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1741243413093-9dcf2981fac2?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -230,10 +236,10 @@
       <p class="day-description">Morning beach in Cenang, evening flight back to KL. Quick night in KL — Jalan Alor street food, prep for east-coast leg tomorrow.</p>
       <div class="day-spots"><span class="spot">Jalan Alor</span><span class="spot">Central Market</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$10</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$55</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$10</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$5</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$33</span></span>
   </div>
       <div class="flight">
     <div>
@@ -252,10 +258,12 @@
       <span class="badge">Terengganu</span>
       <div class="carousel-wrap" data-carousel="day-5">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Perhentian_islands.png?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Redang_Island_satellite.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1692955833501-527e2b07d7c8?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1598711537325-c38a8fff5b3f?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1595761205637-e7692c1f1c29?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1715314770782-2a1c6aab7d0e?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -264,10 +272,10 @@
       <p class="day-description">Fly to Kuala Terengganu, drive 1.5h north to Besut. Bukit Keluang is a wooden cliff walkway over the South China Sea ending in a tide-pool beach known only to locals.</p>
       <div class="day-spots"><span class="spot">Bukit Keluang walkway</span><span class="spot">Hidden cliff beach</span><span class="spot">Stay in Besut</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$35</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$10</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$63</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$13</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$3</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$31</span></span>
   </div>
       <div class="flight">
     <div>
@@ -286,10 +294,12 @@
       <span class="badge">Setiu</span>
       <div class="carousel-wrap" data-carousel="day-6">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Perhentian_islands.png?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Tioman_island_(3679435126).jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1520942702018-0862200e6873?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1586359716568-3e1907e4cf9f?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1775390722192-166625daa0f0?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1571190008908-45188917059e?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -298,10 +308,10 @@
       <p class="day-description">A long, almost-always-empty stretch in Setiu. No resorts, no crowds, just turquoise water and a few fishermen. Bring a packed lunch — there's nothing here.</p>
       <div class="day-spots"><span class="spot">Pantai Mangkuk</span><span class="spot">Setiu wetlands</span><span class="spot">Local seafood dinner</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$5</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$48</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$12</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$8</span></span>
+    
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$20</span></span>
   </div>
       
     </div>
@@ -311,10 +321,12 @@
       <span class="badge">Pulau Kapas</span>
       <div class="carousel-wrap" data-carousel="day-7">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Perhentian_islands.png?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Beach_%40_Pulau_Kapas%2C_Malaysia_(234435536).jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1654180426587-bc755d72b33a?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1654180674774-45dbe0b3bdca?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1595323397978-65433d24fc23?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1695686017792-59a80e2e95be?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -323,24 +335,25 @@
       <p class="day-description">15-minute boat from Marang jetty. Snorkel coral gardens, walk to the back-of-island deserted beach. Small, sleepy, the way Malaysian islands used to be.</p>
       <div class="day-spots"><span class="spot">Snorkel</span><span class="spot">Kayak to Pulau Gemia</span><span class="spot">Back to TGG by evening</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$22</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$30</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$72</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$8</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$18</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$41</span></span>
   </div>
       
     </div>
   </article>
 <article class="day">
     <div class="day-media">
-      <span class="badge">Pahang/Terengganu</span>
+      <span class="badge">Terengganu</span>
       <div class="carousel-wrap" data-carousel="day-8">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Kenyir_Lake_1.JPG?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Taman_Negara_Sungai_Tembeling.JPG?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Tea_fields_(Will_Ellis).jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1584013896886-f6025239e500?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1764145739533-de72207ca061?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1584430903838-0400762f0c54?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1571546154913-bcde93d6202a?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -349,10 +362,10 @@
       <p class="day-description">Drive west into the interior. Tasik Kenyir is South-East Asia's largest man-made lake — boat ride to one of 14 hidden waterfalls. Afternoon push to Chemerong, a 305-metre vertical cascade.</p>
       <div class="day-spots"><span class="spot">Tasik Kenyir boat tour</span><span class="spot">Chemerong Waterfall</span><span class="spot">Houseboat night (optional)</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$40</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$50</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$110</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$18</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$48</span></span>
   </div>
       
     </div>
@@ -362,9 +375,12 @@
       <span class="badge">Sabah</span>
       <div class="carousel-wrap" data-carousel="day-9">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Panoramic_view_of_Kota_Kinabalu_City.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1562595437-35c49e56ae3c?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1654180680389-4141e2912ef6?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1584942315602-6ba8c7084ad2?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1602436578464-da0b3abbef9a?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -373,10 +389,10 @@
       <p class="day-description">Long travel day. Morning flight back to KL, lunch at airport, afternoon 2h40m flight east to Kota Kinabalu. Mount Kinabalu visible on descent. Sunset at KK waterfront, dinner at Welcome Seafood.</p>
       <div class="day-spots"><span class="spot">KK waterfront</span><span class="spot">Filipino night market</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$5</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$50</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$10</span></span>
+    
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$28</span></span>
   </div>
       <div class="flight">
     <div>
@@ -405,11 +421,12 @@
       <span class="badge">Mantanani</span>
       <div class="carousel-wrap" data-carousel="day-10">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/KKseaisland.jpg?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Sabah-Islands-DarvelBay_PulauMabul-Pushpin.png?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/Pulau_Sipadan.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1654180680389-4141e2912ef6?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1654180444501-633d033d8923?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1731142682923-756d6f51b63d?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1654180714269-9667f416a93f?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -418,10 +435,10 @@
       <p class="day-description">2h drive north + 45-min boat from Kuala Abai jetty. Three small islets with bone-white sand and water you can read a newspaper through. Snorkel the lagoon — dugong sightings if you're patient and quiet.</p>
       <div class="day-spots"><span class="spot">Mantanani Besar</span><span class="spot">Snorkel + free-dive</span><span class="spot">Return KK by night</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$30</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$65</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$120</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$12</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$45</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$72</span></span>
   </div>
       
     </div>
@@ -431,10 +448,12 @@
       <span class="badge">Kota Belud</span>
       <div class="carousel-wrap" data-carousel="day-11">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Kinabalu_Sabah_Borneo_Kampong_Kundasang_panorama_2.jpg?width=1200" alt="" loading="lazy" />
-<img src="https://en.wikipedia.org/wiki/Special:FilePath/KKseaisland.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1654180444273-958864814bb4?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1654180444501-633d033d8923?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1590324094066-a44ee7ecb2e0?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1696919385549-4873eae39dfd?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div>
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -443,10 +462,10 @@
       <p class="day-description">1h45m drive from KK. What Sabah locals point to when you ask about hidden beaches — long, turquoise, fishermen pulling nets in at dawn, zero tourists. The Sunday Tamu market in Kota Belud is worth a detour.</p>
       <div class="day-spots"><span class="spot">Bak Bak fishing village</span><span class="spot">Mt Kinabalu views</span><span class="spot">Tamu market (Sunday)</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$18</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$30</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$5</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$53</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$12</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$12</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$3</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$27</span></span>
   </div>
       
     </div>
@@ -456,21 +475,24 @@
       <span class="badge">Sandakan</span>
       <div class="carousel-wrap" data-carousel="day-12">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Tanjung_Puting30477.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1552656504-5fd2ed591222?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1618507939664-c34f46970a2b?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1727004135367-05ca2ad5cad0?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1612368195523-19e00a05b1cf?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
       <div class="day-meta"><span class="day-num">Day 12</span><span>Mon, Jul 21</span></div>
       <h2 class="day-title">East Sabah · Sepilok Orangutan Centre</h2>
-      <p class="day-description">Short hop to Sandakan. 25-min taxi to Sepilok — morning and afternoon feedings, plus the Sun Bear Conservation Centre next door (genuinely one of the best wildlife encounters in Asia).</p>
+      <p class="day-description">Short hop to Sandakan. 25-min taxi to Sepilok — morning and afternoon feedings, plus the Sun Bear Conservation Centre next door (one of the best wildlife encounters in Asia).</p>
       <div class="day-spots"><span class="spot">Sepilok orangutans</span><span class="spot">Sun bears</span><span class="spot">Rainforest canopy walkway</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$22</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$20</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$30</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$72</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$15</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$10</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$20</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$45</span></span>
   </div>
       <div class="flight">
     <div>
@@ -489,9 +511,12 @@
       <span class="badge">Danum Valley</span>
       <div class="carousel-wrap" data-carousel="day-13">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Morning_fog_over_Danum_Valley_(27329938517).jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1768700203107-aeccfcc4447c?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1712024280287-9cea82fec948?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1628869314595-23a1ac484b07?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1549793786-6c0ad4e98a50?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -500,10 +525,10 @@
       <p class="day-description">Long drive south (3.5h on logging roads). 130-million-year-old primary rainforest with wild orangutans, pygmy elephants, clouded leopards. Stay at Borneo Rainforest Lodge or budget at the Field Centre. Night walk after dinner.</p>
       <div class="day-spots"><span class="spot">Borneo Rainforest Lodge</span><span class="spot">Canopy walkway at dawn</span><span class="spot">Night safari</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$35</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$60</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$90</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$185</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$25</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$25</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$60</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$110</span></span>
   </div>
       
     </div>
@@ -513,9 +538,12 @@
       <span class="badge">SDK → KL</span>
       <div class="carousel-wrap" data-carousel="day-14">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Bukit_Bintang_junction_in_2024_2.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1585031039436-16a906da2f05?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1593923874587-127a467b2731?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1506320775314-84c60bff00ff?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1574218747243-6a6ac3639337?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -524,10 +552,10 @@
       <p class="day-description">Early dawn nature walk in Danum, drive back to Sandakan by lunch, evening flight to KL. Farewell dinner — banana-leaf at Sri Nirwana Maju or fine-dining at Dewakan.</p>
       <div class="day-spots"><span class="spot">Sri Nirwana Maju (Bangsar)</span><span class="spot">KL Tower Skybox</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$35</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$25</span></span>
-    <span class="cost"><span class="lbl">Activities</span><span class="val">$15</span></span>
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$75</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$22</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$12</span></span>
+    <span class="cost"><span class="lbl">Activities</span><span class="val">$8</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$42</span></span>
   </div>
       <div class="flight">
     <div>
@@ -546,9 +574,12 @@
       <span class="badge">Departure</span>
       <div class="carousel-wrap" data-carousel="day-15">
     <div class="carousel" data-track>
-      <img src="https://en.wikipedia.org/wiki/Special:FilePath/Bukit_Bintang_junction_in_2024_2.jpg?width=1200" alt="" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1575291789523-dd3433d35e5f?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1575291786633-0c218afc4f2c?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1687992176093-6417a93fa3d0?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
+<img src="https://images.unsplash.com/photo-1674725690428-948af1d7f5a1?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy" />
     </div>
-    
+    <div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div>
   </div>
     </div>
     <div class="day-content">
@@ -557,10 +588,10 @@
       <p class="day-description">Last morning. Coffee at one of the lounges in KLIA2 — Plaza Premium has decent showers. Onward.</p>
       <div class="day-spots"><span class="spot">Airport lounge</span><span class="spot">Last MYR souvenirs</span></div>
       <div class="costs">
-    <span class="cost"><span class="lbl">Food</span><span class="val">$15</span></span>
-    <span class="cost"><span class="lbl">Transport</span><span class="val">$20</span></span>
+    <span class="cost"><span class="lbl">Food</span><span class="val">$10</span></span>
+    <span class="cost"><span class="lbl">Transport</span><span class="val">$10</span></span>
     
-    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$35</span></span>
+    <span class="cost cost-total"><span class="lbl">Day est.</span><span class="val">$20</span></span>
   </div>
       
     </div>
@@ -570,43 +601,51 @@
     <p class="section-title">Budget</p>
     <div class="budget">
       <h2>Per-person estimate</h2>
+      <p class="group-note">Assumes a group of 4 sharing 2 double rooms / 1 villa, splitting vans, day-trip boats, and guide fees 4-ways. Solo travellers should roughly 1.5–2× these numbers.</p>
       <table>
         <tr><td>Domestic flights · 7 legs (live prices via <a href="https://flighthelper.vercel.app" target="_blank" rel="noopener">flighthelper</a>)</td><td><span class="mono">$380</span></td></tr>
-        <tr><td>Daily costs (food + transport + activities × 15 days)</td><td><span class="mono">$1128</span></td></tr>
-        <tr class="row-sub"><td>Food · approx $20–35/day</td><td>$348</td></tr>
-        <tr class="row-sub"><td>Local transport · taxis, Grab, car-hire</td><td>$395</td></tr>
-        <tr class="row-sub"><td>Activities · tours, entries, day-trips</td><td>$385</td></tr>
-        <tr><td>Accommodation · 14 nights (mid-range + 1 jungle lodge)</td><td><span class="mono">$700 – 1,100</span></td></tr>
-        <tr class="row-sub"><td>KL × 2 nights · $50–80</td><td>$100–160</td></tr>
-        <tr class="row-sub"><td>Langkawi × 2 nights · $50–120</td><td>$100–240</td></tr>
-        <tr class="row-sub"><td>Terengganu × 4 nights · $40–80</td><td>$160–320</td></tr>
-        <tr class="row-sub"><td>Sabah (KK + Sandakan) × 4 nights · $50–90</td><td>$200–360</td></tr>
-        <tr class="row-sub"><td>Danum Valley lodge × 1 night · $140–220</td><td>$140–220</td></tr>
+        <tr class="row-sub"><td>KUL → LGK · Batik Air</td><td>$38</td></tr>
+        <tr class="row-sub"><td>LGK → KUL · AirAsia</td><td>$41</td></tr>
+        <tr class="row-sub"><td>KUL → TGG · AirAsia</td><td>$35</td></tr>
+        <tr class="row-sub"><td>TGG → KUL · AirAsia</td><td>$35</td></tr>
+        <tr class="row-sub"><td>KUL → BKI · Malaysia Airlines</td><td>$87</td></tr>
+        <tr class="row-sub"><td>BKI → SDK · AirAsia</td><td>$43</td></tr>
+        <tr class="row-sub"><td>SDK → KUL · AirAsia</td><td>$101</td></tr>
+        <tr><td>Daily costs (food + transport + activities × 15 days)</td><td><span class="mono">$636</span></td></tr>
+        <tr class="row-sub"><td>Food · ~$12–25/day (hawker mixed with sit-down)</td><td>$241</td></tr>
+        <tr class="row-sub"><td>Local transport · vans, Grab, boat transfers (4-way split)</td><td>$175</td></tr>
+        <tr class="row-sub"><td>Activities · tour entry, guides (4-way split)</td><td>$220</td></tr>
+        <tr><td>Accommodation · 14 nights, 4-way split on 2 doubles / villa</td><td><span class="mono">$200 – 320</span></td></tr>
+        <tr class="row-sub"><td>KL × 2 nights · $15–25/pax</td><td>$30–50</td></tr>
+        <tr class="row-sub"><td>Langkawi × 2 nights · $20–35/pax</td><td>$40–70</td></tr>
+        <tr class="row-sub"><td>Terengganu × 4 nights · $12–20/pax</td><td>$48–80</td></tr>
+        <tr class="row-sub"><td>Sabah (KK + Sandakan) × 4 nights · $15–25/pax</td><td>$60–100</td></tr>
+        <tr class="row-sub"><td>Danum Valley lodge × 1 night · $50–80/pax (shared room, premium)</td><td>$50–80</td></tr>
         <tr><td>Visa, SIM, contingency</td><td><span class="mono">$50</span></td></tr>
-        <tr class="total"><td>Total per person</td><td><span class="mono">$2258 – 2658</span></td></tr>
+        <tr class="total"><td>Total per person (group of 4)</td><td><span class="mono">$1266 – $1386</span></td></tr>
       </table>
     </div>
 
     <p class="section-title">Notes &amp; tips</p>
     <div class="budget">
       <ul style="margin:0;padding-left:20px;color:var(--ink-2);font-size:14px;line-height:1.7;">
+        <li><strong style="color:var(--ink);">Group savings —</strong> 4-way splits help most on (a) vans &amp; private cars, (b) Mantanani / Pulau Kapas day-boat charter, (c) Danum Valley packages, (d) lodging. Food is per-person but sharing dishes at hawker stalls trims another 10–15%.</li>
         <li><strong style="color:var(--ink);">Monsoon caveat —</strong> Terengganu's east coast is best Mar–Oct. July is fine; Nov–Feb is washed-out.</li>
-        <li><strong style="color:var(--ink);">Live-price warning —</strong> Domestic prices above are valid as of fetch time. Hit <a href="https://flighthelper.vercel.app" target="_blank" rel="noopener">flighthelper.vercel.app</a> before booking; the Book buttons deep-link to Google Flights.</li>
-        <li><strong style="color:var(--ink);">Booking order —</strong> Lock the Danum Valley lodge first (sells out 2+ months ahead). Domestic flights are easy on AirAsia/Batik 1 month out. Hotels last.</li>
+        <li><strong style="color:var(--ink);">Live-price warning —</strong> Domestic flight prices above are valid as of fetch time. Hit <a href="https://flighthelper.vercel.app" target="_blank" rel="noopener">flighthelper.vercel.app</a> before booking; the Book buttons deep-link to Google Flights.</li>
+        <li><strong style="color:var(--ink);">Booking order —</strong> Lock the Danum Valley lodge first (sells out 2+ months ahead, harder for groups). Domestic flights easy on AirAsia/Batik 1 month out. Hotels last.</li>
         <li><strong style="color:var(--ink);">Pack —</strong> Reef-safe sunscreen, dry bag, head-torch (Danum + jungle waterfalls), light long-sleeves, MYR cash for east-coast warungs &amp; boat operators (no card).</li>
-        <li><strong style="color:var(--ink);">Skipped from your list —</strong> Maliau Basin needs 3-night minimum &amp; permits; Lankayan / Tenggol / Pangkor Laut Resort are exclusive (different budget tier); Bohey Dulang &amp; Sibu/Tinggi need a dedicated 3–4 day block in Semporna / Johor.</li>
+        <li><strong style="color:var(--ink);">Skipped from your list —</strong> Maliau Basin needs 3-night minimum &amp; permits; Lankayan / Tenggol / Pangkor Laut Resort are exclusive (different budget tier); Bohey Dulang &amp; Sibu/Tinggi need a dedicated 3–4 day block.</li>
       </ul>
     </div>
   </main>
 
   <footer>
     <div class="container">
-      Live flight prices from <a href="https://flighthelper.vercel.app" target="_blank" rel="noopener">flighthelper.vercel.app</a> · Images from Wikipedia. Routes &amp; budget assume 1 person, economy.
+      Live flight prices from <a href="https://flighthelper.vercel.app" target="_blank" rel="noopener">flighthelper.vercel.app</a> · Photos from Unsplash.
     </div>
   </footer>
 
   <script>
-    // Carousel: update active dot on scroll, advance on dot click.
     for (const wrap of document.querySelectorAll('.carousel-wrap')) {
       const track = wrap.querySelector('.carousel');
       const dots = [...wrap.querySelectorAll('.dot')];
@@ -615,9 +654,7 @@
         const idx = Math.round(track.scrollLeft / track.clientWidth);
         for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === idx);
       }, { passive: true });
-      dots.forEach((d, i) => {
-        d.addEventListener('click', () => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }));
-      });
+      dots.forEach((d, i) => d.addEventListener('click', () => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' })));
     }
   </script>
 </body>
