@@ -144,14 +144,19 @@ export function FlightCard({ card, index }: Props) {
             <div className="mt-0.5 text-[11px] text-[#888888]">per person</div>
           </div>
 
-          <a
-            href={best.bookingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-vercel-primary shrink-0"
-          >
-            Book
-          </a>
+          <div className="flex flex-col items-end gap-1.5">
+            <a
+              href={best.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-vercel-primary shrink-0"
+            >
+              Book
+            </a>
+            <p className="max-w-[180px] text-right text-[10px] leading-tight text-[#a1a1a1]">
+              Opens Google Flights — sign-in may unlock cheaper personalised deals
+            </p>
+          </div>
         </div>
 
         <div className={`${CARD_X} mt-auto pb-5`}>
