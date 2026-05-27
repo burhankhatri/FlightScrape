@@ -10,6 +10,7 @@ import { bookingUrl } from "./deeplink";
 import { resolve, getAirport } from "./destinations";
 import { computeForecast } from "./forecast";
 import { fetchGoogleFlights } from "./google-flights";
+import { invalidateGoogleFlightsSession } from "./google-flights-session";
 import { heroImage } from "./images";
 import type { SearchCallbacks } from "./search-events";
 import type { Cabin, Card, Filters, Offer, SearchStats } from "./types";
@@ -133,7 +134,13 @@ export async function search(
     excludeAirlines: [],
     maxDurationHours: null,
   };
-  const limit = pLimit(args.maxConcurrent ?? 10);
+  // Concurrency budget for the Google scraper. Bumped from 10 to 18 because:
+  //   • full daily coverage now generates up to 31 date pairs per destination,
+  //     so total combo count is materially higher (e.g. ~200 combos for a
+  //     full-month + 2-country search);
+  //   • the 3-pass retry handles Google's per-IP rate limiter, so a higher
+  //     burst rate amortises across retries without losing destinations.
+  const limit = pLimit(args.maxConcurrent ?? 18);
 
   const rawGroups: Array<{ name: string; iatas: Set<string> }> = [];
   for (const name of args.destinationNames) {
@@ -354,6 +361,24 @@ export async function search(
     }
 
     await Promise.all(todo.map((c) => limit(() => runCombo(c, pass))));
+  }
+
+  // Rescue pass: if any whole destination group has zero successes after the
+  // main 3 retries, force one more attempt for JUST that group with a fresh
+  // Google session and a longer backoff. Catches the case where every IATA for
+  // a country (e.g. all 3 Malaysian airports) gets rate-limited in lockstep.
+  const failedGroups = groups.filter((g) => (groupResults.get(g.name) ?? []).length === 0);
+  if (failedGroups.length > 0) {
+    callbacks?.onStatus?.(
+      `Rescuing ${failedGroups.length} destination${failedGroups.length === 1 ? "" : "s"} that timed out…`,
+      "search",
+    );
+    invalidateGoogleFlightsSession();
+    await new Promise((r) => setTimeout(r, 2500));
+    const rescueCombos = allCombos.filter((c) =>
+      failedGroups.some((g) => g.name === c.group),
+    );
+    await Promise.all(rescueCombos.map((c) => limit(() => runCombo(c, 2))));
   }
 
   // Emit any groups that had no offers (skip) or weren't emitted yet.

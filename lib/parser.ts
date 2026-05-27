@@ -35,14 +35,14 @@ const TOOL_DEFINITION = {
         type: "array",
         items: { type: "string", pattern: "^\\d{4}-\\d{2}-\\d{2}$" },
         minItems: 1,
-        maxItems: 14,
+        maxItems: 31,
         description:
-          "Departure dates to try, in YYYY-MM-DD. Goal: find the ACTUAL cheapest, which often hides between coarse samples.\n" +
+          "Departure dates to try, in YYYY-MM-DD. Goal: find the ACTUAL cheapest by being exhaustive — when the user gives a window, scan EVERY day in it.\n" +
           "  • Specific date ('25th July') → 1 date\n" +
-          "  • A specific month or named window ('in July', 'mid August') → 14 dates, EVERY OTHER DAY across the window (e.g. for July: Jul 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27). Using stride 2 (not 3) matters — coarser sampling missed the 22%-cheaper deal on Jul 23 in our benchmark.\n" +
-          "  • Multi-month or vague ('summer', 'next 3 months') → 12-14 dates spread roughly evenly\n" +
-          "  • Half-month ('first two weeks of July') → ~8 dates every day or every other day across that window\n" +
-          "Use 14 samples whenever the user gives ANY flexibility. Failed/timed-out queries are common, so dense sampling is redundancy not waste.",
+          "  • Single month ('in July') → ALL 31 days of July (Jul 1, 2, 3, …, 31). Every day, no stride.\n" +
+          "  • Named partial month ('first two weeks of July', 'late August') → every day in that span (~14 dates).\n" +
+          "  • Multi-month or vague ('summer', 'next 3 months') → still cap at 31 dates, sample evenly across the broader range.\n" +
+          "Default to dense daily coverage. Sampling misses deals; the engine retries failures so coverage matters more than concision.",
       },
       return_dates: {
         type: ["array", "null"],
@@ -352,35 +352,31 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
   const { min, exact } = inferMinNights(query);
   const window = inferWindow(query, today);
 
+  // Cap for programmatic regeneration. Matches the LLM schema's maxItems and
+  // the search-engine concurrency budget — every entry becomes N × IATAs combos.
+  const MAX_PAIRS = 31;
+
   // Window + "cheapest"/"any" exploration cue, but no explicit duration: the
   // user wants to explore many trip options inside the window. The LLM often
-  // collapses this to a single pair (X, Y) — which gives no exploration at all,
-  // or worse, picks a 15-night trip when an 8-night might be much cheaper.
-  // Regenerate ~12 pairs with varied departs AND varied trip durations.
+  // collapses this to a single pair (X, Y) — which gives no exploration at all.
+  // Regenerate with varied departs AND varied trip durations.
   const wantsExploration = /\b(cheapest|best\s+deal|best\s+price|best\s+fare|any|explore|find\s+me|deals?|flexible)\b/i.test(query);
   if (window && exact === null && min === null && wantsExploration) {
     const winStart = window.start >= today ? window.start : today;
     const totalSpan = nightsBetween(winStart, window.end);
     if (totalSpan >= 2) {
-      // Pick trip-duration buckets that fit. Skew toward shorter trips first
-      // (they're cheaper to compare and surface bargains) but always include the
-      // longest possible if the window is wide enough.
+      // Try several durations; skew shorter, always include the longest the
+      // window allows. Each duration enumerates every valid depart day.
       const candidateDurations = [3, 5, 7, 10, 14, 21].filter((n) => n <= totalSpan);
       if (candidateDurations.length === 0) candidateDurations.push(Math.max(2, totalSpan));
-      // For each duration, generate 2-3 sample departs.
       const pairs: Array<{ d: string; r: string }> = [];
       for (const dur of candidateDurations) {
         const latestDepart = addDaysISO(window.end, -dur);
-        const spanForDur = nightsBetween(winStart, latestDepart);
-        const samples = Math.min(spanForDur >= 6 ? 3 : 2, spanForDur + 1);
-        for (let i = 0; i < samples; i++) {
-          const d = samples === 1 ? winStart : addDaysISO(winStart, Math.round((i * spanForDur) / (samples - 1)));
+        for (let d = winStart; d <= latestDepart && pairs.length < MAX_PAIRS; d = addDaysISO(d, 1)) {
           pairs.push({ d, r: addDaysISO(d, dur) });
-          if (pairs.length >= 14) break;
         }
-        if (pairs.length >= 14) break;
+        if (pairs.length >= MAX_PAIRS) break;
       }
-      // Dedupe by string pair.
       const seen = new Set<string>();
       const uniq = pairs.filter((p) => {
         const k = `${p.d}|${p.r}`;
@@ -398,25 +394,19 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
     }
   }
 
-  // Window + duration: regenerate from scratch so every pair fits the window.
+  // Window + duration: regenerate from scratch with EVERY valid depart day.
   // This is the most common bug class — the LLM samples departs to the end of
   // the window then naively adds the duration, pushing returns past the window.
+  // Exhaustive daily coverage beats coarse sampling for surfacing cheap deals.
   if (window && (exact !== null || min !== null)) {
     const baseNights = exact ?? min!;
     const winStart = window.start >= today ? window.start : today;
     const latestDepart = addDaysISO(window.end, -baseNights);
     if (latestDepart >= winStart) {
-      const totalDays = nightsBetween(winStart, latestDepart);
-      const targetSamples = Math.min(14, totalDays + 1);
-      const stride =
-        targetSamples <= 1 ? 1 : Math.max(1, Math.round(totalDays / (targetSamples - 1)));
+      // Every day in [winStart, latestDepart], capped at MAX_PAIRS.
       const departSamples: string[] = [];
-      for (let d = winStart; d <= latestDepart && departSamples.length < 14; d = addDaysISO(d, stride)) {
+      for (let d = winStart; d <= latestDepart && departSamples.length < MAX_PAIRS; d = addDaysISO(d, 1)) {
         departSamples.push(d);
-      }
-      // Force-include latestDepart so we don't miss the end of the window.
-      if (departSamples[departSamples.length - 1] !== latestDepart && departSamples.length < 14) {
-        departSamples.push(latestDepart);
       }
       // Pick a duration per sample. For "exact" use exact. For "min" cycle
       // through min/+1/+3/+7 but clamped so return ≤ window.end.
