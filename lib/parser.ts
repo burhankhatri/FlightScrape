@@ -108,6 +108,12 @@ Minimum/at-least durations:
 - "at least N days", "minimum N days", "no less than N days", "≥N days", "N+ days" → every (depart, return) pair MUST satisfy return ≥ depart + N nights. Sample durations of N, N+1, N+2, N+3, N+5, N+7 — weighted toward the lower end. NEVER return a duration less than N. This is the most common bug; double-check before submitting.
 - "around N days", "about N days", "roughly N days" → split across N-1, N, N+1, N+2.
 - "exactly N days", "strictly N days" → all pairs use exactly N.
+- "any N days/weeks", "any N-week trip" → exactly N (the "any" modifies the start date, not the length).
+
+Window constraints — "between A and B", "from A to B", "A to B" with explicit dates:
+- BOTH depart_dates[i] AND return_dates[i] MUST fall within [A, B] for every i.
+- If a duration is also given (e.g. "any 2 weeks between July 15 and Aug 15"), depart_dates[i] MUST be ≤ B − duration so the return still fits inside B.
+- Sample depart dates evenly across [A, B − duration], not [A, B]. Going past B − duration produces returns outside the user's window.
 
 Origin handling:
 - If the user said "from X" or "leaving from X", set origin to X.
@@ -160,6 +166,31 @@ function nightsBetween(depart: string, ret: string): number {
 
 const TODAY_ISO = () => new Date().toISOString().slice(0, 10);
 
+const WORD_NUMBERS: Record<string, number> = {
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7,
+  eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14,
+};
+
+/**
+ * Replace spelled-out numbers ("two weeks") with digits ("2 weeks") so the
+ * downstream regexes can stay simple. Only touches words that appear next to a
+ * duration unit (day/week/night) or after a duration keyword ("any", "for",
+ * "at least", ...) so we don't mangle phrases like "one-way".
+ */
+function normalizeQueryForDuration(query: string): string {
+  let q = query.toLowerCase();
+  const wordsAlt = Object.keys(WORD_NUMBERS).join("|");
+  q = q.replace(
+    new RegExp(`\\b(${wordsAlt})\\s+(days?|nights?|weeks?|wks?)\\b`, "g"),
+    (_, w: string, unit: string) => `${WORD_NUMBERS[w]} ${unit}`,
+  );
+  q = q.replace(
+    new RegExp(`\\b(any|for|at\\s*least|minimum|min|exactly|strictly|about|around|roughly)\\s+(${wordsAlt})\\b`, "g"),
+    (_, kw: string, w: string) => `${kw} ${WORD_NUMBERS[w]}`,
+  );
+  return q;
+}
+
 /**
  * Parse a duration intent from the raw user query. Returns the minimum number
  * of nights the user is willing to accept (or null if the query is silent on
@@ -169,7 +200,7 @@ function inferMinNights(query: string): {
   min: number | null;
   exact: number | null;
 } {
-  const q = query.toLowerCase();
+  const q = normalizeQueryForDuration(query);
   // Order matters: "at least 14 days" must match before plain "14 days".
   const minPatterns: Array<[RegExp, (m: RegExpMatchArray) => number]> = [
     [/(?:at\s*least|minimum|min\.?|no\s*less\s*than|>=|≥)\s*(\d+)\s*\+?\s*(?:days?|nights?|d\b)/, (m) => parseInt(m[1], 10)],
@@ -181,7 +212,8 @@ function inferMinNights(query: string): {
     if (m) return { min: get(m), exact: null };
   }
   const exactPatterns: Array<[RegExp, (m: RegExpMatchArray) => number]> = [
-    [/(?:exactly|strictly|precisely)\s*(\d+)\s*(?:days?|nights?)/, (m) => parseInt(m[1], 10)],
+    [/(?:exactly|strictly|precisely|any)\s*(\d+)\s*(?:days?|nights?)/, (m) => parseInt(m[1], 10)],
+    [/(?:exactly|strictly|precisely|any)\s*(\d+)\s*(?:weeks?|wks?)/, (m) => parseInt(m[1], 10) * 7],
     [/for\s*(\d+)\s*(?:days?|nights?)\b/, (m) => parseInt(m[1], 10)],
     [/(\d+)[-\s]*(?:day|night)\s*trip/, (m) => parseInt(m[1], 10)],
     [/for\s*(\d+)\s*weeks?/, (m) => parseInt(m[1], 10) * 7],
@@ -192,6 +224,56 @@ function inferMinNights(query: string): {
     if (m) return { min: null, exact: get(m) };
   }
   return { min: null, exact: null };
+}
+
+// ----- Window parsing ("between Jul 15 and Aug 15") -----------------------
+
+const MONTH_NAMES: Record<string, number> = {
+  jan: 1, january: 1, feb: 2, february: 2, mar: 3, march: 3, apr: 4, april: 4,
+  may: 5, jun: 6, june: 6, jul: 7, july: 7, aug: 8, august: 8,
+  sep: 9, sept: 9, september: 9, oct: 10, october: 10, nov: 11, november: 11,
+  dec: 12, december: 12,
+};
+
+function resolveMonthDay(month: number, day: number, today: string): string | null {
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const yearNow = parseInt(today.slice(0, 4), 10);
+  const mm = String(month).padStart(2, "0");
+  const dd = String(day).padStart(2, "0");
+  const candidate = `${yearNow}-${mm}-${dd}`;
+  return candidate >= today ? candidate : `${yearNow + 1}-${mm}-${dd}`;
+}
+
+function parseLooseDate(text: string, today: string): string | null {
+  const t = text.toLowerCase().trim().replace(/[,.]/g, "");
+  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+  let m = t.match(/^([a-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?$/);
+  if (m && MONTH_NAMES[m[1]]) return resolveMonthDay(MONTH_NAMES[m[1]], parseInt(m[2], 10), today);
+  m = t.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+(?:of\s+)?([a-z]+)$/);
+  if (m && MONTH_NAMES[m[2]]) return resolveMonthDay(MONTH_NAMES[m[2]], parseInt(m[1], 10), today);
+  return null;
+}
+
+/**
+ * Detect a window like "between July 15 and August 15" / "from 1st aug to 1st sep"
+ * / "Jul 15 to Aug 15". Returns ISO start+end (both inclusive), or null.
+ */
+function inferWindow(query: string, today: string): { start: string; end: string } | null {
+  const q = query.toLowerCase();
+  const datePart =
+    String.raw`(?:\d{4}-\d{2}-\d{2}|(?:[a-z]+)\s+\d{1,2}(?:st|nd|rd|th)?|\d{1,2}(?:st|nd|rd|th)?\s+(?:of\s+)?[a-z]+)`;
+  const patterns: RegExp[] = [
+    new RegExp(`(?:between|from)\\s+(${datePart})\\s+(?:and|to|through|until|till|-)\\s+(${datePart})`),
+    new RegExp(`(${datePart})\\s+(?:to|through|until|till|-)\\s+(${datePart})`),
+  ];
+  for (const re of patterns) {
+    const m = q.match(re);
+    if (!m) continue;
+    const a = parseLooseDate(m[1], today);
+    const b = parseLooseDate(m[2], today);
+    if (a && b && b > a) return { start: a, end: b };
+  }
+  return null;
 }
 
 /**
@@ -225,6 +307,48 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
   }
 
   const { min, exact } = inferMinNights(query);
+  const window = inferWindow(query, today);
+
+  // Window + duration: regenerate from scratch so every pair fits the window.
+  // This is the most common bug class — the LLM samples departs to the end of
+  // the window then naively adds the duration, pushing returns past the window.
+  if (window && (exact !== null || min !== null)) {
+    const baseNights = exact ?? min!;
+    const winStart = window.start >= today ? window.start : today;
+    const latestDepart = addDaysISO(window.end, -baseNights);
+    if (latestDepart >= winStart) {
+      const totalDays = nightsBetween(winStart, latestDepart);
+      const targetSamples = Math.min(14, totalDays + 1);
+      const stride =
+        targetSamples <= 1 ? 1 : Math.max(1, Math.round(totalDays / (targetSamples - 1)));
+      const departSamples: string[] = [];
+      for (let d = winStart; d <= latestDepart && departSamples.length < 14; d = addDaysISO(d, stride)) {
+        departSamples.push(d);
+      }
+      // Force-include latestDepart so we don't miss the end of the window.
+      if (departSamples[departSamples.length - 1] !== latestDepart && departSamples.length < 14) {
+        departSamples.push(latestDepart);
+      }
+      // Pick a duration per sample. For "exact" use exact. For "min" cycle
+      // through min/+1/+3/+7 but clamped so return ≤ window.end.
+      const candidateDurations =
+        exact !== null ? [exact] : [min!, min! + 1, min! + 3, min! + 7];
+      const rebuilt = departSamples.map((d, i) => {
+        const maxFromHere = nightsBetween(d, window.end);
+        let dur = candidateDurations[i % candidateDurations.length];
+        if (dur > maxFromHere) {
+          dur = candidateDurations.find((n) => n <= maxFromHere) ?? baseNights;
+        }
+        return { d, r: addDaysISO(d, dur) };
+      });
+      return {
+        ...parsed,
+        departDates: rebuilt.map((p) => p.d),
+        returnDates: rebuilt.map((p) => p.r),
+      };
+    }
+    // Window too narrow for the requested duration — fall through.
+  }
 
   // Align lengths conservatively.
   if (returnDates.length !== departDates.length) {
@@ -233,7 +357,7 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
     departDates = departDates.slice(0, n);
   }
 
-  // Validate each pair.
+  // Validate each pair. Window without duration: clip pairs to window.end.
   const valid: Array<{ d: string; r: string }> = [];
   for (let i = 0; i < departDates.length; i++) {
     const d = departDates[i];
@@ -245,6 +369,7 @@ function repairDates(parsed: ParsedQuery, query: string): ParsedQuery {
     if (nights < 1) continue;
     if (min !== null && nights < min) continue;
     if (exact !== null && nights !== exact) continue;
+    if (window && (d < window.start || r > window.end)) continue;
     valid.push({ d, r });
   }
 
