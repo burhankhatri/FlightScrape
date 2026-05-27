@@ -204,6 +204,16 @@ export async function fetchGoogleFlights(args: FetchArgs): Promise<Offer | null>
       return null;
     }
     const text = await res.text();
+    // Google occasionally returns 200 OK with a tiny RPC-error body when it
+    // throttles or the session is stale. Body looks like:
+    //   )]}'\n\n267\n[["wrb.fr",null,null,null,null,[13,null,[["type.googleapis.com/travel.frontend.flights.Err...
+    // Detect this and force the next call to fetch a fresh session so the
+    // search-level retry has a chance to succeed.
+    if (text.length < 1024 && /travel\.frontend\.flights\.Err/.test(text)) {
+      invalidateGoogleFlightsSession();
+      console.warn(`Google Flights throttled (RPC err) for ${args.origin}→${args.dest} on ${args.depart}`);
+      return null;
+    }
     parsed = parseShoppingResults(text);
   } catch (err) {
     console.warn(`Google Flights fetch error for ${args.origin}→${args.dest}:`, err);

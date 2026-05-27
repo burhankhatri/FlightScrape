@@ -209,7 +209,7 @@ export async function search(
     const keys = groupComboKeys.get(groupName) ?? [];
     const finished = keys.every((k) => {
       const attempts = comboAttempts.get(k) ?? 0;
-      return successful.has(k) || attempts >= 2;
+      return successful.has(k) || attempts >= 3;
     });
     if (!finished) return;
 
@@ -331,15 +331,26 @@ export async function search(
     "search",
   );
 
-  for (let pass = 0; pass < 2; pass++) {
+  // Google occasionally throttles individual combos (200 OK with a tiny
+  // RPC-error body, no flight data). A 2-pass retry would miss whole
+  // destinations if all of their IATAs got throttled on the retry too. Three
+  // passes with a short backoff between retries fixes the flake.
+  const RETRY_BACKOFF_MS = [0, 1500, 3500];
+  for (let pass = 0; pass < 3; pass++) {
     const todo =
       pass === 0
         ? sortedCombos
         : sortedCombos.filter((c) => !successful.has(comboKey(c)));
     if (todo.length === 0) break;
 
-    if (pass === 1) {
-      callbacks?.onStatus?.("Retrying routes that timed out…", "search");
+    if (pass >= 1) {
+      callbacks?.onStatus?.(
+        pass === 1
+          ? `Retrying ${todo.length} route${todo.length === 1 ? "" : "s"}…`
+          : `One more retry on ${todo.length} stubborn route${todo.length === 1 ? "" : "s"}…`,
+        "search",
+      );
+      if (RETRY_BACKOFF_MS[pass]) await new Promise((r) => setTimeout(r, RETRY_BACKOFF_MS[pass]));
     }
 
     await Promise.all(todo.map((c) => limit(() => runCombo(c, pass))));
