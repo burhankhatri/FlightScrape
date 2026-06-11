@@ -102,7 +102,9 @@ function parseShoppingResults(raw: string): ParseResult {
   let typicalPrice: number | null = null;
   let priceDelta: number | null = null;
   // Each wrb.fr entry holds a JSON-encoded string containing the actual response.
-  const matches = raw.matchAll(/"wrb\.fr",null,"((?:\\.|[^"\\])*)"/g);
+  // Google's batchexecute format: ["wrb.fr","<rpc-name>","<json>", ...] — the
+  // second field used to be null in older builds but is now the RPC method name.
+  const matches = raw.matchAll(/"wrb\.fr",(?:"[^"]*"|null),"((?:\\.|[^"\\])*)"/g);
   for (const m of matches) {
     let outer: unknown;
     try {

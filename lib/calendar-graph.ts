@@ -88,7 +88,7 @@ function buildFReq(args: FetchArgs): string {
 
 function parseGraphResponse(raw: string): NearbyPrice[] {
   const out: NearbyPrice[] = [];
-  const matches = raw.matchAll(/"wrb\.fr",null,"((?:\\.|[^"\\])*)"/g);
+  const matches = raw.matchAll(/"wrb\.fr",(?:"[^"]*"|null),"((?:\\.|[^"\\])*)"/g);
   for (const m of matches) {
     let inner: unknown;
     try {
