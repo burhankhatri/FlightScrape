@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>A month in Bandung · Jul 25 – Aug 25, 2026</title>
+  <meta name="description" content="A curated guide to the best of Bandung for a month-long stay (Jul 25 – Aug 25, 2026) from a base in Ciburial / Dago Atas — waterfalls, viewpoints, volcano craters, turquoise pools, hidden gems and the city's food, with Grab times and fees from your doorstep." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#fafafa; --surface:#fff; --ink:#171717; --ink-2:#525252; --ink-3:#8a8a8a;
+      --line:#ebebeb; --accent:#0070f3; --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+      --radius:16px;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; padding:0; }
+    body { font-family:'Geist',-apple-system,BlinkMacSystemFont,system-ui,sans-serif; background:var(--bg);
+      color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; letter-spacing:-0.01em; }
+    .mono { font-family:'Geist Mono',ui-monospace,monospace; }
+    a { color:var(--accent); text-decoration:none; }
+    .container { max-width:1180px; margin:0 auto; padding:0 24px; }
+
+    header.hero { padding:84px 24px 40px; text-align:center;
+      background:radial-gradient(120% 100% at 50% 0%, #f0f7ff 0%, var(--bg) 60%); border-bottom:1px solid var(--line); }
+    .hero .eyebrow { font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin:0 0 18px; }
+    .hero h1 { font-size:clamp(38px,6vw,68px); font-weight:700; letter-spacing:-0.04em; line-height:1.02; margin:0 0 18px; }
+    .hero .tagline { font-size:18px; color:var(--ink-2); max-width:660px; margin:0 auto 28px; }
+    .hero-stats { display:inline-flex; gap:0; padding:0; background:var(--surface); border:1px solid var(--line);
+      border-radius:14px; box-shadow:var(--shadow); overflow:hidden; flex-wrap:wrap; }
+    .hero-stats > div { padding:14px 22px; border-right:1px solid var(--line); text-align:left; }
+    .hero-stats > div:last-child { border-right:0; }
+    .hero-stats .n { font-size:20px; font-weight:700; letter-spacing:-0.02em; }
+    .hero-stats .l { font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.08em; margin-top:2px; }
+
+    nav.toc { position:sticky; top:0; z-index:40; background:rgba(250,250,250,.82);
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+    nav.toc .container { display:flex; gap:6px; overflow-x:auto; padding:11px 24px; scrollbar-width:none; }
+    nav.toc .container::-webkit-scrollbar { display:none; }
+    nav.toc a { white-space:nowrap; font-size:13px; font-weight:500; color:var(--ink-2);
+      padding:6px 13px; border-radius:999px; border:1px solid transparent; }
+    nav.toc a:hover { background:var(--surface); border-color:var(--line); color:var(--ink); }
+
+    section { padding:8px 0 16px; }
+    .sec-head { position:relative; margin:56px 0 22px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+    .sec-head h2 { font-size:clamp(24px,3.2vw,34px); font-weight:700; letter-spacing:-0.03em; margin:0 0 6px; }
+    .sec-head p { margin:0; color:var(--ink-2); font-size:15px; max-width:640px; }
+    .sec-count { position:absolute; top:2px; right:0; font-size:12px; color:var(--ink-3); font-weight:500;
+      font-family:'Geist Mono',monospace; }
+
+    .grid { display:grid; grid-template-columns:1fr; gap:22px; }
+    @media (min-width:640px) { .grid { grid-template-columns:repeat(2,1fr); } }
+    @media (min-width:1000px) { .grid { grid-template-columns:repeat(3,1fr); } }
+
+    .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+      overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease; }
+    .card:hover { transform:translateY(-3px); box-shadow:0 2px 4px rgba(0,0,0,.05),0 16px 40px rgba(0,0,0,.10); }
+
+    .media { position:relative; aspect-ratio:3/2; background:#e8e8e8; }
+    .badge { position:absolute; top:12px; left:12px; z-index:3; padding:5px 11px; background:rgba(255,255,255,.94);
+      backdrop-filter:blur(8px); border-radius:999px; font-size:11px; font-weight:600; letter-spacing:.02em; color:var(--ink); }
+    .vibe { position:absolute; top:12px; right:12px; z-index:3; padding:5px 11px; border-radius:999px;
+      font-size:11px; font-weight:600; letter-spacing:.02em; }
+    .vibe-gem { background:rgba(255,184,0,.95); color:#5b3d00; }
+    .vibe-secret { background:rgba(124,58,237,.95); color:#fff; }
+    .vibe-known { background:rgba(255,255,255,.92); color:var(--ink-2); }
+    .vibe-classic { background:rgba(23,23,23,.78); color:#fff; }
+    .carousel-wrap { width:100%; height:100%; position:relative; }
+    .carousel { display:flex; width:100%; height:100%; overflow-x:auto; scroll-snap-type:x mandatory;
+      scroll-behavior:smooth; scrollbar-width:none; }
+    .carousel::-webkit-scrollbar { display:none; }
+    .carousel img { flex:0 0 100%; width:100%; height:100%; object-fit:cover; scroll-snap-align:start; display:block; }
+    .noimg { width:100%; height:100%; background:linear-gradient(135deg,#e9eef5,#dfe6ee); }
+    .dots { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:5px;
+      padding:5px 9px; background:rgba(23,23,23,.42); backdrop-filter:blur(8px); border-radius:999px; z-index:2; }
+    .dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5); cursor:pointer; transition:.2s; }
+    .dot.active { background:#fff; transform:scale(1.18); }
+
+    .body { padding:18px 20px 20px; display:flex; flex-direction:column; gap:11px; flex:1; }
+    .body h3 { font-size:18px; font-weight:600; letter-spacing:-0.02em; line-height:1.25; margin:0; }
+    .meta { display:flex; flex-wrap:wrap; gap:6px; }
+    .pill { font-size:12px; font-family:'Geist Mono',monospace; padding:4px 9px; border-radius:8px;
+      background:#f4f4f4; color:var(--ink-2); white-space:nowrap; }
+    .pill-go { background:#eef5ff; color:#0058c4; }
+    .blurb { margin:0; color:var(--ink-2); font-size:13.5px; line-height:1.6; }
+    .chips { display:flex; flex-wrap:wrap; gap:5px; }
+    .chip { font-size:11.5px; padding:3px 9px; background:#f5f5f5; border-radius:999px; color:var(--ink-3); }
+    .when { font-size:12.5px; color:var(--ink-2); font-weight:500; display:flex; align-items:center; gap:6px; }
+    .when-ic { color:var(--accent); }
+    .tip { margin:2px 0 0; font-size:12.5px; color:var(--ink-2); line-height:1.55; padding:11px 13px;
+      background:#fafafa; border:1px solid var(--line); border-radius:10px; }
+    .tip span { display:inline-block; font-weight:600; color:var(--ink); font-size:11px; text-transform:uppercase;
+      letter-spacing:.06em; margin-right:7px; }
+
+    .practical { margin:20px 0 0; }
+    .practical ul { list-style:none; margin:0; padding:0; display:grid; gap:12px;
+      grid-template-columns:1fr; }
+    @media (min-width:760px) { .practical ul { grid-template-columns:1fr 1fr; } }
+    .practical li { background:var(--surface); border:1px solid var(--line); border-radius:12px;
+      padding:16px 18px; font-size:13.5px; color:var(--ink-2); line-height:1.6; position:relative; }
+
+    footer { margin-top:64px; padding:32px 24px 56px; border-top:1px solid var(--line); text-align:center;
+      color:var(--ink-3); font-size:13px; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">Jul 25 – Aug 25, 2026 · West Java, Indonesia</p>
+    <h1>A month in Bandung</h1>
+    <p class="tagline">Everything worth doing from a base up in <strong>Ciburial</strong>, Dago Atas — the waterfalls, viewpoints, crater lakes and gatekept gems first, the city when you want it. Each spot tagged with the Grab time &amp; fare from your doorstep.</p>
+    <div class="hero-stats">
+      <div><div class="n">36</div><div class="l">spots &amp; trips</div></div>
+      <div><div class="n">11</div><div class="l">hidden gems</div></div>
+      <div><div class="n">7</div><div class="l">zones</div></div>
+      <div><div class="n">~1,100m</div><div class="l">your altitude</div></div>
+    </div>
+  </header>
+
+  <nav class="toc"><div class="container"><a href="#sec-doorstep">On your doorstep</a><a href="#sec-balcony">Bandung&#x27;s balcony</a><a href="#sec-forest">Into the forest</a><a href="#sec-lembang">Lembang &amp; the volcano</a><a href="#sec-waterfalls">Waterfall &amp; turquoise-pool missions</a><a href="#sec-south">The big south day-trip</a><a href="#sec-city">The city when you want it</a></div></nav>
+
+  <main>
+<section id="sec-doorstep">
+    <div class="container">
+      <div class="sec-head">
+        <h2>On your doorstep</h2>
+        <p>Ciburial &amp; Dago Atas — walk or a ≤15-min Grab</p>
+        <span class="sec-count">7 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="art">
+    <div class="media">
+      <span class="badge">Walkable</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/8036/8073966378_a0a3b64bc1_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/5073/5876906092_9b33db4615_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/5079/5876345369_b32e02cfe0_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Selasar Sunaryo Art Space &amp; Kopi Selasar</h3>
+      <div class="meta">
+        <span class="pill pill-go">Walk · ~5 min</span>
+        <span class="pill">Rp30k</span>
+      </div>
+      <p class="blurb">Bandung&#x27;s best contemporary-art space, terraced into the Dago hills by ITB artist Sunaryo — rotating shows, an open-air amphitheatre and a sculpture garden. The attached Kopi Selasar is a serene wood-and-greenery coffee garden, and the whole thing is basically at the end of your road.</p>
+      <div class="chips"><span class="chip">Galleries</span><span class="chip">Kopi Selasar</span><span class="chip">Sculpture garden</span></div>
+      <div class="when"><span class="when-ic">◷</span> Tue–Sun 10:00–17:00 (closed Mon)</div>
+      <p class="tip"><span>Tip</span>The one real attraction you can walk to. Cafe is free to enter without the gallery ticket; order the namesake Kopi Selasar.</p>
+    </div>
+  </article>
+<article class="card" data-cat="forest-cafe">
+    <div class="media">
+      <span class="badge">In Tahura</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Taman_Hutan_Raya_Ir._Djuanda_Dago_Bandung_-_panoramio.jpg/1280px-Taman_Hutan_Raya_Ir._Djuanda_Dago_Bandung_-_panoramio.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Taman_Hutan_Raya_Ir._Djuanda_Bandung_-_panoramio_%285%29.jpg/1280px-Taman_Hutan_Raya_Ir._Djuanda_Bandung_-_panoramio_%285%29.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Taman_Hutan_Raya_Ir._Djuanda_Bandung_-_panoramio_%281%29.jpg/1280px-Taman_Hutan_Raya_Ir._Djuanda_Bandung_-_panoramio_%281%29.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Monumen_Patung_Taman_Hutan_Raya_Ir._Djuanda_-_panoramio.jpg/1280px-Monumen_Patung_Taman_Hutan_Raya_Ir._Djuanda_-_panoramio.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Warung Kopi Armor — coffee in the pines</h3>
+      <div class="meta">
+        <span class="pill pill-go">Walk · ~10 min</span>
+        <span class="pill">Rp57k</span>
+      </div>
+      <p class="blurb">A tiny wooden coffee shack set right inside the pine forest of Tahura Djuanda — outdoor tables under towering trees, cool mountain air and cheap single-origin Indonesian coffee. The closest proper nature-cafe to your place, and the perfect warm-up before the caves or Tebing Keraton.</p>
+      <div class="chips"><span class="chip">Forest coffee</span><span class="chip">Cool air</span><span class="chip">Pre-hike stop</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday mornings, misty &amp; quiet</div>
+      <p class="tip"><span>Tip</span>The entry fee is the Tahura gate (foreigners ~Rp57k) — so make a half-day of it and walk to the caves or the cliff after.</p>
+    </div>
+  </article>
+<article class="card" data-cat="forest">
+    <div class="media">
+      <span class="badge">Forest</span><span class="vibe vibe-classic">Classic</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/1322/1371927848_77834742ea_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/1502/24149626859_f81e7b694a_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/1564/23889188904_a06589d633_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Tahura Ir. H. Djuanda forest park</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp25k · 10 min</span>
+        <span class="pill">Rp57k</span>
+      </div>
+      <p class="blurb">A 590-hectare ribbon of jungle threading from Dago Pakar all the way to Maribaya, with one shaded forest spine linking caves, waterfalls and the Cikapundung river right at the city&#x27;s edge. One ticket buys a whole cool, green day of walking — the single best piece of nature within reach of your bed.</p>
+      <div class="chips"><span class="chip">Dago Pakar gate</span><span class="chip">River trail</span><span class="chip">Picnic flats</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday 07:00–10:00</div>
+      <p class="tip"><span>Tip</span>Enter via the Dago Pakar gate for the flattest start. Rent a bamboo walking stick at the entrance; download the map since signal dies inside.</p>
+    </div>
+  </article>
+<article class="card" data-cat="cave">
+    <div class="media">
+      <span class="badge">Caves</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Goa_Belanda_di_Bandung.jpg/1280px-Goa_Belanda_di_Bandung.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/2593/5717601727_78c88a9a4d_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/4052/4531047514_543d252112_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Goa Jepang &amp; Goa Belanda — the war caves</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp28k · 12 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">Two hand-dug tunnel complexes a short walk apart inside Tahura: the Dutch Cave, a 144-metre grid of pitch-black hydro-plant tunnels from 1901, and the rawer, eerier Japanese Cave, bored by forced labour in 1942 as a military bunker. Rent a flashlight guy at the mouth and the dark does the rest.</p>
+      <div class="chips"><span class="chip">Goa Belanda</span><span class="chip">Goa Jepang</span><span class="chip">Flashlight guide</span></div>
+      <div class="when"><span class="when-ic">◷</span> Midday — a cool escape from the sun</div>
+      <p class="tip"><span>Tip</span>Both sit ~15 min walk from the Dago Pakar gate. Hire one senter (flashlight) guide for ~Rp5–10k to cover both rather than fumbling with your phone torch.</p>
+    </div>
+  </article>
+<article class="card" data-cat="viewpoint">
+    <div class="media">
+      <span class="badge">Sunrise</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Tebing_Keraton%2C_Bandung%2C27052017.jpg/1280px-Tebing_Keraton%2C_Bandung%2C27052017.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Tebing_Keraton_Bandung-2021.jpg/1280px-Tebing_Keraton_Bandung-2021.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Tebing_Karaton_Bandung_Regency.jpg/1280px-Tebing_Karaton_Bandung_Regency.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/615/23283492890_75ba58fcf8_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Tebing Keraton — the cliff</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp30k · 12 min</span>
+        <span class="pill">Rp17k</span>
+      </div>
+      <p class="blurb">A jutting rock ledge at 1,200 m on the edge of the Tahura pine forest, staring straight across the green Maribaya valley toward the Lembang Fault. Come before dawn and the whole forest below drowns in a sea of fog that burns gold as the sun climbs the far ridge — it&#x27;s the postcard of North Bandung, and it&#x27;s in your own village.</p>
+      <div class="chips"><span class="chip">Sunrise</span><span class="chip">Sea of fog</span><span class="chip">Cliff platform</span></div>
+      <div class="when"><span class="when-ic">◷</span> Sunrise 05:30 — arrive by 05:00</div>
+      <p class="tip"><span>Tip</span>Grab cars can&#x27;t reach the gate; the last 1.5 km finishes on an ojek (~Rp20–30k) or on foot. Go on a weekday to beat the railed-viewpoint queue.</p>
+    </div>
+  </article>
+<article class="card" data-cat="waterfall">
+    <div class="media">
+      <span class="badge">Hidden</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/COLLECTIE_TROPENMUSEUM_Waterval_bij_Dago_West-Java_TMnr_60018407.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8168/7698474350_337e719151_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/3126/2761711962_f068775b96_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Curug Dago — the secret waterfall</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp35k · 18 min</span>
+        <span class="pill">Rp11k</span>
+      </div>
+      <p class="blurb">A secluded 12-metre fall on the Cikapundung, famous for two Thai-script stone inscriptions left when Kings Rama V and Rama VII visited over a century ago. Recently tidied up, it&#x27;s a quiet, history-soaked pocket of jungle far less mobbed than the rest of Tahura.</p>
+      <div class="chips"><span class="chip">Waterfall</span><span class="chip">Thai inscriptions</span><span class="chip">Quiet jungle</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday mornings</div>
+      <p class="tip"><span>Tip</span>Access is from the lower Curug Dago entrance off Jl. Dago Pojok, not the main Pakar gate. Ask for the &#x27;prasasti Thailand&#x27; and the warden points you to the stones.</p>
+    </div>
+  </article>
+<article class="card" data-cat="city-cafe">
+    <div class="media">
+      <span class="badge">City view</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/7304/27321111675_3d1804864d_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/3009/3047679883_014f729720_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/2003/2517163687_e6e48f339a_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Dago Pakar view-cafés — the city-lights cluster</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp28k · 10 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">A knot of hillside cafés a few minutes from you — Sierra, Congo, The Stone Cafe, The Valley — all perched for the same trick: the whole Bandung basin spread below, turning into a glittering carpet of lights after dark. Sierra has the widest panorama; Congo and Stone sit side by side with live music; The Valley does romantic dinners.</p>
+      <div class="chips"><span class="chip">Sierra</span><span class="chip">Congo</span><span class="chip">The Stone Cafe</span><span class="chip">The Valley</span></div>
+      <div class="when"><span class="when-ic">◷</span> Arrive ~17:00 for sunset → city lights</div>
+      <p class="tip"><span>Tip</span>Request the lowest/front terrace for an unobstructed view, and bring a layer — it gets genuinely cold after dark up here. On a budget? De Grote&#x27;s 3rd-floor rooftop has the same view for less.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section><section id="sec-balcony">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Bandung&#x27;s balcony</h2>
+        <p>The east-rim viewpoints where the whole city turns to lights</p>
+        <span class="sec-count">4 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="viewpoint">
+    <div class="media">
+      <span class="badge">City lights</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/7304/27321111675_3d1804864d_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8033/8051566562_758b291474_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8314/8051571120_bf67a94a7c_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Bukit Moko &amp; Puncak Bintang</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp45k · 28 min</span>
+        <span class="pill">Rp15k</span>
+      </div>
+      <p class="blurb">The highest accessible hilltop on Bandung&#x27;s east rim (~1,442 m), where a short pine-lined walk leads to the star-shaped Puncak Bintang platform. After dark the entire basin spreads out as a shimmering carpet of light below your feet; just below sits Warung Daweung, arguably the highest warung in the city, where you sip hot bandrek over a cliff-edge rail.</p>
+      <div class="chips"><span class="chip">Puncak Bintang</span><span class="chip">Warung Daweung</span><span class="chip">Pine forest</span></div>
+      <div class="when"><span class="when-ic">◷</span> Sunset into blue hour, or sunrise above the fog</div>
+      <p class="tip"><span>Tip</span>The final road is steep and narrow — confirm your Grab driver will actually go all the way up before booking, and arrange the ride back as cars thin out after dark.</p>
+    </div>
+  </article>
+<article class="card" data-cat="city-cafe">
+    <div class="media">
+      <span class="badge">24 hours</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/8059/8191117306_371f20f51d_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8481/8189944161_abfb493803_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8337/8190054635_9dba02f87e_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Caringin Tilu (Cartil)</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp40k · 22 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">A free-to-enter hillside strip in Padasuka Atas lined with open-air warungs and cafés, all aimed straight at the Bandung basin. It&#x27;s the local go-to for cheap food and an unobstructed front-row seat to the city-light bowl — open round the clock, so a 2 a.m. coffee over the lights is entirely on the table.</p>
+      <div class="chips"><span class="chip">City lights</span><span class="chip">Cheap warungs</span><span class="chip">Open 24h</span></div>
+      <div class="when"><span class="when-ic">◷</span> Late afternoon into night</div>
+      <p class="tip"><span>Tip</span>No entry ticket — you only pay for what you order. Claim an edge table at Dapur Caringin Tilu before dusk and nurse a coffee as the lights switch on.</p>
+    </div>
+  </article>
+<article class="card" data-cat="city-cafe">
+    <div class="media">
+      <span class="badge">Sunrise eats</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/View_from_Punclut_Bandung_%22_-_panoramio.jpg/1280px-View_from_Punclut_Bandung_%22_-_panoramio.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7707/16586903244_5fa9bef3b5_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Punclut — misty hilltop breakfast</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp42k · 22 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">A breezy ridge above Ciumbuleuit packed with saung-style warungs serving the signature nasi merah &#x27;binggol&#x27; — red rice in a bamboo basket with sambal and lalapan — eaten cross-legged on hilltop platforms with the valley on one side and the city on the other. Newer cafés like Tagme add a TikTok-famous sunset view next door.</p>
+      <div class="chips"><span class="chip">Nasi merah</span><span class="chip">Misty sunrise</span><span class="chip">Tagme café</span></div>
+      <div class="when"><span class="when-ic">◷</span> Misty breakfast 07:00, or sunset</div>
+      <p class="tip"><span>Tip</span>Come for an early breakfast when the ridge is wrapped in cloud and far quieter than the sunset rush. Expect a small local parking levy (~Rp5–15k) on Punclut roads.</p>
+    </div>
+  </article>
+<article class="card" data-cat="hike">
+    <div class="media">
+      <span class="badge">Hidden hike</span><span class="vibe vibe-secret">Gatekept</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/1831/42250732754_3650e6d070_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/3478/3180196594_34c75054f1_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8201/8200433661_9fc4eb9264_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Sesar Lembang ridge trail</h3>
+      <div class="meta">
+        <span class="pill pill-go">Walk · ~15 min</span>
+        <span class="pill">Rp15k</span>
+      </div>
+      <p class="blurb">A genuinely underrated ridgeline walk tracing the active Lembang Fault scarp, linking Tebing Keraton, Bukit Moko and Batu Lonceng through shady pine forest with 360° valley views. Hiking clubs love it for sunrise above the mist with almost none of the theme-park crowds — and you can start it near Tebing Keraton, partly on foot from home.</p>
+      <div class="chips"><span class="chip">Fault-line ridge</span><span class="chip">Sunrise hike</span><span class="chip">No crowds</span></div>
+      <div class="when"><span class="when-ic">◷</span> Pre-dawn start; dry days only</div>
+      <p class="tip"><span>Tip</span>No single ticket gate — small fees at the Tebing Keraton / Puncak Bintang access points. The clay trail gets slippery, so go on a dry day and bring water; no Grab along the ridge itself.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section><section id="sec-forest">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Into the forest</h2>
+        <p>The Tahura traverse to Maribaya</p>
+        <span class="sec-count">2 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="waterfall">
+    <div class="media">
+      <span class="badge">Signature hike</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Curug_Maribaya.jpg/1280px-Curug_Maribaya.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Air_Terjun_Curug_Omas_Maribaya_Lembang%2C10062017.jpg/1280px-Air_Terjun_Curug_Omas_Maribaya_Lembang%2C10062017.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>The Dago → Maribaya forest walk (Curug Omas)</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp45k · 25 min</span>
+        <span class="pill">Rp17k</span>
+      </div>
+      <p class="blurb">The classic Tahura traverse: ~5.5 km of cool forest path from the Dago Pakar gate to Curug Omas, where the Cikawari and Ciwagun rivers crash together and plunge past iron footbridges strung over the gorge. The roar, spray and mossy cliffs make it the natural turnaround of the best day-hike in Bandung.</p>
+      <div class="chips"><span class="chip">Curug Omas</span><span class="chip">Forest path</span><span class="chip">Iron bridges</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday mornings, dry season for footing</div>
+      <p class="tip"><span>Tip</span>Walk it one-way (2–2.5 hrs) from Dago Pakar and Grab back from the Maribaya side — much better than doubling back. Not up for the full hike? Grab straight to the Maribaya end; the falls are a short walk down.</p>
+    </div>
+  </article>
+<article class="card" data-cat="hotspring">
+    <div class="media">
+      <span class="badge">Hot springs</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/5072/29244029954_d39ce8452e_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Air_Terjun_Curug_Omas_Maribaya_Lembang%2C10062017.jpg/1280px-Air_Terjun_Curug_Omas_Maribaya_Lembang%2C10062017.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7107/7033348389_1c43b77477_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Maribaya Hot Springs &amp; The Lodge</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp65k · 35 min</span>
+        <span class="pill">Rp45k</span>
+      </div>
+      <p class="blurb">A forested river gorge where small waterfalls tumble through ferns and you soak tired feet in natural hot pools fed by Tangkuban Perahu&#x27;s geothermal heat. Up the ridge, The Lodge Maribaya adds pine-clad walking trails and viral photo rigs — a &#x27;sky tree&#x27; bench and zip-bike that dangle you out over the valley.</p>
+      <div class="chips"><span class="chip">Hot pools</span><span class="chip">The Lodge</span><span class="chip">Valley swings</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday mornings; quiet &amp; cool</div>
+      <p class="tip"><span>Tip</span>You can hike the river trail one-way from the hot springs up to The Lodge and Grab back from there. Hot-pool soaking costs extra on top of entry.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section><section id="sec-lembang">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Lembang &amp; the volcano</h2>
+        <p>30–75 min north into the cool highlands</p>
+        <span class="sec-count">7 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="volcano">
+    <div class="media">
+      <span class="badge">Active crater</span><span class="vibe vibe-classic">Classic</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/5751/21446324848_0475094c26_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/4016/4285407392_0688be9c51_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8024/7111423695_75e8a7d4dc_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Tangkuban Perahu — the volcano</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp130k · 70 min</span>
+        <span class="pill">Rp200k</span>
+      </div>
+      <p class="blurb">An active stratovolcano whose &#x27;upturned boat&#x27; silhouette gives it its name, where you walk right up to the railing of Kawah Ratu and stare down into a 500-m bowl of hissing sulphur steam and boiling mud. Vendors cook eggs on the warm earth, and you can scramble down to Kawah Domas to dip a hand in a bubbling spring.</p>
+      <div class="chips"><span class="chip">Kawah Ratu</span><span class="chip">Kawah Domas</span><span class="chip">Sulphur steam</span></div>
+      <div class="when"><span class="when-ic">◷</span> Arrive 07:00–08:00 before the crater clouds over</div>
+      <p class="tip"><span>Tip</span>Foreigner tickets run far above local prices (~Rp200k weekday). Grab is very scarce at the top gate — have your driver wait or pre-book the return, and bring a mask for the sulphur.</p>
+    </div>
+  </article>
+<article class="card" data-cat="forest">
+    <div class="media">
+      <span class="badge">Pine forest</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Taman_Orchid_Forest%2C_Cikole%2C_Lembang_Bandung.jpg/1280px-Taman_Orchid_Forest%2C_Cikole%2C_Lembang_Bandung.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Koleksi_Anggrek_Orchid_Forest_Cikole.jpg/1280px-Koleksi_Anggrek_Orchid_Forest_Cikole.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Bullbopyllum_angusti_folium.jpg/1280px-Bullbopyllum_angusti_folium.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Orchid Forest Cikole</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp95k · 55 min</span>
+        <span class="pill">Rp100k</span>
+      </div>
+      <p class="blurb">A genuine highland pine forest threaded with the &#x27;Forest Walk&#x27; suspension bridges, 20,000+ orchids, a rabbit forest and a wood-and-glass garden that glows with fairy lights at dusk. Tucked inside is Golden Pine, a European-style glasshouse café where you drink coffee among towering pines and mountain mist.</p>
+      <div class="chips"><span class="chip">Suspension bridges</span><span class="chip">Orchids</span><span class="chip">Golden Pine café</span></div>
+      <div class="when"><span class="when-ic">◷</span> 9:00 opening on a weekday; stay for dusk lights</div>
+      <p class="tip"><span>Tip</span>It&#x27;s high up the Tangkuban Perahu road where Grab gets thin — arrange your return ride in advance.</p>
+    </div>
+  </article>
+<article class="card" data-cat="park">
+    <div class="media">
+      <span class="badge">Eco valley</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/4234/34931086561_f156a4858e_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/4204/34674906880_3639282de3_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/3701/19810417268_76d4cddbde_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Dusun Bambu</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp100k · 60 min</span>
+        <span class="pill">Rp25k</span>
+      </div>
+      <p class="blurb">A beautifully landscaped valley of bamboo architecture, terraced flower gardens and a small lake where you paddle wooden boats beneath the hills. Birdcage-shaped dining pods hang over the greenery, and quiet paths climb to cooler pine-and-bamboo viewpoints away from the crowds.</p>
+      <div class="chips"><span class="chip">Bamboo gardens</span><span class="chip">Lake boats</span><span class="chip">Birdcage diners</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday late morning</div>
+      <p class="tip"><span>Tip</span>Cheap entry, but boats and the birdcage restaurants are paid separately. It&#x27;s out toward Cisarua — pair it with Curug Cimahi nearby and pre-book your return Grab.</p>
+    </div>
+  </article>
+<article class="card" data-cat="hotspring">
+    <div class="media">
+      <span class="badge">Thermal</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/682/21871123561_930a8eae3c_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7181/6956371065_b8c495150e_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8025/6965129346_cc874230c3_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Sari Ater (Ciater) hot springs</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp150k · 75 min</span>
+        <span class="pill">Rp50k</span>
+      </div>
+      <p class="blurb">Sprawling thermal pools on the far Subang flank of Tangkuban Perahu, where mineral-rich water runs naturally hot enough to steam in the cool mountain air. You ease from warm soaking pools down to a small waterfall-fed channel, all ringed by tea-country hills.</p>
+      <div class="chips"><span class="chip">Hot pools</span><span class="chip">Waterfall channel</span><span class="chip">Tea hills</span></div>
+      <div class="when"><span class="when-ic">◷</span> Early morning or late afternoon</div>
+      <p class="tip"><span>Tip</span>The furthest spot here, over the hill into Subang — Grab back is genuinely hard, so keep your driver or arrange a resort shuttle.</p>
+    </div>
+  </article>
+<article class="card" data-cat="viewpoint">
+    <div class="media">
+      <span class="badge">Sunrise</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/1831/42250732754_3650e6d070_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/5751/21446324848_0475094c26_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/2155/1808623867_1bebd467bd_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Gunung Putri Lembang — sunrise hike</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp80k · 45 min</span>
+        <span class="pill">Rp15k</span>
+      </div>
+      <p class="blurb">A short, paved 30-minute climb to a ridge that opens onto a sea of Lembang valley mist at dawn, popular with campers who pitch tents to catch first light. It carries Sundanese legend as a former hilltop fortress, and the summit pines frame the glow over the town below.</p>
+      <div class="chips"><span class="chip">Sunrise ridge</span><span class="chip">Valley mist</span><span class="chip">Camp ground</span></div>
+      <div class="when"><span class="when-ic">◷</span> Climb from 04:30 for first light</div>
+      <p class="tip"><span>Tip</span>Getting a 4 a.m. Grab UP here is the hard part — book the night before or have a driver drop you; you can usually catch a ride back from Lembang town by mid-morning.</p>
+    </div>
+  </article>
+<article class="card" data-cat="park">
+    <div class="media">
+      <span class="badge">Family</span><span class="vibe vibe-classic">Classic</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/7317/27031698372_d53f0ae95e_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7248/13796831825_5496c9eac4_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Lembang&#x27;s photo parks</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp75k · 45 min</span>
+        <span class="pill">Rp35k</span>
+      </div>
+      <p class="blurb">If you&#x27;ve got kids or just want easy fun: Floating Market (sampan food stalls on a mountain lake), Farmhouse Susu (a storybook Euro-village where your ticket buys fresh milk and you feed sheep) and The Great Asia Africa (a photo-park of seven countries&#x27; villages with costume rental). Pure kitsch — but well-made kitsch, all on the main Lembang road.</p>
+      <div class="chips"><span class="chip">Floating Market</span><span class="chip">Farmhouse Susu</span><span class="chip">Great Asia Africa</span></div>
+      <div class="when"><span class="when-ic">◷</span> Right at 09:00 opening on a weekday</div>
+      <p class="tip"><span>Tip</span>These sit on the main road, so Grabs back are easy compared to the higher spots. Skip if you&#x27;re chasing nature — keep if you want a light, low-effort day.</p>
+    </div>
+  </article>
+<article class="card" data-cat="food">
+    <div class="media">
+      <span class="badge">Dinner</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/5140/5400668194_4e980a5426_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/65535/52340283319_0c55a706dd_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Kampung Daun — dinner in a ravine</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp65k · 50 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">An open-air &#x27;culinary village&#x27; of bamboo huts scattered among trees, a small waterfall and dim lanterns on the road up toward Lembang — the most atmospheric of the Bandung-hills Sundanese restaurants. Order nasi liwet for the group, sate maranggi and grilled gurame, and let the lantern-light and cool air do the rest.</p>
+      <div class="chips"><span class="chip">Nasi liwet</span><span class="chip">Sate maranggi</span><span class="chip">Lantern huts</span></div>
+      <div class="when"><span class="when-ic">◷</span> Late afternoon into evening</div>
+      <p class="tip"><span>Tip</span>Book a saung ahead on weekends. Ask the host to call your Grab — pickups up in Bajuri can be slow at night.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section><section id="sec-waterfalls">
+    <div class="container">
+      <div class="sec-head">
+        <h2>Waterfall &amp; turquoise-pool missions</h2>
+        <p>The hidden, gatekept, worth-the-drive stuff</p>
+        <span class="sec-count">6 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="pool">
+    <div class="media">
+      <span class="badge">Turquoise</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Sanghyang_Heuleut_Lake_Is_Hidden_Paradise_at_West_Java.jpg/1280px-Sanghyang_Heuleut_Lake_Is_Hidden_Paradise_at_West_Java.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Pond_of_Sanghyang_Heuleut.jpg/1280px-Pond_of_Sanghyang_Heuleut.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Sanghyang_Heuleut_from_Above_%28Sep%2C_2024%29.jpg/1280px-Sanghyang_Heuleut_from_Above_%28Sep%2C_2024%29.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Sanghyang Heuleut, Kenit &amp; Tikoro</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp320k · 110 min</span>
+        <span class="pill">Rp20k</span>
+      </div>
+      <p class="blurb">A string of milky-turquoise plunge pools cupped between giant boulders in the Saguling gorge — rumoured in Sundanese myth to be where angels bathed — deep enough to leap into off the rocks. Downstream, Sanghyang Kenit runs emerald-clear into a cave mouth (the safe swim, with tubing and life jackets), while Tikoro is the eerie &#x27;throat&#x27; where the Citarum vanishes underground.</p>
+      <div class="chips"><span class="chip">Heuleut pools</span><span class="chip">Kenit tubing</span><span class="chip">Tikoro cave</span></div>
+      <div class="when"><span class="when-ic">◷</span> Dry-season mornings 8–11 for the brightest jade</div>
+      <p class="tip"><span>Tip</span>From the PLTA Saguling car park it&#x27;s a rocky 30–45 min trek. There is NO return ride at the trailhead — have your driver wait or charter a car for the day. Grippy shoes; skip it after heavy rain when the water browns and currents rise.</p>
+    </div>
+  </article>
+<article class="card" data-cat="waterfall">
+    <div class="media">
+      <span class="badge">Tallest</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/7685/17125403300_85f1fdf0b2_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8809/16692684063_8b879fe809_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7708/17105522437_ee9566f099_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7674/17287014056_3748909503_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Curug Cimahi — the Rainbow Waterfall</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp150k · 70 min</span>
+        <span class="pill">Rp20k</span>
+      </div>
+      <p class="blurb">At 87 m this is the tallest waterfall in greater Bandung, thundering down a fern-draped cliff you reach by descending ~580 forest steps past chattering monkeys. Around 1 p.m. the spray throws a real rainbow; after 6 p.m. coloured spotlights wash the falls, which is how it earned its &#x27;Pelangi&#x27; nickname.</p>
+      <div class="chips"><span class="chip">87 m drop</span><span class="chip">Rainbow mist</span><span class="chip">Night colours</span></div>
+      <div class="when"><span class="when-ic">◷</span> ~14:00 for a daytime rainbow, or after 18:00 for lights</div>
+      <p class="tip"><span>Tip</span>The easiest big waterfall to reach — Grab can usually drop and collect at the Curug Pelangi gate. The climb back UP the stairs is the only real work; pace it.</p>
+    </div>
+  </article>
+<article class="card" data-cat="waterfall">
+    <div class="media">
+      <span class="badge">Adventure</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Curug_Aseupan.jpg/1280px-Curug_Aseupan.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/HD23.LS_005.jpg/1280px-HD23.LS_005.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/The_Beautiful_Path_to_Waterfall.jpg/1280px-The_Beautiful_Path_to_Waterfall.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Curug Tilu Leuwi Opat &amp; Curug Aseupan</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp140k · 65 min</span>
+        <span class="pill">Rp20k</span>
+      </div>
+      <p class="blurb">&#x27;Three waterfalls, four pools&#x27; — tea-coloured leuwi and small caves linked by suspension bridges and river crossings in the Parongpong hills, with body-rafting and trekking through genuinely wild, dripping greenery. Nearby and quieter still is Curug Aseupan, a slender cone-shaped fall you reach by wading a shin-deep river and scrambling a steep ladder.</p>
+      <div class="chips"><span class="chip">3 falls, 4 pools</span><span class="chip">Body-rafting</span><span class="chip">Curug Aseupan</span></div>
+      <div class="when"><span class="when-ic">◷</span> Dry-season mornings — safer crossings</div>
+      <p class="tip"><span>Tip</span>Reached via Ciwangun Indah Camp, Parongpong. Grab gets you to the entrance but pickups are unreliable up here — ask your driver to wait or save a local ojek number. Wear shoes you can soak.</p>
+    </div>
+  </article>
+<article class="card" data-cat="waterfall">
+    <div class="media">
+      <span class="badge">Camp</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/7192/6979659883_c26322c188_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8214/8304990575_71af7927a9_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8501/8304999727_96db5ff95d_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Curug Layung — pine-forest camp falls</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp150k · 75 min</span>
+        <span class="pill">Rp10k</span>
+      </div>
+      <p class="blurb">A gentle, low-pressure waterfall in a cool pine forest at 1,400 m on the flank of Mt. Burangrang — less a big-drama cascade than a mellow, almost alpine hideaway of pine-scented air, open meadow and a shallow stream. Beloved as a riverside camping spot above Cisarua.</p>
+      <div class="chips"><span class="chip">Pine meadow</span><span class="chip">Riverside camp</span><span class="chip">Sunset</span></div>
+      <div class="when"><span class="when-ic">◷</span> Dry season; sunset &amp; overnight camping</div>
+      <p class="tip"><span>Tip</span>Past Curug Cimahi, then a rough side road into the Perhutani pines — a Grab car can struggle the last stretch, so an ojek helps. Nothing passes up here after dark; arrange your return in advance.</p>
+    </div>
+  </article>
+<article class="card" data-cat="karst">
+    <div class="media">
+      <span class="badge">Mini-Cappadocia</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Stone_Garden_Citatah_07.jpg/1280px-Stone_Garden_Citatah_07.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Stone_Garden_Citatah_06.jpg/1280px-Stone_Garden_Citatah_06.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Stone_Garden_Citatah_03.jpg/1280px-Stone_Garden_Citatah_03.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Citatah karst — Stone Garden, Gua Pawon &amp; Tebing Hawu</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp230k · 95 min</span>
+        <span class="pill">Rp15k</span>
+      </div>
+      <p class="blurb">A surreal field of wind-carved limestone pinnacles atop Gunung Masigit — the eroded remnant of a 20-million-year-old coral reef, often likened to a mini-Cappadocia, with the whole Padalarang valley dropping away below. Just downhill, Gua Pawon hid ~9,500-year-old human skeletons, and the dramatic Tebing Hawu rock arch draws Bandung&#x27;s hardcore climbers.</p>
+      <div class="chips"><span class="chip">Stone Garden</span><span class="chip">Gua Pawon cave</span><span class="chip">Tebing Hawu arch</span></div>
+      <div class="when"><span class="when-ic">◷</span> Sunrise or golden hour for soft light on the rock</div>
+      <p class="tip"><span>Tip</span>Grab can drop you at the Stone Garden car park, but return pickups are unreliable — keep your driver and do all three as one karst loop. Wear real shoes; the rock is sharp.</p>
+    </div>
+  </article>
+<article class="card" data-cat="waterfall">
+    <div class="media">
+      <span class="badge">Epic mission</span><span class="vibe vibe-secret">Gatekept</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/8031/7961512656_b6bc530b9e_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Curug_Malela.jpg/1280px-Curug_Malela.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Air_terjun_curug_malela.jpg/1280px-Air_terjun_curug_malela.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Curug Malela — the &#x27;Little Niagara&#x27;</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp600k · 210 min</span>
+        <span class="pill">Rp10k</span>
+      </div>
+      <p class="blurb">A genuinely jaw-dropping ~50-m-tall, ~70-m-wide curtain of water fanning across black rock in the remote far west of the regency, near the Cianjur border. Its sheer scale and the brutal journey to reach it make standing at its base feel like a hard-won secret — Bandung&#x27;s true &#x27;Little Niagara&#x27;.</p>
+      <div class="chips"><span class="chip">50 m curtain</span><span class="chip">Far west</span><span class="chip">Hard-won</span></div>
+      <div class="when"><span class="when-ic">◷</span> Dry season; start at dawn — it&#x27;s a full day</div>
+      <p class="tip"><span>Tip</span>The hardest reach here. Grab can&#x27;t serve it: charter a car to Gununghalu, then the last broken stretch is best by ojek (~Rp75k round trip). Budget ~4 hrs each way — not a casual day trip.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section><section id="sec-south">
+    <div class="container">
+      <div class="sec-head">
+        <h2>The big south day-trip</h2>
+        <p>Ciwidey · Rancabali · Pangalengan — hire a car, make a day of it</p>
+        <span class="sec-count">5 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="crater">
+    <div class="media">
+      <span class="badge">Crater lake</span><span class="vibe vibe-classic">Classic</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Kawah_Putih_Lake_from_the_viewing_platform%2C_Bandung_Regency%2C_2014-08-21.jpg/1280px-Kawah_Putih_Lake_from_the_viewing_platform%2C_Bandung_Regency%2C_2014-08-21.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8037/7887052798_bbd10594fa_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Panorama_Alam_Kawah_Putih_Ciwidey.jpg/1280px-Panorama_Alam_Kawah_Putih_Ciwidey.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Kawah Putih — the white crater</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp350k · 150 min</span>
+        <span class="pill">Rp81k</span>
+      </div>
+      <p class="blurb">A surreal milky turquoise-to-white acid lake (pH near 0.5) in a crater of Mount Patuha at 2,430 m, ringed by bleached dead trunks and drifting sulphur steam. The colour shifts from blue to chalky green depending on sun and sulphur, and the cold thin air makes it feel like another planet 50 km south of the city.</p>
+      <div class="chips"><span class="chip">Acid lake</span><span class="chip">Bleached forest</span><span class="chip">Sulphur steam</span></div>
+      <div class="when"><span class="when-ic">◷</span> Arrive 07:00–08:00 — lighter sulphur, fewer crowds</div>
+      <p class="tip"><span>Tip</span>Too far for a one-way Grab back — hire a car + driver for the full day (~Rp600–750k) and bundle it with Patenggang and the tea estates next door. Bring a mask for the gas.</p>
+    </div>
+  </article>
+<article class="card" data-cat="lake">
+    <div class="media">
+      <span class="badge">Lake + tea</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/905/40342845770_9cb8e75e9b_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/55/142013071_f9a4b199cc_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/50/142012394_7c0b36fc98_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Situ Patenggang &amp; the Pinisi tea-ship</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp370k · 165 min</span>
+        <span class="pill">Rp50k</span>
+      </div>
+      <p class="blurb">A serene 1,600-m lake cradled by emerald tea plantations, with a small forested island and the legendary Batu Cinta &#x27;Love Stone&#x27; on its shore. Above it looms Glamping Lakeside&#x27;s Pinisi Resto — a full-size wooden Bugis schooner marooned on a tea-covered hill that you board via a swaying rope bridge for tea with the lake spread out below.</p>
+      <div class="chips"><span class="chip">Lake island</span><span class="chip">Pinisi ship</span><span class="chip">Tea terraces</span></div>
+      <div class="when"><span class="when-ic">◷</span> Mid-morning, mist lifting off the water</div>
+      <p class="tip"><span>Tip</span>A 10-min drive past Kawah Putih — bundle both plus Ranca Upas into one hired-car day. Share the per-boat island fare among your group rather than paying per head.</p>
+    </div>
+  </article>
+<article class="card" data-cat="park">
+    <div class="media">
+      <span class="badge">Deer</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Penangkaran_Rusa_Ranca_Upas%2C_Kampung_Cai%2C_Kabupaten_Bandung%2C_Jawa_Barat%2C_Indonesia_%286%29.jpg/1280px-Penangkaran_Rusa_Ranca_Upas%2C_Kampung_Cai%2C_Kabupaten_Bandung%2C_Jawa_Barat%2C_Indonesia_%286%29.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Penangkaran_Rusa_Ranca_Upas%2C_Kampung_Cai%2C_Kabupaten_Bandung%2C_Jawa_Barat%2C_Indonesia_%289%29.jpg/1280px-Penangkaran_Rusa_Ranca_Upas%2C_Kampung_Cai%2C_Kabupaten_Bandung%2C_Jawa_Barat%2C_Indonesia_%289%29.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Penangkaran_Rusa_Ranca_Upas%2C_Kampung_Cai%2C_Kabupaten_Bandung%2C_Jawa_Barat%2C_Indonesia_%2811%29.jpg/1280px-Penangkaran_Rusa_Ranca_Upas%2C_Kampung_Cai%2C_Kabupaten_Bandung%2C_Jawa_Barat%2C_Indonesia_%2811%29.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Ranca Upas — feed the deer</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp350k · 150 min</span>
+        <span class="pill">Rp35k</span>
+      </div>
+      <p class="blurb">A pine-fringed highland meadow where a herd of free-roaming Javanese deer comes to take carrots from your hand, beside a sprawling camping ground and a natural hot-spring pool. Early mornings the whole valley fills with mist and woodsmoke, giving it a cool, slightly wild mountain-camp feel.</p>
+      <div class="chips"><span class="chip">Deer enclosure</span><span class="chip">Hot-spring pool</span><span class="chip">Misty meadow</span></div>
+      <div class="when"><span class="when-ic">◷</span> Early morning — misty, active deer</div>
+      <p class="tip"><span>Tip</span>A day pass (~Rp35k) covers entry, deer and the hot-spring pool; carrots are ~Rp10k extra. It&#x27;s right on the Ciwidey–Patenggang road, so fold it into the Kawah Putih car day.</p>
+    </div>
+  </article>
+<article class="card" data-cat="hotspring">
+    <div class="media">
+      <span class="badge">Rustic</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Kawah_Rengganis.jpg/1280px-Kawah_Rengganis.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Rengganis_Hotspring.jpg/1280px-Rengganis_Hotspring.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Rengganis.jpg/1280px-Rengganis.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Kawah Rengganis / Cibuni hot springs</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp400k · 175 min</span>
+        <span class="pill">Rp50k</span>
+      </div>
+      <p class="blurb">A raw, low-key geothermal field in the Cibuni tea estate where you cross a suspension bridge to reach steaming sulphur vents, bubbling mud and natural hot pools to soak your feet. It feels far more rustic and untouristed than Kawah Putih — run by the local village rather than a slick operator.</p>
+      <div class="chips"><span class="chip">Sulphur vents</span><span class="chip">Hot pools</span><span class="chip">Tea estate</span></div>
+      <div class="when"><span class="when-ic">◷</span> Late morning once the track has dried</div>
+      <p class="tip"><span>Tip</span>The road in is rough and Grab won&#x27;t come out this far — a hired-car spot, ideally bolted onto the Patenggang loop. Carry small cash for the village &#x27;donation&#x27; entry.</p>
+    </div>
+  </article>
+<article class="card" data-cat="tea">
+    <div class="media">
+      <span class="badge">Tea hills</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/4050/4262150560_b95bace237_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/4069/4587994696_685ff8e8d4_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/160/330096210_b1fb4942e3_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/160/330096212_770de7a0ef_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Pangalengan — Nimo Highland, Cileunca &amp; Cukul sunrise</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp370k · 165 min</span>
+        <span class="pill">Rp100k</span>
+      </div>
+      <p class="blurb">A different southern valley of endless tea terraces: Nimo Highland is the &#x27;Switzerland&#x27; of Pangalengan — a glassy hilltop deck reached by a short cable car over the tea, with a ferris wheel turning above the clouds. Add the Dutch-era lake Situ Cileunca for boating, and Sunrise Point Cukul for a dawn sea of cloud over the plantations.</p>
+      <div class="chips"><span class="chip">Nimo Highland</span><span class="chip">Situ Cileunca</span><span class="chip">Cukul sunrise</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday mornings; Cukul pre-dawn</div>
+      <p class="tip"><span>Tip</span>Deep in the tea hills with no Grab waiting — hire a car + driver for the day (~Rp650–800k). For Cukul&#x27;s sunrise you&#x27;ll leave Ciburial around 02:30; dress for near-freezing cold.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section><section id="sec-city">
+    <div class="container">
+      <div class="sec-head">
+        <h2>The city when you want it</h2>
+        <p>Heritage, markets, art &amp; the food you came for</p>
+        <span class="sec-count">5 spots</span>
+      </div>
+      <div class="grid">
+<article class="card" data-cat="heritage">
+    <div class="media">
+      <span class="badge">Heritage</span><span class="vibe vibe-classic">Classic</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Gedung_Sate_Oktober_2024_-_Rahmatdenas.jpg/1280px-Gedung_Sate_Oktober_2024_-_Rahmatdenas.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Mesjid_Agung_Bandung.JPG" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/2234/2336493417_969d9fc0fa_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/4118/4803121611_86f9f0aaee_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span><span class="dot" data-idx="3"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>The downtown heritage loop</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp55k · 35 min</span>
+        <span class="pill">Rp5k</span>
+      </div>
+      <p class="blurb">Old &#x27;Parijs van Java&#x27; on foot: Jalan Braga&#x27;s preserved 1920s Art Deco promenade, the Asia-Africa Conference Museum in Gedung Merdeka (free, birthplace of the non-aligned movement), the twin-minaret Grand Mosque on the grassy Alun-Alun, and the satay-skewer landmark Gedung Sate with the Geology Museum five minutes away. All walkable from each other.</p>
+      <div class="chips"><span class="chip">Braga</span><span class="chip">Asia-Africa Museum</span><span class="chip">Alun-Alun</span><span class="chip">Gedung Sate</span><span class="chip">Geology Museum</span></div>
+      <div class="when"><span class="when-ic">◷</span> Late afternoon → evening lamps; or car-free Sunday AM</div>
+      <p class="tip"><span>Tip</span>Climb the Grand Mosque minaret (~Rp10k) for a city panorama — but avoid Friday midday prayer. Sunday morning the Gedung Sate area becomes a giant car-free street market.</p>
+    </div>
+  </article>
+<article class="card" data-cat="culture">
+    <div class="media">
+      <span class="badge">Culture</span><span class="vibe vibe-classic">Classic</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/2293/2407858251_2c31e11d3c_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/2232/2407898769_527b83b18d_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Saung Angklung Udjo — the bamboo show</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp50k · 30 min</span>
+        <span class="pill">Rp110k</span>
+      </div>
+      <p class="blurb">A renowned bamboo-arts centre dedicated to the angklung, the UNESCO-listed Sundanese shaken-bamboo instrument. The daily afternoon show runs wayang golek puppetry, traditional dance, a children&#x27;s angklung orchestra and an interactive mass play-along finale where the whole audience is handed an instrument.</p>
+      <div class="chips"><span class="chip">Angklung orchestra</span><span class="chip">Wayang golek</span><span class="chip">Play-along finale</span></div>
+      <div class="when"><span class="when-ic">◷</span> Daily show 15:30–17:00; arrive ~15:00</div>
+      <p class="tip"><span>Tip</span>Sit front-centre for the participatory finale. Book online on weekends — the afternoon show sells out.</p>
+    </div>
+  </article>
+<article class="card" data-cat="art">
+    <div class="media">
+      <span class="badge">Art</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/NuArt_Gallery.jpg/1280px-NuArt_Gallery.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8219/8302285006_895ecd9ff8_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/4203/34249208744_196d309000_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>NuArt Sculpture Park</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp80k · 50 min</span>
+        <span class="pill">Rp50k</span>
+      </div>
+      <p class="blurb">A 4-hectare sculpture park by Nyoman Nuarta — the Balinese sculptor behind Bali&#x27;s giant Garuda Wisnu Kencana statue — with a museum, monumental outdoor metalwork, galleries, a working workshop and a restaurant set in landscaped grounds. The most substantial art outing in the city.</p>
+      <div class="chips"><span class="chip">Sculpture grounds</span><span class="chip">Museum</span><span class="chip">Workshop</span></div>
+      <div class="when"><span class="when-ic">◷</span> Weekday late morning; closed Mon</div>
+      <p class="tip"><span>Tip</span>It&#x27;s a long ride to the far NW, so make a half-day of it — time the on-site workshop activity and have lunch at the on-grounds restaurant.</p>
+    </div>
+  </article>
+<article class="card" data-cat="market">
+    <div class="media">
+      <span class="badge">Local gem</span><span class="vibe vibe-gem">Hidden gem</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/3833/9357592641_3efd1f70b1_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/7349/9357579445_fa851f7fc7_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/8180/8065425288_4e6fcb4f42_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Pasar Cihapit — heritage market &amp; hip cafés</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp50k · 30 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">A 1940s wet market that&#x27;s morphed into a hipster-meets-traditional hangout — veg and meat stalls beside third-wave cafés, a French patisserie and heritage warungs. Tucked inside is Warung Bu Eha, open since 1947, serving classic clear-broth Soto Bandung; it&#x27;s the city&#x27;s most charming half-morning.</p>
+      <div class="chips"><span class="chip">Bu Eha soto</span><span class="chip">Los Tjihapit coffee</span><span class="chip">Antique stalls</span></div>
+      <div class="when"><span class="when-ic">◷</span> Morning 07:00–10:00, before it winds down</div>
+      <p class="tip"><span>Tip</span>Do the combo: breakfast at Bu Eha (get there by 10:00 before the gepuk sells out), coffee at Los Tjihapit, pastry at Bien. Bring small cash — many stalls aren&#x27;t on QRIS.</p>
+    </div>
+  </article>
+<article class="card" data-cat="food">
+    <div class="media">
+      <span class="badge">Food hit-list</span><span class="vibe vibe-known">Local favourite</span>
+      <div class="carousel-wrap"><div class="carousel" data-track><img src="https://live.staticflickr.com/65535/48066742062_87e3e0a1fc_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/65535/48066687658_e9af813be7_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" />
+<img src="https://live.staticflickr.com/65535/48066697242_b5e98ed169_b.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div><div class="dots"><span class="dot active" data-idx="0"></span><span class="dot" data-idx="1"></span><span class="dot" data-idx="2"></span></div></div>
+    </div>
+    <div class="body">
+      <h3>Eat your way through Bandung</h3>
+      <div class="meta">
+        <span class="pill pill-go">Grab ~Rp45k · 25 min</span>
+        <span class="pill">Free</span>
+      </div>
+      <p class="blurb">The Sundanese and street-food roll call: nasi timbel komplit at Sambara, crispy-kremes fried chicken at Ayam Goreng Suharti, beef-tendon Mie Kocok Mang Dadeng (since 1953), peanut-drenched Batagor Riri, late-night Surabi Enhaii pancakes, and fish-broth Cuanki Serayu. For coffee, Two Hands Full and Jack Runner are the benchmark local roasters.</p>
+      <div class="chips"><span class="chip">Nasi timbel</span><span class="chip">Mie kocok</span><span class="chip">Batagor</span><span class="chip">Surabi</span><span class="chip">Specialty coffee</span></div>
+      <div class="when"><span class="when-ic">◷</span> Spread across the month — most are lunch spots</div>
+      <p class="tip"><span>Tip</span>For batagor, go easy on the peanut sauce first, then add kecap, sambal and lime yourself — that&#x27;s the local way. Surabi Enhaii runs till 02:00 for a supper run.</p>
+    </div>
+  </article>
+      </div>
+    </div>
+  </section>
+
+    <section id="sec-practical">
+      <div class="container">
+        <div class="sec-head">
+          <h2>Living here for a month</h2>
+          <p>The practical stuff for a long stay up in the Dago Atas hills.</p>
+        </div>
+        <div class="practical"><ul><li>Your trip lands in peak dry season: late July through August brings sunny ~28°C days, but Dago Atas sits high (~1,100 m) so nights drop to 14–18°C — August is the heart of the local &#x27;bediding&#x27; cold snap. Pack a jacket, a sweater and long pants for evenings, plus sunscreen for the strong highland UV.</li><li>Install both Grab and Gojek. Grab handles foreign cards better; Gojek often has more drivers. Up in Ciburial&#x27;s steep lanes, motorbike (GoRide/GrabBike) is far easier to flag than a car — especially after dark — so book return rides early and save a trusted driver&#x27;s WhatsApp.</li><li>Rough fares: short city car rides ~Rp20–40k, longer cross-city or hill runs ~Rp50–100k, motorbike hops ~Rp10–20k. Car drivers thin out late at night in the hills.</li><li>Connectivity: Telkomsel has the best signal up in the hills. A 30-day ~20–50 GB tourist SIM or eSIM runs ~USD 17–35 and needs your passport to register; an eSIM bought before arrival is easiest.</li><li>Money: Bandung is heavily QRIS-cashless but foreign cards can&#x27;t scan the QR — keep cash for warungs, markets, parking and small rides. Prefer BCA ATMs (Mandiri adds a ~Rp50k foreign-card fee); per-withdrawal limit ~Rp2.5–3M. Budget roughly Rp16,500 per USD.</li><li>Health &amp; safety: Bandung is generally safe — the real daily risk is traffic, so cross deliberately and always wear the ojek helmet. Tap water isn&#x27;t drinkable; dengue is present, so use repellent. RS Hasan Sadikin and RS Borromeus are the main hospitals — carry travel insurance.</li><li>Culture: West Java is devout and Muslim-majority. Most food is halal by default; pork is clearly labelled at the few non-halal spots; alcohol is available but discreet. Expect the call to prayer five times a day, including a pre-dawn one (~04:30) carrying across the valley — earplugs if you sleep light.</li><li>Doorstep notes: nearest Alfamart/Indomaret minimarkets are down toward Dago/Dago Pakar, so stock up on a trip down. Tahura Djuanda forest is right there — just don&#x27;t feed the monkeys; they snatch food and bags. Ramadan 2026 ended in March, so it won&#x27;t affect a July–August stay.</li></ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      Built for Jul 25 – Aug 25, 2026 in Ciburial · -6.858, 107.6355 · prices &amp; fares approximate.<br/>
+      Photos from Wikimedia Commons. Always check opening hours &amp; book hill rides ahead.
+    </div>
+  </footer>
+
+  <script>
+    for (const wrap of document.querySelectorAll('.carousel-wrap')) {
+      const track = wrap.querySelector('.carousel');
+      const dots = [...wrap.querySelectorAll('.dot')];
+      if (!track || dots.length === 0) continue;
+      track.addEventListener('scroll', () => {
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+      }, { passive:true });
+      dots.forEach((d,i) => d.addEventListener('click',
+        () => track.scrollTo({ left:i*track.clientWidth, behavior:'smooth' })));
+    }
+  </script>
+</body>
+</html>
